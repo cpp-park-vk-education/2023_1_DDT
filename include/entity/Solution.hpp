@@ -2,6 +2,7 @@
 #define SOURCEDOUT_SOLUTION_HPP
 #include <iostream>
 #include <string>
+#include <utility>
 
 class Solution{
 private:
@@ -12,6 +13,10 @@ private:
     size_t task_id;
     std::string result;
 public:
+    Solution(size_t id, std::string sendDate, size_t senderId, std::string source, size_t taskId,
+             std::string result) : id(id), send_date(std::move(sendDate)), sender_id(senderId), source(std::move(source)),
+                                          task_id(taskId), result(std::move(result)) {}
+
     [[nodiscard]] size_t getId() const {
         return id;
     }

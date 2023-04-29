@@ -7,11 +7,9 @@
 class ITaskRepository {
     virtual Task getTaskById(size_t id) = 0;
 
-    virtual Task updateTask(size_t id) = 0;
+    virtual void updateTask(Task task) = 0;
 
-    virtual Task updateTask(Task task) = 0;
-
-    virtual void makeTask(Task task) = 0;
+    virtual void storeTask(Task task) = 0;
 
     virtual void deleteTask(Task task) = 0;
 

@@ -12,7 +12,7 @@ class ISolutionRepository {
 
     virtual std::vector<Solution> getSolutionsByTaskId(size_t task_id) = 0;
 
-    virtual void makeSolution(Solution solution) = 0;
+    virtual void storeSolution(Solution solution) = 0;
 
     virtual void updateSolution(Solution solution) = 0;
 

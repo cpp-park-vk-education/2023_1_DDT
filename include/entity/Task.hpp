@@ -1,11 +1,14 @@
 #ifndef SOURCEDOUT_TASK_HPP
 #define SOURCEDOUT_TASK_HPP
 #include <iostream>
+#include <utility>
 class Task{
 private:
     size_t id;
     std::string description;
+
 public:
+    Task(size_t id, std::string description) : id(id), description(std::move(description)) {}
     [[nodiscard]] size_t getId() const {
         return id;
     }

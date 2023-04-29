@@ -8,6 +8,6 @@ find_package(libpqxx REQUIRED)
 find_package(GTest REQUIRED)
 find_package(nlohmann_json REQUIRED)
 message(STATUS ${nlohmann_json_LIBRARIES})
-add_executable(${PROJECT_NAME} src/main.cpp include/entity/User.hpp include/repository/UserRepository.hpp include/dataBase/conn.hpp include/repository/IUserRepository.hpp include/entity/Solution.hpp include/entity/Task.hpp include/repository/ISolutionRepository.hpp include/repository/ISolutionRepository.hpp include/repository/ITaskRepository.hpp include/repository/ITaskRepository.hpp)
+add_executable(${PROJECT_NAME} src/main.cpp include/entity/User.hpp include/repository/UserRepository.hpp include/dataBase/conn.hpp include/repository/IUserRepository.hpp include/entity/Solution.hpp include/entity/Task.hpp include/repository/ISolutionRepository.hpp include/repository/ISolutionRepository.hpp include/repository/ITaskRepository.hpp include/repository/ITaskRepository.hpp include/repository/TaskRepository.hpp include/repository/TaskRepository.hpp include/repository/SolutionRepository.hpp include/repository/SolutionRepository.hpp)
 #add_executable(${PROJECT_NAME} text-basic-metrics/tbm_main.cpp text-basic-metrics/tbm_main.cpp) строка для запуска моей части в text-basic-metrics
 target_link_libraries(${PROJECT_NAME} ${Boost_LIBRARIES} ${antlr4-runtime_LIBRARIES} ${libpqxx_LIBRARIES} ${GTest_LIBRARIES} nlohmann_json::nlohmann_json)

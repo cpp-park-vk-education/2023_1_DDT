@@ -28,11 +28,11 @@ jobs:
   linters:
     runs-on: ubuntu-latest
     container: raiden454/sourced-out
-    needs: [build]
     steps:
+      - uses: actions/checkout@v3
       - name: Cppcheck
         run: |
-          cppcheck --language=c++ ./src/main.cpp
+          cppcheck src --std=c++17 --enable=all
       - name: Cpplint
         run: |
-          cpplint --filter=-legal/copyright,-readability/casting,-whitespace/tab,-build/include_subdir --linelength=110 ./src/main.cpp
+          cpplint --extensions=cpp,hpp --recursive ./src/*

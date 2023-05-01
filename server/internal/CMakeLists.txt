@@ -1,9 +1,13 @@
 set(CMAKE_CXX_STANDARD 20)
 cmake_minimum_required(VERSION 3.19)
+
 add_subdirectory(src)
 add_subdirectory(entities)
 add_subdirectory(repository)
 add_subdirectory(dbManager)
+add_subdirectory(service)
+
+
 set(libEntities_LIB ${libEntities_LIB} PARENT_SCOPE)
 set(libEntities_INCLUDE_DIRS ${libEntities_INCLUDE_DIRS} PARENT_SCOPE)
 

@@ -18,6 +18,13 @@ jobs:
       - name: Installing
         run: |
           sudo apt update
+          wget https://boostorg.jfrog.io/artifactory/main/release/1.82.0/source/boost_1_82_0.tar.gz
+          tar xvf boost_1_82_0.tar.gz
+          cd boost_1_82_0
+          ./bootstrap.sh --prefix=/usr/
+          sudo ./b2 install
+          cd ..
+
           git clone https://github.com/google/googletest.git -b release-1.11.0
           cd googletest
           mkdir build

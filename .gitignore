@@ -1,5 +1,6 @@
 /cmake-build-debug/
 /build/
+.vscode
 .idea
 .vscode
 server/build/

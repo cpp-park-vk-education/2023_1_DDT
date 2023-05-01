@@ -1,0 +1,38 @@
+name: Cpp
+
+on:
+  push:
+      branches: [ "dev", "main" ]
+  pull_request:
+      branches: [ "dev", "main" ]
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container: raiden454/sourced-out
+    steps:
+      - uses: actions/checkout@v3
+      - name: Building
+        run: |
+          mkdir build
+          cd build
+          cmake ..
+          make
+      # - name: Testing
+      #   run: |
+      #     ./build/tests/test_parser    
+  linters:
+    runs-on: ubuntu-latest
+    container: raiden454/sourced-out
+    steps:
+      - uses: actions/checkout@v3
+      - name: Cppcheck
+        run: |
+          cppcheck src --std=c++17 --enable=all
+      - name: Cpplint
+        run: |
+          cpplint --extensions=cpp,hpp --recursive ./src/*

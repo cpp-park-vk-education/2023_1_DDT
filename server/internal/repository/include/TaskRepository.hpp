@@ -5,6 +5,7 @@
 #include <fstream>
 #include "../virtual/ITaskRepository.hpp"
 #include "pqxx/pqxx"
+#include "dbManager.hpp"
 
 using namespace pqxx;
 
@@ -22,6 +23,7 @@ public:
 
 private:
     static Task makeTask(const result::const_iterator &c);
+    std::shared_ptr<dbManager> manager;
 };
 
 #endif //SOURCEDOUT_TASKREPOSITORY_HPP

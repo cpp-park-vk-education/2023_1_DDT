@@ -35,3 +35,9 @@ void User::setUsername(const std::string &username_) {
 size_t User::getId() const {
     return id;
 }
+
+std::ostream &operator<<(std::ostream &os, const User &user) {
+    os << "id: " << user.id << " login: " << user.login << " password: " << user.password << " username: "
+       << user.username;
+    return os;
+}

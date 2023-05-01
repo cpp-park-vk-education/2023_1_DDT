@@ -1,8 +1,8 @@
 cmake_minimum_required(VERSION 3.19)
 
-project("RepositoryLib")
+project("EntitiesLib")
 
-set(LIB_NAME libRepository)
+set(LIB_NAME libEntities)
 
 file(GLOB_RECURSE SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp)
 file(GLOB_RECURSE HEADERS ${CMAKE_CURRENT_SOURCE_DIR}/include/*.hpp ${CMAKE_CURRENT_SOURCE_DIR}/include/*.h)
@@ -19,19 +19,15 @@ set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -lboost_filesystem")
 
 add_library(${LIB_NAME} ${SOURCES} ${HEADERS})
 target_include_directories(${LIB_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
-target_link_libraries(${LIB_NAME} ${Boost_LIBRARIES} ${libpqxx_LIBRARIES} ${libEntities_LIB} ${libDbManager_LIB})
+#target_link_libraries(${LIB_NAME} ${Boost_LIBRARIES} nlohmann_json::nlohmann_json)
 
-set(libRepository_LIB ${LIB_NAME})
-set(libRepository_LIB ${libRepository_LIB} PARENT_SCOPE)
+set(libEntities_LIB ${LIB_NAME})
+set(libEntities_LIB ${libEntities_LIB} PARENT_SCOPE)
+set(libEntities_INCLUDE_DIRS ${LIB_NAME} ${CMAKE_CURRENT_SOURCE_DIR}/include)
+set(libEntities_INCLUDE_DIRS ${libEntities_INCLUDE_DIRS} PARENT_SCOPE)
 
-set(libRepository_INCLUDE_DIRS ${LIB_NAME} ${CMAKE_CURRENT_SOURCE_DIR}/include)
-set(libRepository_INCLUDE_DIRS ${libRepository_INCLUDE_DIRS} PARENT_SCOPE)
-
-
-message(Entities_LIB = "${libEntities_LIB}")
-message(dbManager = "${libDbManager_LIB}")
-message("libRepository_LIB = ${libRepository_LIB}")
-message("libRepository_INCLUDE_DIRS = ${libRepository_INCLUDE_DIRS}")
+message("libEntities_LIB = ${libEntities_LIB}")
+message("libEntities_INCLUDE_DIRS = ${libEntities_INCLUDE_DIRS}")
 
 enable_testing()
 add_subdirectory(tests)

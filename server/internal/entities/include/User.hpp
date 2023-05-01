@@ -30,6 +30,8 @@ public:
     void setUsername(const std::string &username);
 
     [[nodiscard]] size_t getId() const;
+
+    friend std::ostream &operator<<(std::ostream &os, const User &user);
 };
 
 #endif //SOURCEDOUT_USER_HPP

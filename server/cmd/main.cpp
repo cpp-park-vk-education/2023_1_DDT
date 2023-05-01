@@ -1,6 +1,6 @@
 
 
-#include "../internal/users/include/UserRepository.hpp"
+#include "../internal/repository/include/UserRepository.hpp"
 
 int main(){
     User user{"qwerty200468@gmail.com", "123", "tolik"};

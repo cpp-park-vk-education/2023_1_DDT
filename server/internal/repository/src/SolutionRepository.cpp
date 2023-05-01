@@ -4,7 +4,7 @@
 #include <pqxx/pqxx>
 #include <boost/format.hpp>
 #include <fstream>
-#include "../Solution.hpp"
+#include "Solution.hpp"
 #include "SolutionRepository.hpp"
 using namespace pqxx;
 

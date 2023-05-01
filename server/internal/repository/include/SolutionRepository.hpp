@@ -5,7 +5,8 @@
 #include <pqxx/pqxx>
 #include <boost/format.hpp>
 #include <fstream>
-#include "ISolutionRepository.hpp"
+#include "../virtual/ISolutionRepository.hpp"
+
 using namespace pqxx;
 
 class SolutionRepository : ISolutionRepository {

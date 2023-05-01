@@ -3,7 +3,7 @@
 
 #include <boost/format.hpp>
 #include <fstream>
-#include "ITaskRepository.hpp"
+#include "../virtual/ITaskRepository.hpp"
 #include "pqxx/pqxx"
 
 using namespace pqxx;

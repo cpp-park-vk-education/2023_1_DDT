@@ -1,5 +1,5 @@
 #include <iostream>
-#include "../User.hpp"
+#include "../include/User.hpp"
 
 User::User(size_t id_, std::string login_, std::string password_, std::string username_) :
         id(id_), login(std::move(login_)), password(std::move(password_)), username(std::move(username_)) {

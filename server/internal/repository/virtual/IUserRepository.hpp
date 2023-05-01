@@ -2,7 +2,7 @@
 #define SOURCEDOUT_IUSERREPOSITORY_HPP
 
 #include <vector>
-#include "../User.hpp"
+#include "../../entities/include/User.hpp"
 class IUserRepository {
 public:
     virtual User getUserById(size_t id) = 0;

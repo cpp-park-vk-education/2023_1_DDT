@@ -2,7 +2,7 @@
 #define SOURCEDOUT_ITASKREPOSITORY_HPP
 
 #include <iostream>
-#include "../Task.hpp"
+#include "../../entities/include/Task.hpp"
 
 class ITaskRepository {
     virtual Task getTaskById(size_t id) = 0;

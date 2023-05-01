@@ -3,7 +3,7 @@
 
 #include <iostream>
 #include <vector>
-#include "../Solution.hpp"
+#include "../../entities/include/Solution.hpp"
 
 class ISolutionRepository {
     virtual Solution getSolutionById(size_t id) = 0;

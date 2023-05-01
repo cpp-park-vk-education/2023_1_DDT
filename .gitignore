@@ -1,4 +1,6 @@
 /cmake-build-debug/
 /build/
 .idea
+server/build/
+log.txt
 CMakeUserPresets.json

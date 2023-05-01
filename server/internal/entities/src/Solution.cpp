@@ -1,7 +1,7 @@
 
 #include <string>
 #include <utility>
-#include "../Solution.hpp"
+#include "../include/Solution.hpp"
 
 Solution::Solution(unsigned long id, std::string sendDate, unsigned long senderId,
                    std::string source, std::string tokens,

@@ -1,0 +1,11 @@
+set(CMAKE_CXX_STANDARD 20)
+cmake_minimum_required(VERSION 3.19)
+add_subdirectory(src)
+add_subdirectory(users)
+add_subdirectory(solutions)
+add_subdirectory(tasks)
+set(libusers_LIB ${libusers_LIB} PARENT_SCOPE)
+set(libusers_INCLUDE_DIRS ${libusers_INCLUDE_DIRS} PARENT_SCOPE)
+
+set(DB_Lib_LIB ${DB_Lib_LIB} PARENT_SCOPE)
+set(DB_Lib_INCLUDE_DIRS ${DB_Lib_INCLUDE_DIRS} PARENT_SCOPE)

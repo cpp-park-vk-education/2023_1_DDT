@@ -3,7 +3,9 @@
 TaskService::TaskService(std::unique_ptr<ITaskRepository> taskRepo)
     : taskRepo(std::move(taskRepo)) {}
 
-Task TaskService::createTask(std::string desc) { return Task(); }
+Task TaskService::createTask(std::string desc) {
+  return Task(desc);
+}
 
 std::vector<Task> TaskService::getAllTasks() { return std::vector<Task>(); }
 

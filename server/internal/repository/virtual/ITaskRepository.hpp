@@ -11,7 +11,7 @@ class ITaskRepository {
 
     virtual void updateTask(Task task) = 0;
 
-    virtual void storeTask(Task task) = 0;
+    virtual int storeTask(Task task) = 0;
 
     virtual void deleteTask(Task task) = 0;
 

@@ -1,5 +1,3 @@
-set(CMAKE_CXX_STANDARD 20)
-cmake_minimum_required(VERSION 3.19)
 set(CMAKE_PREFIX_PATH build)
 project(SourcedOut CXX)
 # find_package(antlr4-runtime REQUIRED)

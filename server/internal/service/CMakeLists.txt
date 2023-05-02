@@ -1,5 +1,3 @@
-cmake_minimum_required(VERSION 3.19)
-
 project("ServiceLib")
 
 file(GLOB SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp)

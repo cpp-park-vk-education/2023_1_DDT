@@ -32,7 +32,7 @@ void TaskRepository::updateTask(Task task) {
     }
 }
 
-void TaskRepository::storeTask(Task task) {
+int TaskRepository::storeTask(Task task) {
     try {
         auto c = manager->connection();
         std::string sql = (boost::format("INSERT INTO tasks (description) "  \
@@ -45,6 +45,7 @@ void TaskRepository::storeTask(Task task) {
         std::cerr << e.what() << std::endl;
         throw e;
     }
+    return 0;
 }
 
 void TaskRepository::deleteTask(Task task) {

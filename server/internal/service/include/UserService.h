@@ -1,9 +1,9 @@
 #pragma once
 #include <memory>
 
-#include "IUserRepository.h"
+#include "IUserRepository.hpp"
 #include "IUserService.h"
-#include "UserValidation.h"
+#include "UserValidator.h"
 
 class UserService : IUserService {
  private:

@@ -2,7 +2,7 @@
 
 #include <memory>
 
-#include "ISolutionRepository.h"
+#include "ISolutionRepository.hpp"
 #include "ISolutionService.h"
 
 class SolutionService : ISolutionService {

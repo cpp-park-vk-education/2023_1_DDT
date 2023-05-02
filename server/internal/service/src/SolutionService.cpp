@@ -14,8 +14,8 @@ std::vector<Solution> SolutionService::getSolutionsByUserAndTaskId(
   return std::vector<Solution>();
 }
 
-SolutionService::deleteSolutionById(size_t solId) {}
+void SolutionService::deleteSolutionById(size_t solId) {}
 
-std::pair<std::string, std::string> Solution::getMetrics(size_t solId) {
+std::pair<std::string, std::string> SolutionService::getMetrics(size_t solId) {
   return std::make_pair("", "");
 }

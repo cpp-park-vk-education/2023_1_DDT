@@ -1,6 +1,6 @@
 #pragma once
 
-#include "User.h"
+#include "User.hpp"
 
 class UserValidator {
  private:

@@ -2,7 +2,7 @@
 
 #include <memory>
 
-#include "ITaskRepository.h"
+#include "ITaskRepository.hpp"
 #include "ITaskService.h"
 
 class TaskService : ITaskService {

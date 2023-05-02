@@ -9,6 +9,7 @@ private:
 
 public:
     Task()=default;
+    ~Task() = default;
     Task(size_t id, std::string description);
 
     explicit Task(std::string description);

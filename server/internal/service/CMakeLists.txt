@@ -15,9 +15,11 @@ message("libRepository_INCLUDE_DIRS = ${libRepository_INCLUDE_DIRS}")
 # target_include_directories(${PROJECT_NAME} PUBLIC ${INCLUDE_DIRS} ${libEntities_INCLUDE_DIRS} ${libRepository_INCLUDE_DIRS})
 target_link_libraries(${PROJECT_NAME} ${libRepository_LIB} ${ibEntities_LIB})
 
-set(SERVICE_lib_LIBRARY ${PROJECT_NAME} PARENT_SCOPE)
-set(SERVICE_lib_INCLUDE_DIRS ${INCLUDE_DIRS} PARENT_SCOPE)
+set(SERVICE_lib_LIBRARY ${PROJECT_NAME})
+set(SERVICE_lib_LIBRARY ${SERVICE_lib_LIBRARY} PARENT_SCOPE)
 
+set(SERVICE_lib_INCLUDE_DIRS ${INCLUDE_DIRS})
+set(SERVICE_lib_INCLUDE_DIRS ${SERVICE_lib_INCLUDE_DIRS} PARENT_SCOPE)
 
 enable_testing()
 add_subdirectory(tests)

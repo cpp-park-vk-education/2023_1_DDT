@@ -5,13 +5,15 @@
 #include "ITaskRepository.hpp"
 #include "ITaskService.h"
 
-class TaskService : ITaskService {
+class TaskService : public ITaskService {
  private:
   std::unique_ptr<ITaskRepository> taskRepo;
 
  public:
-  explicit TaskService(std::unique_ptr<ITaskRepository> taskRepo);
+  TaskService(std::unique_ptr<ITaskRepository> taskRepo);
+  ~TaskService() override = default;
   Task createTask(std::string desc) override;
-  std::vector<Task> getAllTasks(size_t id) override;
+  Task getTask(size_t id) override;
+  std::vector<Task> getAllTasks() override;
   void deleteTask(size_t id) override;
 };

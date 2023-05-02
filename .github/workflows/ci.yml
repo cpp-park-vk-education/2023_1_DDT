@@ -13,7 +13,7 @@ defaults:
 jobs:
   build:
     runs-on: ubuntu-latest
-    container: raiden454/sourced-out
+    container: raiden454/ddt-project
     steps:
       - uses: actions/checkout@v3
       - name: Building
@@ -27,7 +27,7 @@ jobs:
       #     ./build/tests/test_parser    
   linters:
     runs-on: ubuntu-latest
-    container: raiden454/sourced-out
+    container: raiden454/ddt-project
     steps:
       - uses: actions/checkout@v3
       - name: Cppcheck

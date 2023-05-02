@@ -17,7 +17,7 @@ class SolutionRepository : ISolutionRepository {
 
     std::vector<Solution> getSolutionsByTaskId(size_t task_id)  override;
 
-    void storeSolution(Solution solution) override;
+    size_t storeSolution(Solution solution) override;
 
     void updateSolution(Solution solution) override;
 

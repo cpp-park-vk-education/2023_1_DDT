@@ -53,16 +53,17 @@ std::vector<Solution> SolutionRepository::getSolutionsByTaskId(size_t task_id)  
     }
 }
 
-void SolutionRepository::storeSolution(Solution solution)  {
+size_t SolutionRepository::storeSolution(Solution solution)  {
     try {
         auto c = manager->connection();
 
         std::string sql = (boost::format("INSERT INTO solutions (send_date,sender_id, source, task_id, result, tokens, astTree) "  \
-            "VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s'); ") % solution.getSendDate() % solution.getSenderId() % solution.getSource() % solution.getTaskId() % solution.getResult() % solution.getTokens() % solution.getAstTree()).str();
+            "VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s') RETURNING id; ") % solution.getSendDate() % solution.getSenderId() % solution.getSource() % solution.getTaskId() % solution.getResult() % solution.getTokens() % solution.getAstTree()).str();
         work w(*c);
-        w.exec(sql);
+        row r = (w.exec1(sql));
         w.commit();
         manager->freeConnection(c);
+        return r["id"].as<size_t>();
     } catch (const std::exception &e) {
         std::cerr << e.what() << std::endl;
         throw e;
@@ -89,6 +90,7 @@ void SolutionRepository::deleteSolutionById(size_t id)  {
         auto c = manager->connection();
         std::string sql = "DELETE FROM solutions WHERE id=" + std::to_string(id);
         work w(*c);
+        w.exec(sql);
         w.commit();
         manager->freeConnection(c);
     } catch (const std::exception &e) {

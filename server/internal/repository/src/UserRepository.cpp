@@ -38,13 +38,12 @@ size_t UserRepository::makeUser(User user) {
         auto c = manager->connection();
 
         std::string sql = (boost::format("INSERT INTO users (login,password,username) "  \
-            "VALUES ('%s', '%s', '%s'); ") % user.getLogin() % user.getPassword() % user.getUsername()).str();
+            "VALUES ('%s', '%s', '%s') RETURNING id; ") % user.getLogin() % user.getPassword() % user.getUsername()).str();
         work w(*c);
-        w.exec(sql);
+        row r = w.exec1(sql);
         w.commit();
         manager->freeConnection(c);
-
-        return getUserByLogin(user.getLogin()).getId();
+        return r["id"].as<size_t>();
     } catch (const std::exception &e) {
         std::cerr << e.what() << std::endl;
         throw e;
@@ -56,6 +55,7 @@ void UserRepository::deleteByUserId(size_t user_id) {
         auto c = manager->connection();
         std::string sql = "DELETE FROM Users WHERE id=" + std::to_string(user_id);
         work w(*c);
+        w.exec(sql);
         w.commit();
         manager->freeConnection(c);
     } catch (const std::exception &e) {

@@ -1,0 +1,8 @@
+//
+// Created by qwert on 03.05.2023.
+//
+
+#ifndef SOURCEDOUT_METRICSTAT_HPP
+#define SOURCEDOUT_METRICSTAT_HPP
+
+#endif //SOURCEDOUT_METRICSTAT_HPP

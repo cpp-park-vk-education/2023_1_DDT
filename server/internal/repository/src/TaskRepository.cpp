@@ -32,15 +32,16 @@ void TaskRepository::updateTask(Task task) {
     }
 }
 
-void TaskRepository::storeTask(Task task) {
+size_t TaskRepository::storeTask(Task task) {
     try {
         auto c = manager->connection();
         std::string sql = (boost::format("INSERT INTO tasks (description) "  \
-            "VALUES ('%s'); ") % task.getDescription()).str();
+            "VALUES ('%s') RETURNING id; ") % task.getDescription()).str();
         work w(*c);
-        w.exec(sql);
+        row r = w.exec1(sql);
         w.commit();
         manager->freeConnection(c);
+        return r["id"].as<size_t>();
     } catch (const std::exception &e) {
         std::cerr << e.what() << std::endl;
         throw e;
@@ -54,7 +55,9 @@ void TaskRepository::deleteTask(Task task) {
 void TaskRepository::deleteTaskById(size_t task_id) {
     try {
         auto c = manager->connection();
+        std::string sql = "DELETE FROM tasks WHERE id=" + std::to_string(task_id);
         work w(*c);
+        w.exec(sql);
         w.commit();
         manager->freeConnection(c);
     } catch (const std::exception &e) {

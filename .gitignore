@@ -3,4 +3,5 @@
 .idea
 server/build/
 log.txt
+/server/cpp-dotenv
 CMakeUserPresets.json

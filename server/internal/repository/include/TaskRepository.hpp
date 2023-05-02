@@ -15,7 +15,7 @@ public:
 
     void updateTask(Task task) override;
 
-    void storeTask(Task task) override;
+    size_t storeTask(Task task) override;
 
     void deleteTask(Task task) override;
 

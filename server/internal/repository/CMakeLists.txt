@@ -18,7 +18,7 @@ set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -lboost_filesystem")
 
 
 add_library(${LIB_NAME} ${SOURCES} ${HEADERS})
-target_include_directories(${LIB_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
+target_include_directories(${LIB_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include ${CMAKE_CURRENT_SOURCE_DIR}/virtual)
 target_link_libraries(${LIB_NAME} ${Boost_LIBRARIES} ${libpqxx_LIBRARIES} ${libEntities_LIB} ${libDbManager_LIB})
 
 set(libRepository_LIB ${LIB_NAME})

@@ -3,7 +3,7 @@
 
 #include <boost/format.hpp>
 #include <fstream>
-#include "../virtual/ITaskRepository.hpp"
+#include "ITaskRepository.hpp"
 #include "pqxx/pqxx"
 #include "dbManager.hpp"
 

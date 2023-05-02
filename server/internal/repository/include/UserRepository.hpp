@@ -2,7 +2,7 @@
 #define SOURCEDOUT_USERREPOSITORY_HPP
 
 #include <iostream>
-#include "../virtual/IUserRepository.hpp"
+#include "IUserRepository.hpp"
 #include "dbManager.hpp"
 #include <pqxx/pqxx>
 #include <boost/format.hpp>

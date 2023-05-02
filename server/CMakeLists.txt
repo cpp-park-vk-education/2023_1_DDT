@@ -18,5 +18,6 @@ add_subdirectory(cmd)
 message(STATUS ${Boost_LIBRARIES})
 set(CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS} "-lpthread -pthread")
 
+#add_subdirectory(cpp-dotenv)
 #add_executable(${PROJECT_NAME} text-basic-metrics/tbm_main.cpp text-basic-metrics/tbm_main.cpp) строка для запуска моей части в text-basic-metrics
 # target_link_libraries(${PROJECT_NAME} ${Boost_LIBRARIES} ${antlr4-runtime_LIBRARIES} ${libpqxx_LIBRARIES} ${GTest_LIBRARIES})

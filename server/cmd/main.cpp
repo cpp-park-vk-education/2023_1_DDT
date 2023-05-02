@@ -1,11 +1,10 @@
+//#include "dotenv.h"
+#include "UserRepository.hpp"
+#include "User.hpp"
 
-
-#include "../internal/repository/include/UserRepository.hpp"
-
+//using namespace dotenv;
 int main(){
     User user{"qwerty200468@gmail.com", "123", "tolik"};
-    conn conn;
-    UserRepository repo(conn);
-    std::cout<<conn.getData();
-    repo.makeUser(user);
+    UserRepository repo;
+    std::cout<<repo.getUserById(1)<<std::endl;
 }

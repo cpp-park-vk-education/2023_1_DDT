@@ -1,4 +1,4 @@
-#pragma once
+
 #include <iostream>
 #include <fstream>
 #include "Task.hpp"
@@ -7,20 +7,11 @@
 
 Task TaskRepository::getTaskById(size_t id) {
     try {
-        connection c;
-        std::ofstream log("log.txt", std::ios_base::out | std::ios_base::app);
-        if (c.is_open()) {
-            log << "Opened database successfully: " << c.dbname() << std::endl;
-        } else {
-            log << "Can't open database" << std::endl;
-            std::cerr << "Can't open database" << std::endl;
-        }
+        auto c = manager->connection();
         std::string sql = "SELECT * FROM tasks WHERE id=" + std::to_string(id);
-        nontransaction n(c);
+        nontransaction n(*c);
         result r(n.exec(sql));
-        log << "OK" << std::endl;
-        log.close();
-        //c.close();
+        manager->freeConnection(c);
         return makeTask(r.begin());
     } catch (const std::exception &e) {
         std::cerr << e.what() << std::endl;
@@ -30,20 +21,11 @@ Task TaskRepository::getTaskById(size_t id) {
 
 void TaskRepository::updateTask(Task task) {
     try {
-        connection c;
-        std::ofstream log("log.txt", std::ios_base::out | std::ios_base::app);
-        if (c.is_open()) {
-            log << "Opened database successfully: " << c.dbname() << std::endl;
-        } else {
-            log << "Can't open database" << std::endl;
-            std::cerr << "Can't open database" << std::endl;
-        }
-        std::string sql = (boost::format("UPDATE tasks SET description = %s ;") % task.getDescription()).str();
-        work w(c);
+        auto c = manager->connection();
+        std::string sql = (boost::format("UPDATE tasks SET description = '%s' ;") % task.getDescription()).str();
+        work w(*c);
         w.exec(sql);
-        log << "OK" << std::endl;
-        log.close();
-        //c.close();
+        manager->freeConnection(c);
     } catch (const std::exception &e) {
         std::cerr << e.what() << std::endl;
         throw e;
@@ -52,22 +34,13 @@ void TaskRepository::updateTask(Task task) {
 
 void TaskRepository::storeTask(Task task) {
     try {
-        connection c;
-        std::ofstream log("log.txt", std::ios_base::out | std::ios_base::app);
-        if (c.is_open()) {
-            log << "Opened database successfully: " << c.dbname() << std::endl;
-        } else {
-            log << "Can't open database" << std::endl;
-            std::cerr << "Can't open database" << std::endl;
-        }
+        auto c = manager->connection();
         std::string sql = (boost::format("INSERT INTO tasks (description) "  \
-            "VALUES (%s); ") % task.getDescription()).str();
-        work w(c);
+            "VALUES ('%s'); ") % task.getDescription()).str();
+        work w(*c);
         w.exec(sql);
         w.commit();
-        log << "OK" << std::endl;
-        log.close();
-        //c.close();
+        manager->freeConnection(c);
     } catch (const std::exception &e) {
         std::cerr << e.what() << std::endl;
         throw e;
@@ -80,20 +53,10 @@ void TaskRepository::deleteTask(Task task) {
 
 void TaskRepository::deleteTaskById(size_t task_id) {
     try {
-        connection c;
-        std::ofstream log("log.txt", std::ios_base::out | std::ios_base::app);
-        if (c.is_open()) {
-            log << "Opened database successfully: " << c.dbname() << std::endl;
-        } else {
-            log << "Can't open database" << std::endl;
-            std::cerr << "Can't open database" << std::endl;
-        }
-        std::string sql = "DELETE FROM tasks WHERE id=" + std::to_string(task_id);
-        work w(c);
+        auto c = manager->connection();
+        work w(*c);
         w.commit();
-        log << "OK" << std::endl;
-        log.close();
-        //c.close();
+        manager->freeConnection(c);
     } catch (const std::exception &e) {
         std::cerr << e.what() << std::endl;
         throw e;

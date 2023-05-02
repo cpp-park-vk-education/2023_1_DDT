@@ -5,7 +5,8 @@
 #include <pqxx/pqxx>
 #include <boost/format.hpp>
 #include <fstream>
-#include "ISolutionRepository.hpp"
+#include "../virtual/ISolutionRepository.hpp"
+#include "dbManager.hpp"
 
 using namespace pqxx;
 
@@ -26,6 +27,7 @@ class SolutionRepository : ISolutionRepository {
 
 private:
     static Solution makeSolution(const result::const_iterator& c);
+    std::shared_ptr<dbManager> manager;
 };
 
 #endif //SOURCEDOUT_SOLUTIONREPOSITORY_HPP

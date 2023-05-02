@@ -3,15 +3,15 @@
 
 #include <iostream>
 #include "../virtual/IUserRepository.hpp"
+#include "dbManager.hpp"
 #include <pqxx/pqxx>
 #include <boost/format.hpp>
 #include <fstream>
-#include "conn.hpp"
 using namespace pqxx;
 
 class UserRepository : IUserRepository {
 public:
-    explicit UserRepository(conn connect);
+    explicit UserRepository();
 
     User getUserById(size_t id) override;
 
@@ -28,7 +28,7 @@ public:
 
 private:
     static User makeUser(const result::const_iterator& c);
-    conn conn_;
+    std::shared_ptr<dbManager> manager;
 };
 
 #endif //SOURCEDOUT_USERREPOSITORY_HPP

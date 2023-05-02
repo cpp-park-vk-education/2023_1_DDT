@@ -2,17 +2,21 @@ cmake_minimum_required(VERSION 3.19)
 
 project("ServiceLib")
 
-file(GLOB SOURCES ./src/*.cpp)
-file(GLOB INCLUDE_DIRS ${CMAKE_CURRENT_SOURCE_DIR}/include /home/denis/2023_1_DDT/antlr/virtual)
+file(GLOB SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp)
+file(GLOB INCLUDE_DIRS ${CMAKE_CURRENT_SOURCE_DIR}/include ${CMAKE_CURRENT_SOURCE_DIR}/virtual)
 
 
 include_directories(${INCLUDE_DIRS})
 add_library(${PROJECT_NAME} ${SOURCES})
 
-# target_link_libraries(${LIB_NAME})
+message("libRepository_LIB = ${libRepository_LIB}")
+message("libRepository_INCLUDE_DIRS = ${libRepository_INCLUDE_DIRS}")
 
-set(SERVICE_LIBRARY ${PROJECT_NAME} PARENT_SCOPE)
-set(SERVICE_INCLUDE_DIRS ${INCLUDE_DIRS} PARENT_SCOPE)
+# target_include_directories(${PROJECT_NAME} PUBLIC ${INCLUDE_DIRS} ${libEntities_INCLUDE_DIRS} ${libRepository_INCLUDE_DIRS})
+target_link_libraries(${PROJECT_NAME} ${libRepository_LIB} ${ibEntities_LIB})
+
+set(SERVICE_lib_LIBRARY ${PROJECT_NAME} PARENT_SCOPE)
+set(SERVICE_lib_INCLUDE_DIRS ${INCLUDE_DIRS} PARENT_SCOPE)
 
 
 enable_testing()

@@ -13,6 +13,7 @@ private:
     std::string username;
 
 public:
+    User()=default;
     User(size_t id_, std::string login_, std::string password_, std::string username_);
 
     User(std::string login_, std::string password_, std::string username_);

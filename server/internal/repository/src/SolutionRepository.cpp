@@ -23,7 +23,7 @@ Solution SolutionRepository::getSolutionById(size_t id)  {
         result r(n.exec(sql));
         log << "OK" << std::endl;
         log.close();
-        c.close();
+        //c.close();
         return makeSolution(r.begin());
     } catch (const std::exception &e) {
         std::cerr << e.what() << std::endl;
@@ -46,7 +46,7 @@ std::vector<Solution> SolutionRepository::getSolutionsBySenderId(size_t sender_i
         result r(n.exec(sql));
         log << "OK" << std::endl;
         log.close();
-        c.close();
+        //c.close();
         std::vector<Solution> solutions;
         for(result::const_iterator k = r.begin(); k != r.end(); ++k)
             solutions.push_back(makeSolution(k));
@@ -72,7 +72,7 @@ std::vector<Solution> SolutionRepository::getSolutionsByTaskId(size_t task_id)  
         result r(n.exec(sql));
         log << "OK" << std::endl;
         log.close();
-        c.close();
+        //c.close();
         std::vector<Solution> solutions;
         for(result::const_iterator k = r.begin(); k != r.end(); ++k)
             solutions.push_back(makeSolution(k));
@@ -100,7 +100,7 @@ void SolutionRepository::storeSolution(Solution solution)  {
         w.commit();
         log << "OK" << std::endl;
         log.close();
-        c.close();
+        //c.close();
     } catch (const std::exception &e) {
         std::cerr << e.what() << std::endl;
         throw e;
@@ -123,7 +123,7 @@ void SolutionRepository::updateSolution(Solution solution)  {
         w.exec(sql);
         log << "OK" << std::endl;
         log.close();
-        c.close();
+        //c.close();
     } catch (const std::exception &e) {
         std::cerr << e.what() << std::endl;
         throw e;
@@ -145,7 +145,7 @@ void SolutionRepository::deleteSolutionById(size_t id)  {
         w.commit();
         log << "OK" << std::endl;
         log.close();
-        c.close();
+        //c.close();
     } catch (const std::exception &e) {
         std::cerr << e.what() << std::endl;
         throw e;

@@ -32,7 +32,7 @@ jobs:
       - uses: actions/checkout@v3
       - name: Cppcheck
         run: |
-          cppcheck src --std=c++17 --enable=all
+          cppcheck server --std=c++17 --enable=all
       - name: Cpplint
         run: |
-          cpplint --extensions=cpp,hpp --recursive ./src/*
+          cpplint --extensions=cpp,hpp,h --recursive ./server/*

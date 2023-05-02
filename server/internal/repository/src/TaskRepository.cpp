@@ -20,7 +20,7 @@ Task TaskRepository::getTaskById(size_t id) {
         result r(n.exec(sql));
         log << "OK" << std::endl;
         log.close();
-        c.close();
+        //c.close();
         return makeTask(r.begin());
     } catch (const std::exception &e) {
         std::cerr << e.what() << std::endl;
@@ -43,7 +43,7 @@ void TaskRepository::updateTask(Task task) {
         w.exec(sql);
         log << "OK" << std::endl;
         log.close();
-        c.close();
+        //c.close();
     } catch (const std::exception &e) {
         std::cerr << e.what() << std::endl;
         throw e;
@@ -67,7 +67,7 @@ void TaskRepository::storeTask(Task task) {
         w.commit();
         log << "OK" << std::endl;
         log.close();
-        c.close();
+        //c.close();
     } catch (const std::exception &e) {
         std::cerr << e.what() << std::endl;
         throw e;
@@ -93,7 +93,7 @@ void TaskRepository::deleteTaskById(size_t task_id) {
         w.commit();
         log << "OK" << std::endl;
         log.close();
-        c.close();
+        //c.close();
     } catch (const std::exception &e) {
         std::cerr << e.what() << std::endl;
         throw e;

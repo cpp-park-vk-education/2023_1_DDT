@@ -22,7 +22,7 @@ User UserRepository::getUserById(size_t id) {
         result r(n.exec(sql));
         log << "OK" << std::endl;
         log.close();
-        c.close();
+        //c.close();
         return makeUser(r.begin());
     } catch (const std::exception &e) {
         std::cerr << e.what() << std::endl;
@@ -45,7 +45,7 @@ User UserRepository::getUserByLogin(std::string login) {
         result r(n.exec(sql));
         log << "OK" << std::endl;
         log.close();
-        c.close();
+        //c.close();
         return makeUser(r.begin());
     } catch (const std::exception &e) {
         std::cerr << e.what() << std::endl;
@@ -71,7 +71,7 @@ size_t UserRepository::makeUser(User user) {
         log << "OK" << std::endl;
         log.close();
 
-        c.close();
+        //c.close();
 
         return getUserByLogin(user.getLogin()).getId();
     } catch (const std::exception &e) {
@@ -95,7 +95,7 @@ void UserRepository::deleteByUserId(size_t user_id) {
         w.commit();
         log << "OK" << std::endl;
         log.close();
-        c.close();
+        //c.close();
     } catch (const std::exception &e) {
         std::cerr << e.what() << std::endl;
         throw e;
@@ -122,7 +122,7 @@ std::vector<User> UserRepository::getAllUsers() {
         result r(n.exec(sql));
         log << "OK" << std::endl;
         log.close();
-        c.close();
+        //c.close();
         std::vector<User> users;
         for (result::const_iterator k = r.begin(); k != r.end(); ++k)
             users.push_back(makeUser(k));

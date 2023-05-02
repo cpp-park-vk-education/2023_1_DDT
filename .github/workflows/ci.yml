@@ -13,7 +13,7 @@ defaults:
 jobs:
   build:
     runs-on: ubuntu-latest
-    container: raiden454/sourced-out
+    container: raiden454/ddt-project
     steps:
       - uses: actions/checkout@v3
       - name: Building
@@ -22,12 +22,17 @@ jobs:
           cd build
           cmake ..
           make
-      # - name: Testing
-      #   run: |
-      #     ./build/tests/test_parser    
+  tests:
+    runs-on: ubuntu-latest
+    container: raiden454/ddt-project
+    needs: [build]
+    steps:
+      - uses: actions/checkout@v3
+      - name: Run-Tests
+        run: ./build/server/internal/service/tests/test_service
   linters:
     runs-on: ubuntu-latest
-    container: raiden454/sourced-out
+    container: raiden454/ddt-project
     steps:
       - uses: actions/checkout@v3
       - name: Cppcheck

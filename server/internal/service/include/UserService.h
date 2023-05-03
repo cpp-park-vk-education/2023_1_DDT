@@ -10,6 +10,7 @@ class UserService : IUserService {
   std::unique_ptr<IUserRepository> userRepo;
 
  public:
+  ~UserService() override = default;
   explicit UserService(std::unique_ptr<IUserRepository> userRepo);
   User createUser(std::string login, std::string username,
                   std::string password) override;

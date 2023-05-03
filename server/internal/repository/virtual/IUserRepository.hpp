@@ -5,6 +5,7 @@
 #include "../../entities/include/User.hpp"
 class IUserRepository {
 public:
+    virtual ~IUserRepository() = default;
     virtual User getUserById(size_t id) = 0;
 
     virtual User getUserByLogin(std::string login) = 0;

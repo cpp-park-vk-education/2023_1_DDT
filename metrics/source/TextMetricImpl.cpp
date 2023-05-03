@@ -5,7 +5,7 @@
 #include "TextMetricsLib.h"
 
 
-void PrepareDataTextMetric::getData(std::string text1, std::string text2) {
+void PrepareDataTextMetric::setData(std::string text1, std::string text2) {
     std::string non_comm_text1 = deleteComments(text1);
     std::string non_comm_text2 = deleteComments(text2);
 

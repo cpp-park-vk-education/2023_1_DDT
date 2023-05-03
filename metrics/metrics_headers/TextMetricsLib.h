@@ -16,13 +16,13 @@
 
 class ITextMetric{
     virtual void countMetric() = 0;
-    virtual void getData(std::string text1, std::string text2) = 0;
+    virtual void setData(std::string text1, std::string text2) = 0;
     virtual double getMetric() = 0;
 };
 
 class PrepareDataTextMetric : public ITextMetric{
 public:
-    void getData(std::string text1, std::string text2) override;
+    void setData(std::string text1, std::string text2) override;
     double getMetric() override;
 protected:
     std::vector <std::string> tokens1;

@@ -23,8 +23,8 @@ int main(){
     LivDistTextMetric livDistTextMetric;
     JaccardTextMetric jaccardTextMetric;
 
-    livDistTextMetric.getData(text1, text2);
-    jaccardTextMetric.getData(text1, text2);
+    livDistTextMetric.setData(text1, text2);
+    jaccardTextMetric.setData(text1, text2);
 
     livDistTextMetric.countMetric();
     jaccardTextMetric.countMetric();

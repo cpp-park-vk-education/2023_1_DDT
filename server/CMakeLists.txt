@@ -1,0 +1,21 @@
+set(CMAKE_PREFIX_PATH build)
+project(SourcedOut CXX)
+# find_package(antlr4-runtime REQUIRED)
+find_package(Boost 1.8.1 REQUIRED)
+# find_package(libpqxx REQUIRED)
+find_library(PQXX_LIB pqxx)
+find_package(GTest REQUIRED)
+find_package(nlohmann_json REQUIRED)
+message(STATUS ${nlohmann_json_LIBRARIES})
+
+set(THREADS_PREFER_PTHREAD_FLAG ON)
+find_package(Threads REQUIRED)
+
+add_subdirectory(internal)
+
+message(STATUS ${Boost_LIBRARIES})
+set(CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS} "-lpthread -pthread")
+
+#add_subdirectory(cpp-dotenv)
+#add_executable(${PROJECT_NAME} text-basic-metrics/tbm_main.cpp text-basic-metrics/tbm_main.cpp) строка для запуска моей части в text-basic-metrics
+# target_link_libraries(${PROJECT_NAME} ${Boost_LIBRARIES} ${antlr4-runtime_LIBRARIES} ${libpqxx_LIBRARIES} ${GTest_LIBRARIES})

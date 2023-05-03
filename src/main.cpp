@@ -1,14 +1,15 @@
 #include <iostream>
-#include "TextMetricsLib.h"
 #include <fstream>
+
+#include "TextMetricsLib.h"
 
 int main(){
     std::ifstream fin1;
-    fin1.open("metrics/code1.txt");
+    fin1.open("metrics/testProgs/code1.txt");
     assert(fin1.is_open());
 
     std::ifstream fin2;
-    fin2.open("metrics/code2.txt");
+    fin2.open("metrics/testProgs/code2.txt");
     assert(fin2.is_open());
 
     std::string text1( (std::istreambuf_iterator<char>(fin1) ),

@@ -5,6 +5,10 @@
 #include "SolutionRepository.hpp"
 using namespace pqxx;
 
+std::vector<Solution> SolutionRepository::getSolutions(size_t sender_id, size_t task_id){
+    return std::vector<Solution>();
+}
+
 Solution SolutionRepository::getSolutionById(size_t id)  {
     try {
         auto c = manager->connection();
@@ -53,7 +57,7 @@ std::vector<Solution> SolutionRepository::getSolutionsByTaskId(size_t task_id)  
     }
 }
 
-void SolutionRepository::storeSolution(Solution solution)  {
+size_t SolutionRepository::storeSolution(Solution solution)  {
     try {
         auto c = manager->connection();
 

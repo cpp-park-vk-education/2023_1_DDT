@@ -6,16 +6,35 @@ SolutionService::SolutionService(
 
 Solution SolutionService::createSolution(size_t userId, size_t taskId,
                                          std::string source) {
-  return Solution();
+  size_t id = solutionRepo->storeSolution(
+      Solution(0, "", userId, "", "", "", taskId, ""));
+  return Solution(id, "", userId, source, "", "", taskId, "");
 }
 
 std::vector<Solution> SolutionService::getSolutionsByUserAndTaskId(
     size_t userId, size_t taskId) {
-  return std::vector<Solution>();
+  try {
+    return solutionRepo->getSolutions(userId, taskId);
+  } catch (std::exception& e) {
+    throw e;
+  }
 }
 
-void SolutionService::deleteSolutionById(size_t solId) {}
+void SolutionService::deleteSolutionById(size_t solId) {
+  try {
+    solutionRepo->deleteSolutionById(solId);
+  } catch (std::exception& e) {
+    throw e;
+  }
+}
 
 std::pair<std::string, std::string> SolutionService::getMetrics(size_t solId) {
-  return std::make_pair("", "");
+  try {
+    Solution sol = solutionRepo->getSolutionById(solId);
+    std::string tokens = sol.getTokens();
+    std::string astTree = sol.getAstTree();
+    return std::make_pair(tokens, astTree);
+  } catch (std::exception& e) {
+    throw e;
+  }
 }

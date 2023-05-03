@@ -11,13 +11,15 @@
 using namespace pqxx;
 
 class SolutionRepository : ISolutionRepository {
+    // ~SolutionRepository()override = default;
     Solution getSolutionById(size_t id) override;
 
     std::vector<Solution> getSolutionsBySenderId(size_t sender_id) override;
 
     std::vector<Solution> getSolutionsByTaskId(size_t task_id)  override;
+    std::vector<Solution> getSolutions(size_t sender_id, size_t task_id) override;
 
-    void storeSolution(Solution solution) override;
+    size_t storeSolution(Solution solution) override;
 
     void updateSolution(Solution solution) override;
 

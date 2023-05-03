@@ -17,5 +17,11 @@ public:
     [[nodiscard]] const std::string &getDescription() const;
 
     void setDescription(const std::string &description);
+
+    void setId(size_t id);
+
+    bool operator==(const Task &rhs) const;
+
+    bool operator!=(const Task &rhs) const;
 };
 #endif //SOURCEDOUT_TASK_HPP

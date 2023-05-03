@@ -16,6 +16,18 @@ const std::string &Task::getDescription() const {
     return description;
 }
 
+void Task::setId(size_t id_) {
+    id = id_;
+}
+
 void Task::setDescription(const std::string &description_) {
     Task::description = description_;
+}
+
+bool Task::operator==(const Task &rhs) const {
+    return id == rhs.id;
+}
+
+bool Task::operator!=(const Task &rhs) const {
+    return !(rhs == *this);
 }

@@ -32,6 +32,12 @@ public:
     [[nodiscard]] size_t getId() const;
 
     friend std::ostream &operator<<(std::ostream &os, const User &user);
+
+    void setId(size_t id);
+
+    bool operator==(const User &rhs) const;
+
+    bool operator!=(const User &rhs) const;
 };
 
 #endif //SOURCEDOUT_USER_HPP

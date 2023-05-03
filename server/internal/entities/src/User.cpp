@@ -12,6 +12,10 @@ const std::string &User::getLogin() const {
     return login;
 }
 
+void User::setId(size_t id_) {
+    id = id_;
+}
+
 void User::setLogin(const std::string &login_) {
     User::login = login_;
 }
@@ -40,4 +44,12 @@ std::ostream &operator<<(std::ostream &os, const User &user) {
     os << "id: " << user.id << " login: " << user.login << " password: " << user.password << " username: "
        << user.username;
     return os;
+}
+
+bool User::operator==(const User &rhs) const {
+    return id == rhs.id;
+}
+
+bool User::operator!=(const User &rhs) const {
+    return !(rhs == *this);
 }

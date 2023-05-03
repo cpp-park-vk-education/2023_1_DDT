@@ -41,6 +41,12 @@ public:
 
     void setResult(const std::string &result);
 
+    void setId(size_t id);
+
+    bool operator==(const Solution &rhs) const;
+
+    bool operator!=(const Solution &rhs) const;
+
 private:
     size_t id;
     std::string send_date;

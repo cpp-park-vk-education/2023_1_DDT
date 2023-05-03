@@ -11,6 +11,7 @@
 using namespace pqxx;
 
 class SolutionRepository : ISolutionRepository {
+public:
     Solution getSolutionById(size_t id) override;
 
     std::vector<Solution> getSolutionsBySenderId(size_t sender_id) override;
@@ -30,4 +31,4 @@ private:
     std::shared_ptr<dbManager> manager;
 };
 
-#endif //SOURCEDOUT_SOLUTIONREPOSITORY_HPP
+#endif

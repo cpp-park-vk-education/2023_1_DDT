@@ -15,6 +15,9 @@ size_t Solution::getId() const {
     return id;
 }
 
+void Solution::setId(size_t id_) {
+    id = id_;
+}
 
 const std::string &Solution::getSendDate() const {
     return send_date;
@@ -70,4 +73,12 @@ const std::string &Solution::getResult() const {
 
 void Solution::setResult(const std::string &result_) {
     Solution::result = result_;
+}
+
+bool Solution::operator==(const Solution &rhs) const {
+    return id == rhs.id;
+}
+
+bool Solution::operator!=(const Solution &rhs) const {
+    return !(rhs == *this);
 }

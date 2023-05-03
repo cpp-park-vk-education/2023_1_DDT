@@ -1,6 +1,6 @@
 #include "UserService.h"
 
-#include "Exeptions.h"
+#include "Exceptions.h"
 
 UserService::UserService(std::unique_ptr<IUserRepository> userRepo)
     : userRepo(std::move(userRepo)) {}
@@ -8,7 +8,7 @@ UserService::UserService(std::unique_ptr<IUserRepository> userRepo)
 User UserService::createUser(std::string login, std::string username,
                              std::string password) {
   if (login == "") {
-    throw ValidateExeption("invalid login");
+    throw ValidateException("invalid login");
   }
   size_t id = userRepo->makeUser(User(login, password, username));
   return User(id, login, password, username);

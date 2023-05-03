@@ -3,7 +3,7 @@
 
 #include <memory>
 
-#include "Exeptions.h"
+#include "Exceptions.h"
 #include "TaskService.h"
 #include "UserService.h"
 
@@ -63,7 +63,9 @@ TEST_F(TaskServiceTest, GetTaskByIdOK) {
 }
 
 TEST_F(TaskServiceTest, GetTaskByIdEXEPTION) {
-  EXPECT_CALL(*mock_ptr, getTaskById(-1)).Times(1).WillRepeatedly(NoTaskException());
+  EXPECT_CALL(*mock_ptr, getTaskById(-1))
+      .Times(1)
+      .WillRepeatedly(NoTaskException());
   EXPECT_THROW(ts->getTask(-1), Exception);
 }
 
@@ -152,7 +154,32 @@ TEST_F(UserServiceTest, makeUserOk) {
 TEST_F(UserServiceTest, makeUserInvalidData) {
   EXPECT_CALL(*mock_ptr, makeUser(User("login", "password", "username")))
       .Times(0);
-  EXPECT_THROW(us->createUser("", "", ""), ValidateExeption);
+  EXPECT_THROW(us->createUser("", "", ""), ValidateException);
+}
+
+TEST(UserValidatorTest, validateOK) {
+  UserValidator uv(User("login", "password", "username"));
+  EXPECT_TRUE(uv.validateUser());
+}
+
+TEST(UserValidatorTest, invalidLogin) {
+  UserValidator uv(User("", "password", "username"));
+  EXPECT_FALSE(uv.validateUser());
+}
+
+TEST(UserValidatorTest, invalidPassword) {
+  UserValidator uv(User("login", "", "username"));
+  EXPECT_FALSE(uv.validateUser());
+}
+
+TEST(UserValidatorTest, invalidUsername) {
+  UserValidator uv(User("login", "password", ""));
+  EXPECT_FALSE(uv.validateUser());
+}
+
+TEST(UserValidatorTest, invalidUserFields) {
+  UserValidator uv(User("", "", ""));
+  EXPECT_FALSE(uv.validateUser());
 }
 
 int main(int argc, char** argv) {

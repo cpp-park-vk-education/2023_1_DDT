@@ -12,5 +12,5 @@ class UserValidator {
  public:
   explicit UserValidator(User user);
   bool validateUser();
-  ~UserValidator();
+  ~UserValidator() = default;
 };

@@ -7,7 +7,7 @@ SolutionService::SolutionService(
 Solution SolutionService::createSolution(size_t userId, size_t taskId,
                                          std::string source) {
   size_t id = solutionRepo->storeSolution(
-      Solution(0, "", userId, "", "", "", taskId, ""));
+      Solution(0, "", userId, source, "metrics1", "metrics2", taskId, ""));
   return Solution(id, "", userId, source, "", "", taskId, "");
 }
 
@@ -37,4 +37,12 @@ std::pair<std::string, std::string> SolutionService::getMetrics(size_t solId) {
   } catch (std::exception& e) {
     throw e;
   }
+}
+
+void SolutionService::setAntlrWrapper(std::unique_ptr<IAntlrWrapper> antlr_) {
+  antlr = std::move(antlr_);
+}
+
+void SolutionService::setMetrics(std::unique_ptr<IMockMetrics> metrics_) {
+  metrics = std::move(metrics_);
 }

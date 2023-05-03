@@ -7,11 +7,11 @@ file(GLOB INCLUDE_DIRS ${CMAKE_CURRENT_SOURCE_DIR}/include ${CMAKE_CURRENT_SOURC
 include_directories(${INCLUDE_DIRS})
 add_library(${PROJECT_NAME} ${SOURCES})
 
-message("libRepository_LIB = ${libRepository_LIB}")
-message("libRepository_INCLUDE_DIRS = ${libRepository_INCLUDE_DIRS}")
+message("ANTLR4_LIB = ${ANTLR4_LIB}")
+message("ANTLR4_LIB_INCLUDE_DIRS = ${ANTLR4_LIB_INCLUDE_DIRS}")
 
-# target_include_directories(${PROJECT_NAME} PUBLIC ${INCLUDE_DIRS} ${libEntities_INCLUDE_DIRS} ${libRepository_INCLUDE_DIRS})
-target_link_libraries(${PROJECT_NAME} ${libRepository_LIB} ${ibEntities_LIB})
+target_include_directories(${PROJECT_NAME} PUBLIC ${INCLUDE_DIRS} ${libEntities_INCLUDE_DIRS} ${libRepository_INCLUDE_DIRS} ${ANTLR4_LIB_INCLUDE_DIRS})
+target_link_libraries(${PROJECT_NAME} ${libRepository_LIB} ${libEntities_LIB} ${ANTLR4_LIB})
 
 set(SERVICE_lib_LIBRARY ${PROJECT_NAME})
 set(SERVICE_lib_LIBRARY ${SERVICE_lib_LIBRARY} PARENT_SCOPE)

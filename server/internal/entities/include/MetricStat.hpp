@@ -5,43 +5,45 @@
 
 class MetricStat {
 public:
+    MetricStat() noexcept;
+
     MetricStat(size_t solutionId, float textBasedRes, float tokenBasedRes, float treeBasedRes, bool verdict,
-               float meanRes);
+               float meanRes) noexcept;
 
     MetricStat(size_t id, size_t solutionId, float textBasedRes, float tokenBasedRes, float treeBasedRes, bool verdict,
-               float meanRes);
+               float meanRes) noexcept;
 
-    [[nodiscard]] size_t getId() const;
+    [[nodiscard]] size_t getId() const noexcept;
 
     void setId(size_t id);
 
-    [[nodiscard]] size_t getSolutionId() const;
+    [[nodiscard]] size_t getSolutionId() const noexcept;
 
-    void setSolutionId(size_t solutionId);
+    void setSolutionId(size_t solutionId) noexcept;
 
-    [[nodiscard]] float getTextBasedRes() const;
+    [[nodiscard]] float getTextBasedRes() const noexcept;
 
-    void setTextBasedRes(float textBasedRes);
+    void setTextBasedRes(float textBasedRes) noexcept;
 
-    [[nodiscard]] float getTokenBasedRes() const;
+    [[nodiscard]] float getTokenBasedRes() const noexcept;
 
-    void setTokenBasedRes(float tokenBasedRes);
+    void setTokenBasedRes(float tokenBasedRes) noexcept;
 
-    [[nodiscard]] float getTreeBasedRes() const;
+    [[nodiscard]] float getTreeBasedRes() const noexcept;
 
-    void setTreeBasedRes(float treeBasedRes);
+    void setTreeBasedRes(float treeBasedRes) noexcept;
 
-    [[nodiscard]] bool isVerdict() const;
+    [[nodiscard]] bool isVerdict() const noexcept;
 
-    void setVerdict(bool verdict);
+    void setVerdict(bool verdict) noexcept;
 
-    [[nodiscard]] float getMeanRes() const;
+    [[nodiscard]] float getMeanRes() const noexcept;
 
-    void setMeanRes(float meanRes);
+    void setMeanRes(float meanRes) noexcept;
 
-    bool operator==(const MetricStat &rhs) const;
+    bool operator==(const MetricStat &rhs) const noexcept;
 
-    bool operator!=(const MetricStat &rhs) const;
+    bool operator!=(const MetricStat &rhs) const noexcept;
 
 private:
     size_t id;

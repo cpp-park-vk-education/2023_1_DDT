@@ -5,13 +5,16 @@
 #include <pqxx/pqxx>
 #include "TaskRepository.hpp"
 
-Task TaskRepository::getTaskById(size_t id) {
+std::optional<Task> TaskRepository::getTaskById(size_t id) {
     try {
         auto c = manager->connection();
         std::string sql = "SELECT * FROM tasks WHERE id=" + std::to_string(id);
         nontransaction n(*c);
         result r(n.exec(sql));
         manager->freeConnection(c);
+        if (r.empty()){
+            return std::nullopt;
+        }
         return makeTask(r.begin());
     } catch (const std::exception &e) {
         std::cerr << e.what() << std::endl;
@@ -22,7 +25,8 @@ Task TaskRepository::getTaskById(size_t id) {
 void TaskRepository::updateTask(Task task) {
     try {
         auto c = manager->connection();
-        std::string sql = (boost::format("UPDATE tasks SET description = '%s' ;") % task.getDescription()).str();
+        std::string sql = (boost::format("UPDATE tasks SET description = '%s', treshold = '%s';") %
+                           task.getDescription() % task.getTreshhold()).str();
         work w(*c);
         w.exec(sql);
         manager->freeConnection(c);
@@ -35,8 +39,8 @@ void TaskRepository::updateTask(Task task) {
 size_t TaskRepository::storeTask(Task task) {
     try {
         auto c = manager->connection();
-        std::string sql = (boost::format("INSERT INTO tasks (description) "  \
-            "VALUES ('%s') RETURNING id; ") % task.getDescription()).str();
+        std::string sql = (boost::format("INSERT INTO tasks (description, treshold) "  \
+            "VALUES ('%s', '%s') RETURNING id; ") % task.getDescription() % task.getTreshhold()).str();
         work w(*c);
         row r = w.exec1(sql);
         w.commit();
@@ -68,5 +72,10 @@ void TaskRepository::deleteTaskById(size_t task_id) {
 
 Task TaskRepository::makeTask(const result::const_iterator &c) {
     return {c.at(c.column_number("id")).as<size_t>(),
-            c.at(c.column_number("description")).as<std::string>()};
+            c.at(c.column_number("description")).as<std::string>(),
+            c.at(c.column_number("treshold")).as<float>()};
+}
+
+TaskRepository::TaskRepository() {
+    manager = std::make_shared<dbManager>();
 }

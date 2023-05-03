@@ -4,13 +4,15 @@
 #include "IMetricRepository.hpp"
 #include "dbManager.hpp"
 #include <pqxx/pqxx>
-
+#include <optional>
 
 using namespace pqxx;
 
 class MetricRepository : IMetricRepository {
 public:
-    MetricStat getById(size_t id) override;
+    explicit MetricRepository();
+
+    std::optional<MetricStat> getById(size_t id) override;
 
     size_t storeMetric(MetricStat metric) override;
 

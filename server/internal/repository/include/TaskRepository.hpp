@@ -6,12 +6,14 @@
 #include "ITaskRepository.hpp"
 #include "pqxx/pqxx"
 #include "dbManager.hpp"
+#include <optional>
 
 using namespace pqxx;
 
 class TaskRepository : ITaskRepository {
 public:
-    Task getTaskById(size_t id) override;
+    explicit TaskRepository();
+    std::optional<Task> getTaskById(size_t id) override;
 
     void updateTask(Task task) override;
 

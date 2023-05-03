@@ -6,13 +6,15 @@
 
 using namespace pqxx;
 
-Solution SolutionRepository::getSolutionById(size_t id) {
+std::optional<Solution> SolutionRepository::getSolutionById(size_t id) {
     try {
         auto c = manager->connection();
         std::string sql = "SELECT * FROM solutions WHERE id=" + std::to_string(id);
         nontransaction n(*c);
         result r(n.exec(sql));
         manager->freeConnection(c);
+        if(r.empty())
+            return std::nullopt;
         return makeSolution(r.begin());
     } catch (const std::exception &e) {
         std::cerr << e.what() << std::endl;
@@ -120,4 +122,8 @@ Solution SolutionRepository::makeSolution(const result::const_iterator &c) {
             c.at(c.column_number("astTree")).as<std::string>(),
             c.at(c.column_number("task_id")).as<size_t>(),
             c.at(c.column_number("result")).as<std::string>()};
+}
+
+SolutionRepository::SolutionRepository() {
+    manager = std::make_shared<dbManager>();
 }

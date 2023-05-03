@@ -18,14 +18,11 @@ void dbManager::createPool() {
 std::shared_ptr<pqxx::connection> dbManager::connection() {
     std::unique_lock<std::mutex> lock_(m_mutex);
 
-    // if pool is empty, then wait until it notifies back
     while (connection_pool.empty()) {
         m_condition.wait(lock_);
     }
 
-    // get new connection in queue
     auto conn_ = connection_pool.front();
-    // immediately pop as we will use it now
     connection_pool.pop();
 
     return conn_;
@@ -34,12 +31,9 @@ std::shared_ptr<pqxx::connection> dbManager::connection() {
 void dbManager::freeConnection(const std::shared_ptr<pqxx::connection> &conn_) {
     std::unique_lock<std::mutex> lock_(m_mutex);
 
-    // push a new connection into a pool
     connection_pool.push(conn_);
 
-    // unlock mutex
     lock_.unlock();
 
-    // notify one of thread that is waiting
     m_condition.notify_one();
 }

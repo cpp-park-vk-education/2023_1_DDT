@@ -5,13 +5,15 @@
 #include "dbManager.hpp"
 #include <pqxx/pqxx>
 
-User UserRepository::getUserById(size_t id) {
+std::optional<User> UserRepository::getUserById(size_t id) {
     try {
         auto c = manager->connection();
         std::string sql = "SELECT * FROM Users WHERE id=" + std::to_string(id);
         nontransaction n(*c);
         result r(n.exec(sql));
         manager->freeConnection(c);
+        if (r.empty())
+            return std::nullopt;
         return makeUser(r.begin());
     } catch (const std::exception &e) {
         std::cerr << e.what() << std::endl;
@@ -19,13 +21,15 @@ User UserRepository::getUserById(size_t id) {
     }
 }
 
-User UserRepository::getUserByLogin(std::string login) {
+std::optional<User> UserRepository::getUserByLogin(std::string login) {
     try {
         auto c = manager->connection();
-        std::string sql = (boost::format("SELECT * FROM Users WHERE login= '%s'")% login).str();
+        std::string sql = (boost::format("SELECT * FROM Users WHERE login= '%s'") % login).str();
         nontransaction n(*c);
         result r(n.exec(sql));
         manager->freeConnection(c);
+        if(r.empty())
+            return std::nullopt;
         return makeUser(r.begin());
     } catch (const std::exception &e) {
         std::cerr << e.what() << std::endl;
@@ -38,7 +42,8 @@ size_t UserRepository::makeUser(User user) {
         auto c = manager->connection();
 
         std::string sql = (boost::format("INSERT INTO users (login,password,username) "  \
-            "VALUES ('%s', '%s', '%s') RETURNING id; ") % user.getLogin() % user.getPassword() % user.getUsername()).str();
+            "VALUES ('%s', '%s', '%s') RETURNING id; ") % user.getLogin() % user.getPassword() %
+                           user.getUsername()).str();
         work w(*c);
         row r = w.exec1(sql);
         w.commit();
@@ -95,4 +100,20 @@ User UserRepository::makeUser(const result::const_iterator &c) {
 
 UserRepository::UserRepository() {
     manager = std::make_shared<dbManager>();
+}
+
+void UserRepository::update(User user) {
+    try {
+        auto c = manager->connection();
+
+        std::string sql = (boost::format(
+                "UPDATE Users SET login = '%s', password = '%s', username = '%s';")
+                           % user.getLogin() % user.getPassword() % user.getUsername()).str();
+        work w(*c);
+        w.exec(sql);
+        manager->freeConnection(c);
+    } catch (const std::exception &e) {
+        std::cerr << e.what() << std::endl;
+        throw e;
+    }
 }

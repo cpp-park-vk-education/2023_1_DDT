@@ -7,12 +7,15 @@
 #include <fstream>
 #include "ISolutionRepository.hpp"
 #include "dbManager.hpp"
+#include <optional>
+
 
 using namespace pqxx;
 
 class SolutionRepository : ISolutionRepository {
 public:
-    Solution getSolutionById(size_t id) override;
+    explicit SolutionRepository();
+    std::optional<Solution> getSolutionById(size_t id) override;
 
     std::vector<Solution> getSolutionsBySenderId(size_t sender_id) override;
 

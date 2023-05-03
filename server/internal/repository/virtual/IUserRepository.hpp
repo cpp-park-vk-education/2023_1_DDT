@@ -2,16 +2,20 @@
 #define SOURCEDOUT_IUSERREPOSITORY_HPP
 
 #include <vector>
-#include "../../entities/include/User.hpp"
+#include "User.hpp"
+#include <optional>
+
 class IUserRepository {
 public:
-    virtual User getUserById(size_t id) = 0;
+    virtual std::optional<User> getUserById(size_t id) = 0;
 
-    virtual User getUserByLogin(std::string login) = 0;
+    virtual std::optional<User> getUserByLogin(std::string login) = 0;
 
     virtual size_t makeUser(User user) = 0;
 
     virtual void deleteUser(User user) = 0;
+
+    virtual void update(User user) = 0;
 
     virtual void deleteByUserId(size_t user_id) = 0;
 

@@ -3,11 +3,12 @@
 
 #include <iostream>
 #include <vector>
-#include "../../entities/include/Solution.hpp"
+#include "Solution.hpp"
+#include <optional>
 
 class ISolutionRepository {
 public:
-    virtual Solution getSolutionById(size_t id) = 0;
+    virtual std::optional<Solution> getSolutionById(size_t id) = 0;
 
     virtual std::vector<Solution> getSolutionsBySenderId(size_t sender_id) = 0;
 
@@ -20,8 +21,6 @@ public:
     virtual void deleteSolutionById(size_t id) = 0;
 
     virtual void deleteSolution(Solution solution) = 0;
-
-
 };
 
 #endif //SOURCEDOUT_ISOLUTIONREPOSITORY_HPP

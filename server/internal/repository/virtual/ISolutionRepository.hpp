@@ -6,6 +6,7 @@
 #include "../../entities/include/Solution.hpp"
 
 class ISolutionRepository {
+public:
     virtual Solution getSolutionById(size_t id) = 0;
 
     virtual std::vector<Solution> getSolutionsBySenderId(size_t sender_id) = 0;

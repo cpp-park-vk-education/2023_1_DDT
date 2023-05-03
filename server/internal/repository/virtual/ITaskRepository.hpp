@@ -5,6 +5,7 @@
 #include "../../entities/include/Task.hpp"
 
 class ITaskRepository {
+public:
     virtual Task getTaskById(size_t id) = 0;
 
     virtual void updateTask(Task task) = 0;

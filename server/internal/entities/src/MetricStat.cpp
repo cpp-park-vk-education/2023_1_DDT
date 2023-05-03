@@ -66,3 +66,11 @@ float MetricStat::getMeanRes() const {
 void MetricStat::setMeanRes(float meanRes) {
     mean_res = meanRes;
 }
+
+bool MetricStat::operator==(const MetricStat &rhs) const {
+    return id == rhs.id;
+}
+
+bool MetricStat::operator!=(const MetricStat &rhs) const {
+    return !(rhs == *this);
+}

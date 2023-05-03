@@ -39,6 +39,10 @@ public:
 
     void setMeanRes(float meanRes);
 
+    bool operator==(const MetricStat &rhs) const;
+
+    bool operator!=(const MetricStat &rhs) const;
+
 private:
     size_t id;
     size_t solution_id;

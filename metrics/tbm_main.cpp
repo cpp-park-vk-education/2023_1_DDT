@@ -12,6 +12,8 @@
 
 #include <boost/tokenizer.hpp>
 
+#include "metrics_headers/TextMetricsLib.h"
+
 
 std::string deleteComms(const std::string& text){
     std::string modif;

@@ -13,26 +13,43 @@ defaults:
 jobs:
   build:
     runs-on: ubuntu-latest
-    container: raiden454/ddt-project
+    container: raiden454/cpp-app
     steps:
       - uses: actions/checkout@v3
+      - name: Installing
+        run: |
+          apt update
+          git clone https://github.com/google/googletest.git -b release-1.11.0
+          cd googletest
+          mkdir build
+          cd build
+          cmake .. -DBUILD_GMOCK=ON
+          make
+          make install
+          cd ../..
       - name: Building
         run: |
           mkdir build
           cd build
           cmake ..
           make
-      # - name: Testing
-      #   run: |
-      #     ./build/tests/test_parser    
+  # tests:
+  #   runs-on: ubuntu-latest
+  #   container: raiden454/cpp-app
+  #   needs: [build]
+  #   steps:
+  #     - uses: actions/checkout@v3
+  #     - name: Run-Tests
+  #       run: |
+  #         find / -name "test_service"
   linters:
     runs-on: ubuntu-latest
-    container: raiden454/ddt-project
+    container: raiden454/cpp-app
     steps:
       - uses: actions/checkout@v3
       - name: Cppcheck
         run: |
-          cppcheck src --std=c++17 --enable=all
+          cppcheck server --std=c++17 --enable=all
       - name: Cpplint
         run: |
-          cpplint --extensions=cpp,hpp --recursive ./src/*
+          cpplint --extensions=cpp,hpp,h --recursive ./server/*

@@ -86,7 +86,7 @@ double Jaccard_metric(const std::vector <std::string>& tokens1, const std::vecto
 
     std::cout << intersect_sets.size() << " " << union_sets.size() << std::endl;
 
-    return static_cast<double> (intersect_sets.size()) / static_cast<double> (union_sets.size());
+    return тут  (intersect_sets.size()) / static_cast<double> (union_sets.size());
 }
 
 double Livenstain_dist(std::vector<std::string> tokens1, std::vector <std::string> tokens2){

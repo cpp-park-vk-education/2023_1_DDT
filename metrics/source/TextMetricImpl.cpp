@@ -5,13 +5,7 @@
 #include "TextMetricsLib.h"
 
 
-void PrepareDataTextMetric::getData(std::istream &fin1, std::istream &fin2) {
-    std::string text1( (std::istreambuf_iterator<char>(fin1) ),
-                       (std::istreambuf_iterator<char>()    ) );
-
-    std::string text2( (std::istreambuf_iterator<char>(fin2) ),
-                       (std::istreambuf_iterator<char>()    ) );
-
+void PrepareDataTextMetric::getData(std::string text1, std::string text2) {
     std::string non_comm_text1 = deleteComments(text1);
     std::string non_comm_text2 = deleteComments(text2);
 
@@ -71,5 +65,53 @@ std::vector <std::string> PrepareDataTextMetric::tbmTokenizer(const std::string 
     return res;
 }
 
+double PrepareDataTextMetric::getMetric() {
+    return metric_res;
+}
+
+void LivDistTextMetric::countMetric(){
+    unsigned long n = tokens1.size();
+    unsigned long m = tokens2.size();
+    int x, y, z;
+
+    std::vector <std::vector <int> > lev (n, std::vector <int> (m, 0));
+
+    for (int i = 0; i < n; i++){
+        for (int j = 0; j < m; j++){
+            if (std::min(i, j) == 0){
+                lev[i][j] = std::max(i, j);
+            }
+            else{
+                x = lev[i-1][j];
+                y = lev[i][j-1];
+                z = lev[i-1][j-1];
+                lev[i][j] = std::min(x, std::min(y, z));
+                if (tokens1[i] != tokens2[j]){
+                    lev[i][j]++;
+                }
+            }
+        }
+    }
+
+    metric_res = 1.0 - static_cast<double> (lev[n-1][m-1]) / static_cast<double> (std::max(n ,m));
+}
 
 
+void JaccardTextMetric::countMetric() {
+    std::set <std::string> s1;
+    std::set <std::string> s2;
+
+    for (auto &i : tokens1) s1.insert(i);
+    for (auto &i : tokens2) s2.insert(i);
+
+
+    std::set<std::string> intersect_sets;
+    set_intersection(s1.begin(), s1.end(), s2.begin(), s2.end(),
+                     std::inserter(intersect_sets, intersect_sets.begin()));
+
+    std::set<std::string> union_sets;
+    set_union(s1.begin(), s1.end(), s2.begin(), s2.end(),
+              std::inserter(union_sets, union_sets.begin()));
+
+    metric_res = static_cast<double> (intersect_sets.size()) / static_cast<double> (union_sets.size());
+}

@@ -27,7 +27,7 @@ public:
 protected:
     std::vector <std::string> tokens1;
     std::vector <std::string> tokens2;
-    double metric_res;
+    double metric_res{};
 private:
     static std::string deleteComments(const std::string& text);
     static std::vector <std::string> tbmTokenizer(const std::string &text);

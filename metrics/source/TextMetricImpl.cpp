@@ -93,7 +93,10 @@ void LivDistTextMetric::countMetric(){
         }
     }
 
-    metric_res = 1.0 - static_cast<double> (lev[n-1][m-1]) / static_cast<double> (std::max(n ,m));
+    if (n == 0 || m == 0)
+        metric_res = 0;
+    else
+        metric_res = 1.0 - static_cast<double> (lev[n-1][m-1]) / static_cast<double> (std::max(n ,m));
 }
 
 

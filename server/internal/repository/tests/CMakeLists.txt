@@ -29,17 +29,6 @@ add_custom_target(
         COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}
 )
 
-add_custom_target(
-        ${PROJECT_NAME}_COVERAGE
-        COMMAND gcovr ${CMAKE_CURRENT_BINARY_DIR} -r ${CMAKE_CURRENT_SOURCE_DIR}
-)
-
-add_custom_target(
-        ${PROJECT_NAME}_COVERAGE_FILE
-        COMMAND rm -r ${CMAKE_CURRENT_BINARY_DIR}/report || echo "There are no reports"
-        COMMAND mkdir ${CMAKE_CURRENT_BINARY_DIR}/report
-        COMMAND gcovr ${CMAKE_CURRENT_BINARY_DIR} -r ${CMAKE_CURRENT_SOURCE_DIR} --html-details report/report.html
-)
 
 add_custom_target(
         ${PROJECT_NAME}_VALGRIND

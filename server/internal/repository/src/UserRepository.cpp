@@ -15,9 +15,9 @@ std::optional<User> UserRepository::getUserById(size_t id) {
         if (r.empty())
             return std::nullopt;
         return makeUser(r.begin());
-    } catch (const std::exception &e) {
-        std::cerr << e.what() << std::endl;
-        throw e;
+    } catch (...) {
+        
+        throw;
     }
 }
 
@@ -31,9 +31,9 @@ std::optional<User> UserRepository::getUserByLogin(std::string login) {
         if(r.empty())
             return std::nullopt;
         return makeUser(r.begin());
-    } catch (const std::exception &e) {
-        std::cerr << e.what() << std::endl;
-        throw e;
+    } catch (...) {
+        
+        throw;
     }
 }
 
@@ -49,9 +49,9 @@ size_t UserRepository::makeUser(User user) {
         w.commit();
         manager->freeConnection(c);
         return r["id"].as<size_t>();
-    } catch (const std::exception &e) {
-        std::cerr << e.what() << std::endl;
-        throw e;
+    } catch (...) {
+        
+        throw;
     }
 }
 
@@ -63,9 +63,9 @@ void UserRepository::deleteByUserId(size_t user_id) {
         w.exec(sql);
         w.commit();
         manager->freeConnection(c);
-    } catch (const std::exception &e) {
-        std::cerr << e.what() << std::endl;
-        throw e;
+    } catch (...) {
+        
+        throw;
     }
 }
 
@@ -85,9 +85,9 @@ std::vector<User> UserRepository::getAllUsers() {
         for (result::const_iterator k = r.begin(); k != r.end(); ++k)
             users.push_back(makeUser(k));
         return users;
-    } catch (const std::exception &e) {
-        std::cerr << e.what() << std::endl;
-        throw e;
+    } catch (...) {
+        
+        throw;
     }
 }
 
@@ -112,8 +112,8 @@ void UserRepository::update(User user) {
         work w(*c);
         w.exec(sql);
         manager->freeConnection(c);
-    } catch (const std::exception &e) {
-        std::cerr << e.what() << std::endl;
-        throw e;
+    } catch (...) {
+        
+        throw;
     }
 }

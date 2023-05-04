@@ -6,7 +6,7 @@
 #include "../include/dbConnection.hpp"
 
 dbConnection::dbConnection() {
-
+    establish_connection();
 }
 
 std::shared_ptr<pqxx::connection> dbConnection::connection() const {

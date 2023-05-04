@@ -5,6 +5,7 @@
 #include "SolutionRepository.hpp"
 #include "TaskRepository.hpp"
 #include <optional>
+
 TEST(UserRepository_CRUD_Test, CRUD) {
     UserRepository rep;
 
@@ -45,7 +46,7 @@ TEST(TaskRepository_CRUD_Test, CRUD) {
 TEST(SolutionRepository_CRUD_Test, CRUD) {
     SolutionRepository rep;
 
-    Solution solution("01.01.1970", 1, ":/C/Users","tokens.txt","tree.txt", 1, "result");
+    Solution solution("01.01.1970", 1, ":/C/Users", "tokens.txt", "tree.txt", 1, "result");
     size_t id = rep.storeSolution(solution);
     EXPECT_NO_FATAL_FAILURE(rep.getSolutionById(1));
     solution.setId(id);
@@ -59,7 +60,7 @@ TEST(SolutionRepository_CRUD_Test, CRUD) {
     EXPECT_NO_FATAL_FAILURE(rep.deleteSolution(new_solution));
 }
 
-TEST(MetricRepository_CRUD_Test, CRUD){
+TEST(MetricRepository_CRUD_Test, CRUD) {
     MetricRepository rep;
     MetricStat metricStat(1, 0.8f, 0.9f, 0.89f, true, 0.85f);
     size_t id = rep.storeMetric(metricStat);
@@ -75,9 +76,10 @@ TEST(MetricRepository_CRUD_Test, CRUD){
     EXPECT_NO_FATAL_FAILURE(rep.deleteMetric(new_stat));
 }
 
-TEST(UserRepository_CRUD_Test, CRUD_many) {
+TEST(UserRepository_CRUD_Test, getAllUsers) {
     UserRepository rep;
-    std::vector<User>  v = {{"test@test.com", "test", "testuser"}, {"test2@test.com", "test2", "testuser2"}};
+    std::vector<User> v = {{"test@test.com",  "test",  "testuser"},
+                           {"test2@test.com", "test2", "testuser2"}};
     EXPECT_NO_FATAL_FAILURE(rep.getAllUsers());
     std::vector<User> new_v = rep.getAllUsers();
     EXPECT_EQ(v, new_v);
@@ -99,15 +101,18 @@ TEST(UserRepository_CRUD_Test, loginLikeId) {
 TEST(SolutionRepository_CRUD_Test, CRUD_getSolutionsBySenderId) {
     SolutionRepository rep;
 
-    Solution solution1("01.01.1970", 1, ":/C/Users","tokens.txt","tree.txt", 1, "result");
-    Solution solution2("01.01.1970", 1, "/home/usr","tokens.txt","tree.txt", 1, "result");
+    Solution solution1("01.01.1970", 1, ":/C/Users", "tokens.txt", "tree.txt", 1, "result");
+    Solution solution2("01.01.1970", 1, "/home/usr", "tokens.txt", "tree.txt", 1, "result");
 
     size_t id1 = rep.storeSolution(solution1);
     solution1.setId(id1);
+    EXPECT_EQ(solution1, rep.getSolutionById(id1));
     size_t id2 = rep.storeSolution(solution2);
     solution2.setId(id2);
-    std::vector<Solution> v = {solution1, solution2};
-    std::vector<Solution> new_v = rep.getSolutionsBySenderId(solution1.getId());
+    EXPECT_EQ(solution2, rep.getSolutionById(id2));
+    std::vector<Solution> v = {{id1, "01.01.1970", 1, ":/C/Users", "tokens.txt", "tree.txt", 1, "result"},
+                               {id2, "01.01.1970", 1, "/home/usr", "tokens.txt", "tree.txt", 1, "result"}};
+    std::vector<Solution> new_v = rep.getSolutionsBySenderId(solution1.getSenderId());
     EXPECT_EQ(v, new_v);
     EXPECT_NO_FATAL_FAILURE(rep.deleteSolution(solution1));
     EXPECT_NO_FATAL_FAILURE(rep.deleteSolution(solution2));
@@ -117,21 +122,50 @@ TEST(SolutionRepository_CRUD_Test, CRUD_getSolutionsBySenderId) {
 TEST(SolutionRepository_CRUD_Test, CRUD_getSolutionsByTaskId) {
     SolutionRepository rep;
 
-    Solution solution1("01.01.1970", 1, ":/C/Users","tokens.txt","tree.txt", 1, "result");
-    Solution solution2("01.01.1970", 1, "/home/usr","tokens.txt","tree.txt", 1, "result");
+    Solution solution1("01.01.1970", 1, ":/C/Users", "tokens.txt", "tree.txt", 1, "result");
+    Solution solution2("01.01.1970", 1, "/home/usr", "tokens.txt", "tree.txt", 1, "result");
 
     size_t id1 = rep.storeSolution(solution1);
     solution1.setId(id1);
     size_t id2 = rep.storeSolution(solution2);
     solution2.setId(id2);
     std::vector<Solution> v = {solution1, solution2};
-    std::vector<Solution> new_v = rep.getSolutionsByTaskId(solution1.getId());
+    std::vector<Solution> new_v = rep.getSolutionsByTaskId(solution1.getTaskId());
     EXPECT_EQ(v, new_v);
     EXPECT_NO_FATAL_FAILURE(rep.deleteSolution(solution1));
     EXPECT_NO_FATAL_FAILURE(rep.deleteSolution(solution2));
 
 }
+TEST(SolutionRepository_CRUD_Test, tryToAddWithNotExistingTask){
+    SolutionRepository rep;
 
+    Solution solution("01.01.1970", 1, ":/C/Users", "tokens.txt", "tree.txt", 100500, "result");
+    try{
+        rep.storeSolution(solution);
+    }catch(pqxx::foreign_key_violation &e){
+        std::cout<<e.what();
+    }
+}
+
+TEST(SolutionRepository_CRUD_Test, tryToStoreWithNotExistingSender){
+    SolutionRepository rep;
+
+    Solution solution("01.01.1970", 100500, ":/C/Users", "tokens.txt", "tree.txt", 1, "result");
+    try{
+        rep.storeSolution(solution);
+    }catch(pqxx::foreign_key_violation &keyViolation){
+        std::cout<<keyViolation.what();
+    }
+}
+TEST(MetricRepository_CRUD_Test, tryToStoreWithNotExistingSolution){
+    MetricRepository rep;
+    MetricStat metricStat(100500, 0.8f, 0.9f, 0.89f, true, 0.85f);
+    try{
+        rep.storeMetric(metricStat);
+    }catch(pqxx::foreign_key_violation &keyViolation) {
+        std::cout<<keyViolation.what();
+    }
+}
 int main(int argc, char **argv) {
     ::testing::InitGoogleMock(&argc, argv);
     return RUN_ALL_TESTS();

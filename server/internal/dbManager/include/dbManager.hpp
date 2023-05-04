@@ -21,7 +21,7 @@ public:
     void freeConnection(const std::shared_ptr<pqxx::connection> &);
 
 private:
-    const int POOL_SIZE = 10;
+    const size_t POOL_SIZE = 10;
     std::condition_variable m_condition;
 
     void createPool();

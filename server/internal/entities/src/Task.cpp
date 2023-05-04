@@ -1,6 +1,4 @@
-#pragma once
-
-#include "../include/Task.hpp"
+#include "Task.hpp"
 #include <iostream>
 
 Task::Task(std::string description_, float treshold_) noexcept : id(0), description(std::move(description_)),

@@ -12,9 +12,9 @@ std::optional<MetricStat> MetricRepository::getById(size_t id) {
         if(r.empty())
             return std::nullopt;
         return makeMetric(r.begin());
-    } catch (const std::exception &e) {
-        std::cerr << e.what() << std::endl;
-        throw e;
+    } catch (...) {
+        
+       throw;
     }
 }
 
@@ -34,9 +34,9 @@ size_t MetricRepository::storeMetric(MetricStat metric) {
         w.commit();
         manager->freeConnection(c);
         return r["id"].as<size_t>();
-    } catch (const std::exception &e) {
-        std::cerr << e.what() << std::endl;
-        throw e;
+    } catch (...) {
+        
+       throw;
     }
 }
 
@@ -51,9 +51,9 @@ void MetricRepository::updateMetric(MetricStat metric) {
         work w(*c);
         w.exec(sql);
         manager->freeConnection(c);
-    } catch (const std::exception &e) {
-        std::cerr << e.what() << std::endl;
-        throw e;
+    } catch (...) {
+        
+       throw;
     }
 }
 
@@ -69,9 +69,8 @@ void MetricRepository::deleteMetricById(size_t id) {
         w.exec(sql);
         w.commit();
         manager->freeConnection(c);
-    } catch (const std::exception &e) {
-        std::cerr << e.what() << std::endl;
-        throw e;
+    } catch (...) {
+        throw;
     }
 }
 

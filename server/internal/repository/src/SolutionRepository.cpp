@@ -13,12 +13,12 @@ std::optional<Solution> SolutionRepository::getSolutionById(size_t id) {
         nontransaction n(*c);
         result r(n.exec(sql));
         manager->freeConnection(c);
-        if(r.empty())
+        if (r.empty())
             return std::nullopt;
         return makeSolution(r.begin());
-    } catch (const std::exception &e) {
-        std::cerr << e.what() << std::endl;
-        throw e;
+    } catch (...) {
+
+        throw;
     }
 }
 
@@ -33,9 +33,9 @@ std::vector<Solution> SolutionRepository::getSolutionsBySenderId(size_t sender_i
         for (result::const_iterator k = r.begin(); k != r.end(); ++k)
             solutions.push_back(makeSolution(k));
         return solutions;
-    } catch (const std::exception &e) {
-        std::cerr << e.what() << std::endl;
-        throw e;
+    } catch (...) {
+
+        throw;
     }
 }
 
@@ -50,9 +50,9 @@ std::vector<Solution> SolutionRepository::getSolutionsByTaskId(size_t task_id) {
         for (result::const_iterator k = r.begin(); k != r.end(); ++k)
             solutions.push_back(makeSolution(k));
         return solutions;
-    } catch (const std::exception &e) {
-        std::cerr << e.what() << std::endl;
-        throw e;
+    } catch (...) {
+
+        throw;
     }
 }
 
@@ -70,9 +70,8 @@ size_t SolutionRepository::storeSolution(Solution solution) {
         w.commit();
         manager->freeConnection(c);
         return r["id"].as<size_t>();
-    } catch (const std::exception &e) {
-        std::cerr << e.what() << std::endl;
-        throw e;
+    } catch (...) {
+        throw;
     }
 }
 
@@ -88,9 +87,9 @@ void SolutionRepository::updateSolution(Solution solution) {
         work w(*c);
         w.exec(sql);
         manager->freeConnection(c);
-    } catch (const std::exception &e) {
-        std::cerr << e.what() << std::endl;
-        throw e;
+    } catch (...) {
+
+        throw;
     }
 }
 
@@ -102,9 +101,9 @@ void SolutionRepository::deleteSolutionById(size_t id) {
         w.exec(sql);
         w.commit();
         manager->freeConnection(c);
-    } catch (const std::exception &e) {
-        std::cerr << e.what() << std::endl;
-        throw e;
+    } catch (...) {
+
+        throw;
     }
 }
 

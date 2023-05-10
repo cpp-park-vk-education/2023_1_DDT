@@ -2,12 +2,15 @@
 #define SOURCEDOUT_ITASKREPOSITORY_HPP
 
 #include <iostream>
+#include <vector>
 #include "../../entities/include/Task.hpp"
 
 class ITaskRepository {
     public:
     virtual ~ITaskRepository() = default;
     virtual Task getTaskById(size_t id) = 0;
+
+    virtual std::vector<Task> getAllTasks() = 0;
 
     virtual void updateTask(Task task) = 0;
 

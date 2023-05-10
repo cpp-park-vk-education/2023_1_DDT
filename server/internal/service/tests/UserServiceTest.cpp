@@ -48,7 +48,7 @@ TEST_F(UserServiceTest, deleteUserWithInvalidId) {
   EXPECT_CALL(*mock_ptr, deleteByUserId(1))
       .Times(1)
       .WillRepeatedly(NoUserException());
-  EXPECT_THROW(us->deleteUser(1), Exception);
+  EXPECT_THROW(us->deleteUser(1), std::exception);
 }
 
 TEST_F(UserServiceTest, getUserOk) {
@@ -62,17 +62,17 @@ TEST_F(UserServiceTest, getUserOk) {
   EXPECT_EQ(u.getUsername(), "username");
 }
 
-TEST_F(UserServiceTest, getUserEXEPTION) {
+TEST_F(UserServiceTest, getUserInvalidId) {
   EXPECT_CALL(*mock_ptr, getUserById(-1)).Times(1).WillOnce(NoUserException());
-  EXPECT_THROW(us->getUserById(-1), Exception);
+  EXPECT_THROW(us->getUserById(-1), std::exception);
 }
 
 TEST_F(UserServiceTest, makeUserOk) {
-  EXPECT_CALL(*mock_ptr, makeUser(User("login", "password", "username")))
+  EXPECT_CALL(*mock_ptr, makeUser(User("login@gmail.com", "password", "username")))
       .Times(1)
       .WillOnce(::testing::Return(1));
-  User u = us->createUser("login", "username", "password");
-  EXPECT_EQ(u.getLogin(), "login");
+  User u = us->createUser("login@gmail.com", "username", "password");
+  EXPECT_EQ(u.getLogin(), "login@gmail.com");
   EXPECT_EQ(u.getId(), 1);
   EXPECT_EQ(u.getPassword(), "password");
   EXPECT_EQ(u.getUsername(), "username");

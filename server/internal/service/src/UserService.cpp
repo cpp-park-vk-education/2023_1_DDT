@@ -1,19 +1,43 @@
 #include "UserService.h"
 
 #include "Exceptions.h"
+#include "UserValidator.h"
 
 UserService::UserService(std::unique_ptr<IUserRepository> userRepo)
     : userRepo(std::move(userRepo)) {}
 
-User UserService::createUser(std::string login, std::string username,
-                             std::string password) {
-  if (login == "") {
-    throw ValidateException("invalid login");
-  }
-  size_t id = userRepo->makeUser(User(login, password, username));
-  return User(id, login, password, username);
+UserService::UserService() {
+  // TODO: раскоментировать, когда будет реализация
+  // userRepo = std::make_unique<UserRepository>();
 }
 
-User UserService::getUserById(size_t id) { return userRepo->getUserById(id); }
+User UserService::createUser(const std::string& login, const std::string& username,
+                             const std::string& password) {
+  User user = User(login, password, username);
+  if (!UserValidator::validate(user)) {
+    throw ValidateException("invalid user params");
+  }
+  try {
+    size_t id = userRepo->makeUser(user);
+    user.setId(id);
+    return user;
+  } catch (std::exception& e) {
+    throw e;
+  }
+}
 
-void UserService::deleteUser(size_t id) { userRepo->deleteByUserId(id); }
+User UserService::getUserById(size_t id) {
+  try {
+    return userRepo->getUserById(id);
+  } catch (std::exception& e) {
+    throw e;
+  }
+}
+
+void UserService::deleteUser(size_t id) {
+  try {
+    userRepo->deleteByUserId(id);
+  } catch (std::exception& e) {
+    throw e;
+  }
+}

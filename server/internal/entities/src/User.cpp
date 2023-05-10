@@ -41,3 +41,7 @@ std::ostream &operator<<(std::ostream &os, const User &user) {
        << user.username;
     return os;
 }
+
+void User::setId(size_t id_) {
+    id=id_;
+}

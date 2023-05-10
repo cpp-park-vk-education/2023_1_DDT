@@ -16,6 +16,8 @@ public:
 
     [[nodiscard]] size_t getId() const;
 
+    void setId(size_t id);
+
     [[nodiscard]] const std::string &getDescription() const;
 
     void setDescription(const std::string &description);

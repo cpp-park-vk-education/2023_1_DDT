@@ -4,8 +4,13 @@ SolutionService::SolutionService(
     std::unique_ptr<ISolutionRepository> solutionRepo)
     : solutionRepo(std::move(solutionRepo)) {}
 
+SolutionService::SolutionService(){
+  //solutionRepo=std::make_unique<SolutionRepository>();
+}    
+
 Solution SolutionService::createSolution(size_t userId, size_t taskId,
-                                         std::string source) {
+                                         const std::string& source) {
+  //antlr = std::make_unique<                                        
   size_t id = solutionRepo->storeSolution(
       Solution(0, "", userId, source, "metrics1", "metrics2", taskId, ""));
   return Solution(id, "", userId, source, "", "", taskId, "");

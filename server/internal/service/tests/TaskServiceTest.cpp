@@ -21,6 +21,7 @@ class TaskRepositoryMock : public ITaskRepository {
   MOCK_METHOD(int, storeTask, (Task task), (override));
   MOCK_METHOD(void, deleteTask, (Task task), (override));
   MOCK_METHOD(void, deleteTaskById, (size_t id), (override));
+  MOCK_METHOD(std::vector<Task>, getAllTasks,(),(override));
 };
 
 struct TaskServiceTest : public testing::Test {
@@ -46,7 +47,7 @@ TEST_F(TaskServiceTest, deleteTasWithInvalidId) {
   EXPECT_CALL(*mock_ptr, deleteTaskById(1))
       .Times(1)
       .WillRepeatedly(NoTaskException());
-  EXPECT_THROW(ts->deleteTask(1), Exception);
+  EXPECT_THROW(ts->deleteTask(1), std::exception);
 }
 
 TEST_F(TaskServiceTest, GetTaskByIdOK) {
@@ -62,7 +63,7 @@ TEST_F(TaskServiceTest, GetTaskByIdEXEPTION) {
   EXPECT_CALL(*mock_ptr, getTaskById(-1))
       .Times(1)
       .WillRepeatedly(NoTaskException());
-  EXPECT_THROW(ts->getTask(-1), Exception);
+  EXPECT_THROW(ts->getTask(-1), std::exception);
 }
 
 TEST_F(TaskServiceTest, CreateTask) {

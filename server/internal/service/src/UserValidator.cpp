@@ -1,34 +1,32 @@
 #include "UserValidator.h"
 
 #include <iostream>
+#include <regex>
 
-UserValidator::UserValidator(User user) : user(user) {}
-
-bool UserValidator::validateUser() {
-  if (validateLogin() && validatePassword() && validateUsername()) {
+bool UserValidator::validate(const User& user) {
+  if (validateLogin(user.getLogin()) && validatePassword(user.getPassword()) &&
+      validateUsername(user.getUsername())) {
     return true;
   }
   return false;
 }
 
-bool UserValidator::validateLogin() {
-  std::string login = user.getLogin();
+bool UserValidator::validateLogin(const std::string& login) {
   if (login.length() < 3 || login.length() > 30) {
     return false;
   }
-  return true;
+  const std::regex pattern("(\\w+)@(\\w+)(\\.(\\w+))+");
+  return std::regex_match(login, pattern);
 }
 
-bool UserValidator::validatePassword() {
-  std::string password = user.getPassword();
+bool UserValidator::validatePassword(const std::string& password) {
   if (password.length() < 8 || password.length() > 30) {
     return false;
   }
   return true;
 }
 
-bool UserValidator::validateUsername() {
-  std::string username = user.getUsername();
+bool UserValidator::validateUsername(const std::string& username) {
   if (username.length() < 3 || username.length() > 20) {
     return false;
   }

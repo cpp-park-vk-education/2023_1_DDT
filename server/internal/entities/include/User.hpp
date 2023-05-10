@@ -22,6 +22,8 @@ public:
 
     void setLogin(const std::string &login);
 
+    void setId(size_t id_);
+
     [[nodiscard]] const std::string &getPassword() const;
 
     void setPassword(const std::string &password);

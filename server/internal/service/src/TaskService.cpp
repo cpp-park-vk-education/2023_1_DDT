@@ -1,7 +1,10 @@
 #include "TaskService.h"
 
-TaskService::TaskService(std::unique_ptr<ITaskRepository> taskRepo)
-    : taskRepo(std::move(taskRepo)) {}
+#include "TaskRepository.hpp"
+
+TaskService::TaskService()
+    : taskRepo(std::make_unique<TaskRepository>()) {
+}
 
 Task TaskService::createTask(std::string desc) {
   size_t id = taskRepo->storeTask(Task(desc));

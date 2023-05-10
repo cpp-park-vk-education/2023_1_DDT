@@ -1,20 +1,25 @@
-#ifndef APP_HTTPSERVER_HTTPSERVER_ROUTER_H_
-#define APP_HTTPSERVER_HTTPSERVER_ROUTER_H_
+#ifndef SOURCEDOUT_HTTPSERVER_ROUTER_UTILS_H
+#define SOURCEDOUT_HTTPSERVER_ROUTER_UTILS_H
 
 #include <string>
 #include <memory>
 #include <boost/noncopyable.hpp>
+#include <boost/beast.hpp>
 
 #include "SolutionManager.h"
 #include "UserManager.h"
 #include "TaskManager.h"
-#include "Response.h"
-#include "Request.h"
 
-class Router : private boost::noncopyable {
+namespace beast = boost::beast;
+namespace http = beast::http;
+namespace net = boost::asio;
+
+class Router : public std::enable_shared_from_this<Router> {
  public:
-    Router();
-    void handleRequest(const Request& req, Response& res);
+    explicit Router(std::string_view doc_root_);
+
+    http::message_generator handleRequest(http::request<http::string_body>&& req);
+
     void setSolutionManager(std::shared_ptr<ISolutionManager> mng) {
         solutionManager = mng;
     }
@@ -28,8 +33,11 @@ class Router : private boost::noncopyable {
     std::shared_ptr<ISolutionManager> solutionManager;
     std::shared_ptr<IUserManager> userManager;
     std::shared_ptr<ITaskManager> taskManager;
-    static bool decodeUrl(const std::string& in, std::string& out);
+    std::string doc_root;
+
+    http::response<http::string_body> getBadRequest(const http::request<http::string_body>& request,
+                                                    beast::string_view why);
 };
 
 
-#endif  // APP_HTTPSERVER_HTTPSERVER_ROUTER_H_
+#endif  // SOURCEDOUT_HTTPSERVER_ROUTER_UTILS_H

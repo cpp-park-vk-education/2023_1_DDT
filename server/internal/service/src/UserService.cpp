@@ -1,9 +1,11 @@
 #include "UserService.h"
 
 #include "Exeptions.h"
+#include "UserRepository.hpp"
 
-UserService::UserService(std::unique_ptr<IUserRepository> userRepo)
-    : userRepo(std::move(userRepo)) {}
+UserService::UserService()
+    : userRepo(std::make_unique<UserRepository>()) {
+}
 
 User UserService::createUser(std::string login, std::string username,
                              std::string password) {

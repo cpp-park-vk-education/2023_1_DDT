@@ -10,7 +10,7 @@
 
 using namespace pqxx;
 
-class SolutionRepository : ISolutionRepository {
+class SolutionRepository : public ISolutionRepository {
     Solution getSolutionById(size_t id) override;
 
     std::vector<Solution> getSolutionsBySenderId(size_t sender_id) override;

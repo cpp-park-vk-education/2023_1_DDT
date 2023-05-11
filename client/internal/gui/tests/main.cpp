@@ -3,7 +3,7 @@
 
 #include "UIManager.h"
 #include "EntryWindow.h"
-#include "UserWindow.h"
+#include "TasksWindow.h"
 
 #include <QApplication>
 
@@ -18,7 +18,7 @@ TEST(ConstructorTest, EntryWindow) {
 TEST(ConstructorTest, UserWindow) {
     int fake = 0;
     QApplication a(fake, nullptr);
-    UserWindow uw;
+    TasksWindow uw;
     EXPECT_NO_FATAL_FAILURE(uw.show());
     a.exec();
 }
@@ -35,7 +35,7 @@ TEST(ConstructorTest, UIManagerUW) {
     int fake_argc = 0;
     QApplication a(fake_argc, nullptr);
     UIManager um;
-    EXPECT_NO_FATAL_FAILURE(um.showUserWindow());
+    EXPECT_NO_FATAL_FAILURE(um.showTasksWindow());
     a.exec();
 }
 

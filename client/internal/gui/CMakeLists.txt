@@ -1,6 +1,9 @@
 project("GuiLib")
 
 set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_AUTOUIC ON)
+set(CMAKE_AUTOMOC ON)
+set(CMAKE_AUTORCC ON)
 
 file(GLOB SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp)
 file(GLOB INCLUDE_DIRS ${CMAKE_CURRENT_SOURCE_DIR}/include)
@@ -19,6 +22,9 @@ set(GUI_lib_LIB ${GUI_lib_LIB} PARENT_SCOPE)
 
 set(GUI_lib_INCLUDE_DIRS ${INCLUDE_DIRS})
 set(GUI_lib_INCLUDE_DIRS ${GUI_lib_INCLUDE_DIRS} PARENT_SCOPE)
+
+add_executable(gui_run main.cpp)
+target_link_libraries(gui_run ${GUI_lib_LIB})
 
 enable_testing()
 add_subdirectory(tests)

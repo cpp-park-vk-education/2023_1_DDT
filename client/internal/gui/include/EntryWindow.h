@@ -14,19 +14,17 @@ Q_OBJECT
 
 public:
     EntryWindow(QWidget *parent = nullptr);
-    ~EntryWindow() override;
 
-    std::shared_ptr<SignUpDialog> getSignUpDialog();
-    std::shared_ptr<AuthDialog> getAuthDialog();
+signals:
+    void showTasksWindow();
 
-private slots:
-    static void onExitButtonClicked();
-    void onLoginButtonClicked();
-    void onSignUpButtonClicked();
+public slots:
+    void on_exitButton_clicked();
+    void on_loginButton_clicked();
+    void on_signUpButton_clicked();
 
 private:
-    std::shared_ptr<AuthDialog> authDialog = nullptr;
-    std::shared_ptr<SignUpDialog> signUpDialog = nullptr;
+
     QWidget *centralwidget = nullptr;
     QVBoxLayout *verticalLayout = nullptr;
     QLabel *introLabel = nullptr;
@@ -38,8 +36,8 @@ private:
     QMenuBar *menubar = nullptr;
     QStatusBar *statusbar = nullptr;
 
-    void setupUi(QMainWindow *MainWindow);
-    void retranslateUi(QMainWindow *MainWindow);
+    void setupUi(QMainWindow *EntryWindow);
+    void retranslateUi(QMainWindow *EntryWindow);
 };
 
 #endif  // MAINWINDOW_H

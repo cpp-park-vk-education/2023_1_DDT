@@ -1,11 +1,19 @@
 #include "UIManager.h"
 
 #include "EntryWindow.h"
-#include "UserWindow.h"
+#include "TasksWindow.h"
 #include "SignUpDialog.h"
+#include "AuthDialog.h"
 
-void UIManager::showEntryWindow() {}
+void UIManager::showEntryWindow() {
+    entryWindow->show();
+}
 
-void UIManager::showUserWindow() {}
+void UIManager::showTasksWindow() {
+    userWindow->show();
+}
 
-UIManager::UIManager() = default;
+UIManager::UIManager(QWidget *parent) : QWidget(parent) {
+    userWindow = new TasksWindow(this);
+    entryWindow = new EntryWindow(this);
+}

@@ -1,21 +1,22 @@
 #ifndef INCLUDE_UIMANAGER_H_
 #define INCLUDE_UIMANAGER_H_
 
+#include <QObject>
 #include "EntryWindow.h"
-#include "UserWindow.h"
+#include "TasksWindow.h"
 
-class UIManager {
+class UIManager : public QWidget {
+Q_OBJECT
 public:
-    UIManager();
+    UIManager(QWidget *parent = nullptr);
 
-    ~UIManager() = default;
-
+public slots:
     void showEntryWindow();
-    void showUserWindow();
+    void showTasksWindow();
 
 private:
-    EntryWindow entryWindow;
-    UserWindow userWindow;
+    EntryWindow* entryWindow = nullptr;
+    TasksWindow* userWindow = nullptr;
 };
 
 #endif  // INCLUDE_UIMANAGER_H_

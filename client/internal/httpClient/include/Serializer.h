@@ -1,12 +1,14 @@
-#ifndef APP_HTTPCLIENT_HTTPCLIENT_SERIALIZER_H_
-#define APP_HTTPCLIENT_HTTPCLIENT_SERIALIZER_H_
+#pragma once
 
 #include <vector>
 #include <memory>
 #include <string>
+#include "User.h"
 
-class Serializer {};
+class Serializer {
+public:
+    std::string serialLoginData(std::string_view login, std::string_view password);
+    std::string serialRegisterData(std::string_view login, std::string_view username, std::string_view password);
+    User deserialUserData(std::string_view body);
+};
 
-
-
-#endif  // APP_HTTPCLIENT_HTTPCLIENT_SERIALIZER_H_

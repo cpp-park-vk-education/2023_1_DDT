@@ -6,18 +6,36 @@
 
 #include "HttpClient.h"
 
-HttpClientManager::HttpClientManager(std::string_view host_, std::string_view port_, std::string_view saved_path_) :
-        host(host_), port(port_), saved_path(saved_path_),
+HttpClientManager::HttpClientManager(std::string_view host_, std::string_view port_) :
+        host(host_), port(port_),
         client(std::make_shared<HttpClient>(host_, port_)),
         serializer(std::make_shared<Serializer>()) {}
 
-unsigned int HttpClientManager::loginUser(const std::string &login, const std::string &password) {
-
+std::pair<unsigned, User> HttpClientManager::loginUser(const std::string &login, const std::string &password) {
+    std::string body = serializer->serialLoginData(login, password);
+    http::response<http::dynamic_body> res = client->makeGetRequest("/user/login", body);
+    unsigned status = res.result_int();
+    std::string res_body;
+    for (auto seq : res.body().data()) {
+        auto* cbuf = boost::asio::buffer_cast<const char*>(seq);
+        res_body.append(cbuf, boost::asio::buffer_size(seq));
+    }
+    User user = serializer->deserialUserData(res_body);
+    return {status, user};
 }
 
-unsigned int HttpClientManager::registerUser(const std::string &login, const std::string &username,
+std::pair<unsigned, User> HttpClientManager::registerUser(const std::string &login, const std::string &username,
                                              const std::string &password) {
-    return 0;
+    std::string body = serializer->serialRegisterData(login, username, password);
+    http::response<http::dynamic_body> res = client->makeGetRequest("/user/register", body);
+    unsigned status = res.result_int();
+    std::string res_body;
+    for (auto seq : res.body().data()) {
+        auto* cbuf = boost::asio::buffer_cast<const char*>(seq);
+        res_body.append(cbuf, boost::asio::buffer_size(seq));
+    }
+    User user = serializer->deserialUserData(res_body);
+    return {status, user};
 }
 
 unsigned int HttpClientManager::submitSolution(const int &user_id, const std::string &path_to_sound) {

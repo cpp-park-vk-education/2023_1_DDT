@@ -1,11 +1,10 @@
-#ifndef SOURCEDOUT_TASK_HPP
-#define SOURCEDOUT_TASK_HPP
+#pragma once
 
 #include <iostream>
 
 struct Task{
     std::size_t id;
     std::string description;
-};
 
-#endif //SOURCEDOUT_TASK_HPP
+    Task(std::size_t id, std::string_view desc);
+};

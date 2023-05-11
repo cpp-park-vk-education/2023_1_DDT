@@ -14,17 +14,17 @@
 
 class HttpClientManager {
 public:
-    HttpClientManager(std::string_view host_, std::string_view port_, std::string_view saved_path_);
+    HttpClientManager(std::string_view host_, std::string_view port_);
 
-    unsigned int loginUser(const std::string &login, const std::string &password);
-    unsigned int registerUser(const std::string &login, const std::string &username, const std::string &password);
+    std::pair<unsigned, User> loginUser(const std::string &login, const std::string &password);
+    std::pair<unsigned, User> registerUser(const std::string &login, const std::string &username,
+                                           const std::string &password);
     unsigned int submitSolution(const int& user_id, const std::string &path_to_solution);
     unsigned int getAllSolutionsForTask(const int& user_id, const int& task_id);
     std::vector<Task> getAllTasks();
     std::vector<Metric> getMetrics(const int& sol_id);
     void setHttpClient(std::shared_ptr<IHttpClient> client_);
 private:
-    std::string saved_path;
     std::string host;
     std::string port;
     std::shared_ptr<IHttpClient> client;

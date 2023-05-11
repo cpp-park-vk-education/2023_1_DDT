@@ -101,3 +101,14 @@ std::string Serializer::serialAllTasks(const std::vector<Task> &tasks) {
     boost::property_tree::write_json(out, json);
     return out.str();
 }
+
+std::string Serializer::serialUserData(const User &user) {
+    boost::property_tree::ptree json;
+    json.put("id", user.getId());
+    json.put("login", user.getLogin());
+    json.put("username", user.getUsername());
+    json.put("password", user.getPassword());
+    std::stringstream out;
+    boost::property_tree::write_json(out, json);
+    return out.str();
+}

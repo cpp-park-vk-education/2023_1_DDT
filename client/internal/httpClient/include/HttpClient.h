@@ -5,36 +5,30 @@
 #include <memory>
 #include <string>
 #include <boost/asio.hpp>
+#include <boost/beast.hpp>
 
-#include "ClientTypes.h"
-#include "Serializer.h"
 #include "IHttpClient.h"
 
+namespace beast = boost::beast;
+namespace http = beast::http;
+namespace net = boost::asio;
+using tcp = net::ip::tcp;
+
 class HttpClient : public IHttpClient {
- public:
-    HttpClient();
-    ResponseStruct makeGetRequest(const Host& host, const std::string& target,
-                                  const std::shared_ptr<Params>& params = nullptr,
-                                  const std::shared_ptr<Params>& headers = nullptr) override;
-    ResponseStruct makePostRequest(const Host& host, const std::string& target,
-                                   const std::shared_ptr<Params>& body,
-                                   const std::shared_ptr<Params>& headers = nullptr) override;
+public:
+    HttpClient(std::string_view host, std::string_view port);
+    http::response<http::dynamic_body> makeGetRequest(std::string_view target, std::string_view body) override;
+    http::response<http::dynamic_body> makePostRequest(std::string_view target, std::string_view body) override;
 
- private:
-    ResponseStruct parseResponse(Response response) override;
-    std::string createURL(const std::string& target, const std::shared_ptr<Params>& params = nullptr) override;
-    bool connect(unsigned short port) override;
-    ResponseStruct makeRequest(const Host& host, const std::string& target, boost::beast::http::verb method,
-                               const std::shared_ptr<Params>& params = nullptr,
-                               const std::shared_ptr<Params>& body = nullptr,
-                               const std::shared_ptr<Params>& headers = nullptr) override;
+private:
+    http::response<http::dynamic_body> makeRequest(std::string_view target,
+                                                   http::verb method,
+                                                   std::string_view body) override;
 
-    boost::asio::io_context context;
-    boost::asio::ip::tcp::resolver resolver;
-    boost::asio::ip::tcp::socket socket;
-    std::string ip;
-    boost::beast::flat_buffer flat_buffer;
-    Serializer serializer;
+    net::io_context io_context{};
+    tcp::resolver resolver;
+    beast::tcp_stream stream;
+    std::string host;
 };
 
 

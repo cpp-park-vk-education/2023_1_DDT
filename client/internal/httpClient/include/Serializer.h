@@ -5,8 +5,6 @@
 #include <memory>
 #include <string>
 
-#include "ClientTypes.h"
-
 class Serializer {};
 
 

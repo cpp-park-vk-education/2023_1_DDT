@@ -1,19 +1,18 @@
-#include "httpClientManager.h"
+#include "HttpClientManager.h"
 
-#include <fstream>
-#include <utility>
 #include <vector>
 #include <string>
 #include <memory>
 
-HttpClientManager::HttpClientManager(const std::string &domain,
-                                     const std::string &ip,
-                                     const unsigned short &port,
-                                     std::string saved_path_)
-                : host(domain, ip, port), client(), serializer(), saved_path(std::move(saved_path_)) {}
+#include "HttpClient.h"
+
+HttpClientManager::HttpClientManager(std::string_view host_, std::string_view port_, std::string_view saved_path_) :
+        host(host_), port(port_), saved_path(saved_path_),
+        client(std::make_shared<HttpClient>(host_, port_)),
+        serializer(std::make_shared<Serializer>()) {}
 
 unsigned int HttpClientManager::loginUser(const std::string &login, const std::string &password) {
-    return 0;
+
 }
 
 unsigned int HttpClientManager::registerUser(const std::string &login, const std::string &username,

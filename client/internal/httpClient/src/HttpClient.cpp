@@ -1,32 +1,38 @@
 #include "httpClient.h"
 
-#include <iostream>
 #include <string>
-#include <memory>
-#include <utility>
-#include <boost/lexical_cast.hpp>
 #include <boost/system/error_code.hpp>
 
-using Error = boost::system::system_error;
+HttpClient::HttpClient(std::string_view host_, std::string_view port) :
+        host(host_),
+        resolver(io_context),
+        stream(io_context) {
+    auto const results = resolver.resolve(host, port);
+    stream.connect(results);
+}
 
-std::string HttpClient::createURL(const std::string& target, const std::shared_ptr<Params>& params) {}
+http::response<http::dynamic_body> HttpClient::makeRequest(std::string_view target,
+                                                           http::verb method,
+                                                           std::string_view body) {
+    http::request<http::string_body> req{http::verb::get, target, 10};
+    req.set(http::field::host, host);
+    req.set(http::field::user_agent, BOOST_BEAST_VERSION_STRING);
 
-bool HttpClient::connect(unsigned short port = 80) {}
+    http::write(stream, req);
 
-HttpClient::HttpClient() : socket(context), resolver(context) {}
+    beast::flat_buffer buffer;
+    http::response<http::dynamic_body> res;
+    http::read(stream, buffer, res);
 
-ResponseStruct HttpClient::makeRequest(const Host &host, const std::string &target,
-                                       const boost::beast::http::verb method,
-                                       const std::shared_ptr<Params>& params,
-                                       const std::shared_ptr<Params>& body,
-                                       const std::shared_ptr<Params>& headers) {}
+    return res;
+}
 
-ResponseStruct HttpClient::parseResponse(Response response) {}
+http::response<http::dynamic_body> HttpClient::makeGetRequest(std::string_view target,
+                                          std::string_view body) {
+    return makeRequest(target, http::verb::get, body);
+}
 
-ResponseStruct HttpClient::makeGetRequest(const Host &host, const std::string &target,
-                                          const std::shared_ptr<Params>& params,
-                                          const std::shared_ptr<Params>& headers) {}
-
-ResponseStruct HttpClient::makePostRequest(const Host &host, const std::string &target,
-                                           const std::shared_ptr<Params>& body,
-                                           const std::shared_ptr<Params>& headers) {}
+http::response<http::dynamic_body> HttpClient::makePostRequest(std::string_view target,
+                                           std::string_view body) {
+    return makeRequest(target, http::verb::post, body);
+}

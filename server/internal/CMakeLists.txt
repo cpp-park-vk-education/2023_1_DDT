@@ -1,10 +1,16 @@
 add_subdirectory(entities)
 add_subdirectory(repository)
+add_subdirectory(metrics)
 add_subdirectory(service)
 
 
 set(libEntities_LIB ${libEntities_LIB} PARENT_SCOPE)
 set(libEntities_INCLUDE_DIRS ${libEntities_INCLUDE_DIRS} PARENT_SCOPE)
+
+set(METRICS_LIBRARY ${METRICS_LIBRARY} PARENT_SCOPE)
+set(METRICS_lib_INCLUDE_DIRS ${METRICS_lib_INCLUDE_DIRS} PARENT_SCOPE)
+
+
 
 
 set(libRepository_LIB ${libRepository_LIB} PARENT_SCOPE)

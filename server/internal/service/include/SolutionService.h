@@ -9,6 +9,7 @@
 #include "ISolutionRepository.hpp"
 #include "ISolutionService.h"
 #include "ITaskRepository.hpp"
+#include "TextMetricsLib.h"
 
 class SolutionService : ISolutionService {
  private:

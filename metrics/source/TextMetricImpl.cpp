@@ -69,7 +69,7 @@ double PrepareDataTextMetric::getMetric() {
     return metric_res;
 }
 
-void LivDistTextMetric::countMetric(){
+void LevDistTextMetric::countMetric(){
     unsigned long n = tokens1.size();
     unsigned long m = tokens2.size();
     int x, y, z;
@@ -116,5 +116,8 @@ void JaccardTextMetric::countMetric() {
     set_union(s1.begin(), s1.end(), s2.begin(), s2.end(),
               std::inserter(union_sets, union_sets.begin()));
 
-    metric_res = static_cast<double> (intersect_sets.size()) / static_cast<double> (union_sets.size());
+    if (union_sets.empty())
+        metric_res = 0;
+    else
+        metric_res = static_cast<double> (intersect_sets.size()) / static_cast<double> (union_sets.size());
 }

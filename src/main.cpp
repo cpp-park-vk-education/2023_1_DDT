@@ -20,7 +20,7 @@ int main(){
     fin1.close();
     fin2.close();
 
-    LivDistTextMetric livDistTextMetric;
+    LevDistTextMetric livDistTextMetric;
     JaccardTextMetric jaccardTextMetric;
 
     livDistTextMetric.setData(text1, text2);

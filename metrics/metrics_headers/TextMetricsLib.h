@@ -13,7 +13,6 @@
 
 #include <boost/tokenizer.hpp>
 
-
 class ITextMetric{
     virtual void countMetric() = 0;
     virtual void setData(std::string text1, std::string text2) = 0;
@@ -33,7 +32,7 @@ private:
     static std::vector <std::string> tbmTokenizer(const std::string &text);
 };
 
-class LivDistTextMetric : public PrepareDataTextMetric{
+class LevDistTextMetric : public PrepareDataTextMetric{
 public:
     void countMetric() override;
 };

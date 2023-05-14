@@ -13,9 +13,9 @@
 
 class LivDistTextMetricTest : public ::testing::Test {
 protected:
-    std::unique_ptr <LivDistTextMetric> livDistTextMetric;
+    std::unique_ptr <LevDistTextMetric> livDistTextMetric;
     void SetUp(){
-        livDistTextMetric = std::make_unique <LivDistTextMetric>();
+        livDistTextMetric = std::make_unique <LevDistTextMetric>();
     }
     void TearDown(){}
 };

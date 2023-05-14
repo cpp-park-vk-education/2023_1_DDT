@@ -26,8 +26,5 @@ int main(){
     livDistTextMetric.setData(text1, text2);
     jaccardTextMetric.setData(text1, text2);
 
-    livDistTextMetric.countMetric();
-    jaccardTextMetric.countMetric();
-
     std::cout << livDistTextMetric.getMetric() << std::endl << jaccardTextMetric.getMetric();
 }

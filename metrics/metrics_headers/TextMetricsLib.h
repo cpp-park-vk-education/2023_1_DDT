@@ -14,7 +14,6 @@
 #include <boost/tokenizer.hpp>
 
 class ITextMetric{
-    virtual void countMetric() = 0;
     virtual void setData(std::string text1, std::string text2) = 0;
     virtual double getMetric() = 0;
 };
@@ -22,11 +21,9 @@ class ITextMetric{
 class PrepareDataTextMetric : public ITextMetric{
 public:
     void setData(std::string text1, std::string text2) override;
-    double getMetric() override;
 protected:
     std::vector <std::string> tokens1;
     std::vector <std::string> tokens2;
-    double metric_res{};
 private:
     static std::string deleteComments(const std::string& text);
     static std::vector <std::string> tbmTokenizer(const std::string &text);
@@ -34,12 +31,12 @@ private:
 
 class LevDistTextMetric : public PrepareDataTextMetric{
 public:
-    void countMetric() override;
+    double getMetric() override;
 };
 
 class JaccardTextMetric : public PrepareDataTextMetric{
 public:
-    void countMetric() override;
+    double getMetric() override;
 };
 
 

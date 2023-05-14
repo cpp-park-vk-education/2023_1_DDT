@@ -65,11 +65,7 @@ std::vector <std::string> PrepareDataTextMetric::tbmTokenizer(const std::string 
     return res;
 }
 
-double PrepareDataTextMetric::getMetric() {
-    return metric_res;
-}
-
-void LevDistTextMetric::countMetric(){
+double LevDistTextMetric::getMetric(){
     unsigned long n = tokens1.size();
     unsigned long m = tokens2.size();
     int x, y, z;
@@ -94,13 +90,13 @@ void LevDistTextMetric::countMetric(){
     }
 
     if (n == 0 || m == 0)
-        metric_res = 0;
+        return 0;
     else
-        metric_res = 1.0 - static_cast<double> (lev[n-1][m-1]) / static_cast<double> (std::max(n ,m));
+        return  1.0 - static_cast<double> (lev[n-1][m-1]) / static_cast<double> (std::max(n ,m));
 }
 
 
-void JaccardTextMetric::countMetric() {
+double JaccardTextMetric::getMetric() {
     std::set <std::string> s1;
     std::set <std::string> s2;
 
@@ -117,7 +113,7 @@ void JaccardTextMetric::countMetric() {
               std::inserter(union_sets, union_sets.begin()));
 
     if (union_sets.empty())
-        metric_res = 0;
+        return 0;
     else
-        metric_res = static_cast<double> (intersect_sets.size()) / static_cast<double> (union_sets.size());
+        return static_cast<double> (intersect_sets.size()) / static_cast<double> (union_sets.size());
 }

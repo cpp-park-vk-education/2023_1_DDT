@@ -88,8 +88,13 @@ TEST_F(SolutionServiceTest, createSolution) {
               storeSolution(Solution(0, "", 2, "source", "", "", 1, "")))
       .Times(1)
       .WillRepeatedly(::testing::Return(1));
-  Solution sol = ss->createSolution(2, 1, "main.cpp");
+  Solution sol = ss->createSolution(2, 1, "main.cpp", "int main(){return 0;}");
   EXPECT_EQ(sol.getId(), 1);
   EXPECT_EQ(sol.getSource(), "main.cpp");
-  EXPECT_EQ(sol.getTokens(),"[@0,0:-1='<EOF>',<-1>,1:0] ");
+  EXPECT_EQ(sol.getTokens(),
+            "[@0,0:2='int',<45>,1:0] [@1,4:7='main',<132>,1:4] "
+            "[@2,8:8='(',<85>,1:8] [@3,9:9=')',<86>,1:9] "
+            "[@4,10:10='{',<89>,1:10] [@5,11:16='return',<59>,1:11] "
+            "[@6,18:18='0',<1>,1:18] [@7,19:19=';',<128>,1:19] "
+            "[@8,20:20='}',<90>,1:20] [@9,21:20='<EOF>',<-1>,1:21] ");
 }

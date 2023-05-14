@@ -9,7 +9,8 @@ class ISolutionService {
  public:
   virtual ~ISolutionService() = default;
   virtual Solution createSolution(size_t userId, size_t taskId,
-                                  const std::string& source) = 0;
+                                  const std::string& filename,
+                                  const std::string& filedata) = 0;
   virtual std::vector<Solution> getSolutionsByUserAndTaskId(size_t userId,
                                                             size_t taskId) = 0;
   virtual void deleteSolutionById(size_t solId) = 0;

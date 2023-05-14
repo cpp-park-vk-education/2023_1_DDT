@@ -1,8 +1,12 @@
 #include "SolutionService.h"
 
 #include <chrono>
+#include <iostream>
+#include <sstream>
 
+#include "FileMethods.h"
 #include "MyCppAntlr.h"
+#include "PythonAntlr.h"
 
 SolutionService::SolutionService(
     std::unique_ptr<ISolutionRepository> solutionRepo)
@@ -14,34 +18,41 @@ SolutionService::SolutionService() {
   // metricRepo = std::make_unique<MetricRepository>();
 }
 
-void SolutionService::setAntlrWrapper(const std::string& source,
-                                      std::ifstream& in) {
-  if (source.substr(source.find_last_of(".") + 1) == "cpp") {
+void SolutionService::setAntlrWrapper(const std::string& fileExtension,
+                                      const std::string& filename,
+                                      const std::string& filedata) {
+  std::istringstream in(filedata);
+  if (fileExtension == CPP_EXTENSION) {
     antlr = std::make_unique<MyCppAntlr>(in);
-  } else {
-    throw "exception";
+  } else if (fileExtension == PYTHON_EXTENSION) {
+    antlr = std::make_unique<MyCppAntlr>(in);
   }
 }
 
 // Вердикт функция
 // treshhold хардкод
 
-//TODO "filename" "data" - string -> создать файл 
 Solution SolutionService::createSolution(size_t userId, size_t taskId,
-                                         const std::string& source) {
+                                         const std::string& filename,
+                                         const std::string& filedata) {
   try {
-    std::ifstream in(source);
-    setAntlrWrapper(source, in);
+    std::pair<std::string, bool> fileExtension =
+        FileMethods::checkFileExtension(filename);
+    if (!fileExtension.second) {
+      throw FileExtensionException("unknown file extension");
+    }
+
+    setAntlrWrapper(fileExtension.first, filename, filedata);
+
     std::pair<std::string, std::string> codeParse = antlr->getTokensAndTree();
 
     std::time_t now =
         std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
-    
+
     // TODO: вызов метрик
     // получил результат
 
-
-    Solution sol = Solution(std::ctime(&now), userId, source, codeParse.first,
+    Solution sol = Solution(std::ctime(&now), userId, filename, codeParse.first,
                             codeParse.second, taskId, "");
     size_t id = solutionRepo->storeSolution(sol);
     sol.setId(id);

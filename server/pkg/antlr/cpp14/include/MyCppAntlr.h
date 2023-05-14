@@ -17,7 +17,7 @@ class MyCppAntlr:public IAntlrWrapper {
   std::unique_ptr<antlr4::CommonTokenStream> tokenStream_ptr;
 
  public:
-  MyCppAntlr(std::ifstream &in);
+  MyCppAntlr(std::istream &in);
   ~MyCppAntlr() override = default;
   std::vector<std::string> getTokensArray() override;
   std::pair<std::string, std::string> getTokensAndTree() override;

@@ -2,7 +2,7 @@
 
 #include <iostream>
 
-PythonAntlr::PythonAntlr(std::ifstream& in) {
+PythonAntlr::PythonAntlr(std::istream& in) {
   input_ptr = std::make_unique<antlr4::ANTLRInputStream>(in);
   lexer_ptr = std::make_unique<antlrcpptest::Python3Lexer>(&(*input_ptr));
   tokenStream_ptr = std::make_unique<antlr4::CommonTokenStream>(&(*lexer_ptr));

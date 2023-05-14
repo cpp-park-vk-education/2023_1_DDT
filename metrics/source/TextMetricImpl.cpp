@@ -23,7 +23,6 @@ std::string PrepareDataTextMetric::deleteComments(const std::string& text) {
     ss << text;
 
     while(getline(ss, line)){
-        line.pop_back();
         line.push_back('\0');
         modif += line;
     }
@@ -45,9 +44,8 @@ std::string PrepareDataTextMetric::deleteComments(const std::string& text) {
 
         else if (modif[i] != '\0')
             res += modif[i];
-        else{
+        else if (res.size() > 0 && res[res.size() - 1] != '\n')
             res += '\n';
-        }
     }
     return res;
 }
@@ -91,8 +89,8 @@ double LevDistTextMetric::getMetric(){
 
     if (n == 0 || m == 0)
         return 0;
-    else
-        return  1.0 - static_cast<double> (lev[n-1][m-1]) / static_cast<double> (std::max(n ,m));
+    double res = 1.0 - static_cast<double> (lev[n-1][m-1]) / static_cast<double> (std::max(n ,m));
+    return  res;
 }
 
 

@@ -4,7 +4,6 @@
 #include "Exceptions.h"
 #include "UserService.h"
 
-bool operator==(User u1, User u2) { return u1.getId() == u2.getId(); }
 
 class Exception : public std::exception {
   std::string _msg;

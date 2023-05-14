@@ -11,8 +11,6 @@ class Exception : public std::exception {
   virtual const char* what() const noexcept override { return _msg.c_str(); }
 };
 
-bool operator==(Solution s1, Solution s2) { return s1.getId() == s2.getId(); }
-
 class SolutionRepositoryMock : public ISolutionRepository {
  public:
   ~SolutionRepositoryMock() override = default;
@@ -90,7 +88,8 @@ TEST_F(SolutionServiceTest, createSolution) {
               storeSolution(Solution(0, "", 2, "source", "", "", 1, "")))
       .Times(1)
       .WillRepeatedly(::testing::Return(1));
-  Solution sol = ss->createSolution(2, 1, "source");
+  Solution sol = ss->createSolution(2, 1, "main.cpp");
   EXPECT_EQ(sol.getId(), 1);
-  EXPECT_EQ(sol.getSource(), "source");
+  EXPECT_EQ(sol.getSource(), "main.cpp");
+  EXPECT_EQ(sol.getTokens(),"[@0,0:-1='<EOF>',<-1>,1:0] ");
 }

@@ -13,6 +13,7 @@ find_package(Threads REQUIRED)
 
 add_subdirectory(pkg)
 add_subdirectory(internal)
+add_subdirectory(cmd)
 
 message(STATUS ${Boost_LIBRARIES})
 set(CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS} "-lpthread -pthread")

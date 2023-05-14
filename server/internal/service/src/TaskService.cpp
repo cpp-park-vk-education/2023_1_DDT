@@ -8,10 +8,10 @@ TaskService::TaskService() {
   // taskRepo = std::make_unique<TaskRepository>();
 }    
 
-Task TaskService::createTask(const std::string& desc) {
+Task TaskService::createTask(const std::string& desc, float treshold) {
   try {
-    Task task = Task(desc);
-    size_t id = taskRepo->storeTask(Task(desc));
+    Task task = Task(desc,treshold);
+    size_t id = taskRepo->storeTask(task);
     task.setId(id);
     return task;
   } catch (std::exception& e) {

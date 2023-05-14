@@ -1,3 +1,5 @@
+cmake_minimum_required(VERSION 3.19)
+
 project("EntitiesLib")
 
 set(LIB_NAME libEntities)
@@ -26,3 +28,6 @@ set(libEntities_INCLUDE_DIRS ${libEntities_INCLUDE_DIRS} PARENT_SCOPE)
 
 message("libEntities_LIB = ${libEntities_LIB}")
 message("libEntities_INCLUDE_DIRS = ${libEntities_INCLUDE_DIRS}")
+
+enable_testing()
+add_subdirectory(tests)

@@ -13,28 +13,33 @@ private:
     std::string username;
 
 public:
-    User()=default;
-    User(size_t id_, std::string login_, std::string password_, std::string username_);
+    User(size_t id_, std::string login_, std::string password_, std::string username_) noexcept;
 
-    User(std::string login_, std::string password_, std::string username_);
+    User(std::string login_, std::string password_, std::string username_) noexcept;
 
-    [[nodiscard]] const std::string &getLogin() const;
+    User() noexcept;
 
-    void setLogin(const std::string &login);
+    [[nodiscard]] const std::string &getLogin() const noexcept;
 
-    void setId(size_t id_);
+    void setLogin(const std::string &login) noexcept;
 
-    [[nodiscard]] const std::string &getPassword() const;
+    [[nodiscard]] const std::string &getPassword() const noexcept;
 
-    void setPassword(const std::string &password);
+    void setPassword(const std::string &password) noexcept;
 
-    [[nodiscard]] const std::string &getUsername() const;
+    [[nodiscard]] const std::string &getUsername() const noexcept;
 
-    void setUsername(const std::string &username);
+    void setUsername(const std::string &username) noexcept;
 
-    [[nodiscard]] size_t getId() const;
+    [[nodiscard]] size_t getId() const noexcept;
 
-    friend std::ostream &operator<<(std::ostream &os, const User &user);
+    friend std::ostream &operator<<(std::ostream &os, const User &user) noexcept;
+
+    void setId(size_t id) noexcept;
+
+    bool operator==(const User &rhs) const noexcept;
+
+    bool operator!=(const User &rhs) const noexcept;
 };
 
 #endif //SOURCEDOUT_USER_HPP

@@ -1,15 +1,15 @@
-#include "MyCppAntlr.h"
+#include "PythonAntlr.h"
 
 #include <iostream>
 
-MyCppAntlr::MyCppAntlr(std::ifstream& in) {
+PythonAntlr::PythonAntlr(std::ifstream& in) {
   input_ptr = std::make_unique<antlr4::ANTLRInputStream>(in);
-  lexer_ptr = std::make_unique<antlrcpptest::CPP14Lexer>(&(*input_ptr));
+  lexer_ptr = std::make_unique<antlrcpptest::Python3Lexer>(&(*input_ptr));
   tokenStream_ptr = std::make_unique<antlr4::CommonTokenStream>(&(*lexer_ptr));
-  parser_ptr = std::make_unique<antlrcpptest::CPP14Parser>(&(*tokenStream_ptr));
+  parser_ptr = std::make_unique<antlrcpptest::Python3Parser>(&(*tokenStream_ptr));
 }
 
-std::vector<std::string> MyCppAntlr::getTokensArray() {
+std::vector<std::string> PythonAntlr::getTokensArray() {
   tokenStream_ptr->fill();
   std::vector<std::string> ans(tokenStream_ptr->size());
 
@@ -22,7 +22,7 @@ std::vector<std::string> MyCppAntlr::getTokensArray() {
   return ans;
 }
 
-std::string MyCppAntlr::getTokensString() {
+std::string PythonAntlr::getTokensString() {
   tokenStream_ptr->fill();
   std::string res;
 
@@ -33,12 +33,12 @@ std::string MyCppAntlr::getTokensString() {
   return res;
 }
 
-std::string MyCppAntlr::getTreeString() {
-  auto tree = parser_ptr->translationUnit();
+std::string PythonAntlr::getTreeString() {
+  auto tree = parser_ptr->file_input();
   return tree->toStringTree(&(*parser_ptr));
 }
 
-std::pair<std::string, std::string> MyCppAntlr::getTokensAndTree() {
+std::pair<std::string, std::string> PythonAntlr::getTokensAndTree() {
   std::string tokens = getTokensString();
   std::string astTree = getTreeString();
   return std::make_pair(tokens, astTree);

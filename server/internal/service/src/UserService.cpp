@@ -26,13 +26,18 @@ User UserService::createUser(const std::string& login, const std::string& userna
   }
 }
 
-User UserService::getUserById(size_t id) {
+User UserService::login(const std::string& login, const std::string& password) {
   try {
-    return userRepo->getUserById(id);
+    User u = userRepo->getUserByLogin(login);
+    if (u.getPassword() != password){
+      throw LoginException("incorrect password");
+    }
+    return u;
   } catch (std::exception& e) {
     throw e;
   }
 }
+
 
 void UserService::deleteUser(size_t id) {
   try {

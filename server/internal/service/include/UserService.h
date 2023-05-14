@@ -15,7 +15,6 @@ class UserService : IUserService {
   UserService();
   User createUser(const std::string& login, const std::string& username,
                   const std::string& password) override;
-  // TODO login
-  User getUserById(size_t id) override;
+  User login(const std::string& login, const std::string& password) override;
   void deleteUser(size_t id) override;
 };

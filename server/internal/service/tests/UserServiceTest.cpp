@@ -50,20 +50,27 @@ TEST_F(UserServiceTest, deleteUserWithInvalidId) {
   EXPECT_THROW(us->deleteUser(1), std::exception);
 }
 
-TEST_F(UserServiceTest, getUserOk) {
-  EXPECT_CALL(*mock_ptr, getUserById(1))
+TEST_F(UserServiceTest, loginOk) {
+  EXPECT_CALL(*mock_ptr, getUserByLogin("login"))
       .Times(1)
       .WillOnce(::testing::Return(User(1, "login", "password", "username")));
-  User u = us->getUserById(1);
+  User u = us->login("login","password");
   EXPECT_EQ(u.getLogin(), "login");
   EXPECT_EQ(u.getId(), 1);
   EXPECT_EQ(u.getPassword(), "password");
   EXPECT_EQ(u.getUsername(), "username");
 }
 
-TEST_F(UserServiceTest, getUserInvalidId) {
-  EXPECT_CALL(*mock_ptr, getUserById(-1)).Times(1).WillOnce(NoUserException());
-  EXPECT_THROW(us->getUserById(-1), std::exception);
+TEST_F(UserServiceTest, loginInvalidLogin) {
+  EXPECT_CALL(*mock_ptr, getUserByLogin("loginnn")).Times(1).WillOnce(NoUserException());
+  EXPECT_THROW(us->login("loginnn","password"), std::exception);
+}
+
+TEST_F(UserServiceTest, loginInvalidPass) {
+    EXPECT_CALL(*mock_ptr, getUserByLogin("login"))
+      .Times(1)
+      .WillOnce(::testing::Return(User(1, "login", "password", "username")));
+  EXPECT_THROW(us->login("login","password1"), std::exception);
 }
 
 TEST_F(UserServiceTest, makeUserOk) {

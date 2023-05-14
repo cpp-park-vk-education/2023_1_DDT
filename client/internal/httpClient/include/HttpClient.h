@@ -16,7 +16,7 @@ using tcp = net::ip::tcp;
 
 class HttpClient : public IHttpClient {
 public:
-    HttpClient(std::string_view host, std::string_view port);
+    HttpClient(std::string_view host_, std::string_view port_);
     http::response<http::dynamic_body> makeGetRequest(std::string_view target, std::string_view body) override;
     http::response<http::dynamic_body> makePostRequest(std::string_view target, std::string_view body) override;
 
@@ -29,6 +29,7 @@ private:
     tcp::resolver resolver;
     beast::tcp_stream stream;
     std::string host;
+    std::string port;
 };
 
 

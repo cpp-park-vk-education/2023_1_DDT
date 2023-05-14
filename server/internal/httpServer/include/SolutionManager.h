@@ -17,7 +17,6 @@ class SolutionManager : public ISolutionManager {
     SolutionManager();
     http::message_generator getAllSolutions(http::request<http::string_body>&& req) override;
     http::message_generator createSolution(http::request<http::string_body>&& req) override;
-    http::message_generator getMetrics(http::request<http::string_body>&& req) override;
     void setService(std::shared_ptr<ISolutionService> service);
 
  private:

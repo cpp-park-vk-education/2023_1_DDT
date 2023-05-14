@@ -1,5 +1,4 @@
-#ifndef APP_HTTPSERVER_HTTPSERVER_MANAGERS_TaskMANAGER_H_
-#define APP_HTTPSERVER_HTTPSERVER_MANAGERS_TaskMANAGER_H_
+#pragma once
 
 #include <memory>
 #include <string>
@@ -18,5 +17,3 @@ private:
     std::shared_ptr<ITaskService> taskService;
     std::shared_ptr<Serializer> serializer;
 };
-
-#endif  // APP_HTTPSERVER_HTTPSERVER_MANAGERS_TaskMANAGER_H_

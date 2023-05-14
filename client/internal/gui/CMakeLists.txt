@@ -12,10 +12,10 @@ file(GLOB INCLUDES ${CMAKE_CURRENT_SOURCE_DIR}/include/*.h)
 set(CMAKE_PREFIX_PATH "~/Qt/6.5.0/macos/lib/cmake")
 find_package(Qt6 REQUIRED COMPONENTS Widgets Core Gui)
 
-include_directories(${INCLUDE_DIRS} ${libClientEntities_INCLUDE_DIRS})
+include_directories(${INCLUDE_DIRS} ${libClientEntities_INCLUDE_DIRS} ${CORE_lib_INCLUDE_DIRS})
 
 add_library(${PROJECT_NAME} ${SOURCES} ${INCLUDES})
-target_link_libraries(${PROJECT_NAME} ${libClientEntities_LIB} Qt6::Widgets Qt6::Core Qt6::Gui)
+target_link_libraries(${PROJECT_NAME} ${libClientEntities_LIB} ${CORE_lib_LIB} Qt6::Widgets Qt6::Core Qt6::Gui)
 
 set(GUI_lib_LIB ${PROJECT_NAME})
 set(GUI_lib_LIB ${GUI_lib_LIB} PARENT_SCOPE)

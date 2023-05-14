@@ -33,12 +33,8 @@ http::message_generator Router::handleRequest(http::request<http::string_body> &
         return getBadRequest(req, "Illegal request-target");
     }
 
-    std::cout << req.target() << std::endl;
-
     if (req.target() == "/solution/submit") {
         return solutionManager->createSolution(std::move(req));
-    } else if (req.target() == "/solution/metrics") {
-        return solutionManager->getMetrics(std::move(req));
     } else if (req.target() == "/solution/all") {
         return solutionManager->getAllSolutions(std::move(req));
     } else if (req.target() == "/user/register") {

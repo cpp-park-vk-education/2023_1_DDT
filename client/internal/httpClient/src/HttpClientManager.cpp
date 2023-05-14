@@ -20,7 +20,9 @@ std::pair<unsigned, User> HttpClientManager::loginUser(const std::string &login,
         auto* cbuf = boost::asio::buffer_cast<const char*>(seq);
         res_body.append(cbuf, boost::asio::buffer_size(seq));
     }
-    User user = serializer->deserialUserData(res_body);
+    User user{0, "", "", ""};
+    if (status == 200)
+        user = serializer->deserialUserData(res_body);
     return {status, user};
 }
 
@@ -38,16 +40,21 @@ std::pair<unsigned, User> HttpClientManager::registerUser(const std::string &log
     return {status, user};
 }
 
-unsigned int HttpClientManager::submitSolution(const int &user_id, const std::string &path_to_sound) {
-    return 0;
+Solution HttpClientManager::submitSolution(const int &user_id, const int &task_id, const std::string &path_to_sound) {
+    std::string body = serializer->serialSolutionData(user_id, task_id, path_to_sound);
+    http::response<http::dynamic_body> res = client->makeGetRequest("/solution/submit", body);
+    unsigned status = res.result_int();
+    std::string res_body;
+    for (auto seq : res.body().data()) {
+        auto* cbuf = boost::asio::buffer_cast<const char*>(seq);
+        res_body.append(cbuf, boost::asio::buffer_size(seq));
+    }
+    Solution sol = serializer->deserialSolutionData(res_body);
+    return sol;
 }
 
 unsigned int HttpClientManager::getAllSolutionsForTask(const int &user_id, const int &task_id) {
     return 0;
-}
-
-std::vector<Metric> HttpClientManager::getMetrics(const int &sol_id) {
-    return std::vector<Metric>();
 }
 
 void HttpClientManager::setHttpClient(std::shared_ptr<IHttpClient> client_) {
@@ -55,5 +62,19 @@ void HttpClientManager::setHttpClient(std::shared_ptr<IHttpClient> client_) {
 }
 
 std::vector<Task> HttpClientManager::getAllTasks() {
-    return std::vector<Task>();
+    http::response<http::dynamic_body> res = client->makeGetRequest("/task/all", "");
+    std::string res_body;
+    for (auto seq : res.body().data()) {
+        auto* cbuf = boost::asio::buffer_cast<const char*>(seq);
+        res_body.append(cbuf, boost::asio::buffer_size(seq));
+    }
+    std::vector<Task> tasks = serializer->deserialAllTasks(res_body);
+    return tasks;
+}
+
+unsigned int HttpClientManager::createTask(const std::string &desc) {
+    std::string body = serializer->serialNewTaskData(desc);
+    http::response<http::dynamic_body> res = client->makeGetRequest("/task/create", body);
+    unsigned int result = res.result_int();
+    return result;
 }

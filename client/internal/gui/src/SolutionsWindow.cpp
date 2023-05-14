@@ -5,6 +5,9 @@
 #include <sstream>
 #include <QMessageBox>
 
+#include "Solution.h"
+#include "Core.h"
+
 SolutionsWindow::SolutionsWindow(Task task, QWidget *parent) : QMainWindow(parent), task(std::move(task)) {
     setupUi(this);
     connect(backButton, &QPushButton::clicked, this, &SolutionsWindow::on_backButton_clicked);
@@ -63,18 +66,12 @@ void SolutionsWindow::on_backButton_clicked() {
 void SolutionsWindow::on_chooseFileButton_clicked() {
     QString fileName = QFileDialog::getOpenFileName(this, tr("Choose a file to send"), QDir::homePath());
     filename->setText(QFileInfo(fileName).fileName());
-    std::ifstream file(fileName.toUtf8().constData());
-    std::ostringstream sstr;
-    sstr << file.rdbuf();
-    source = sstr.str();
+    path_to_file = fileName.toUtf8().constData();
 }
 
 void SolutionsWindow::on_sendButton_clicked() {
-    if (source.empty()) {
-        QMessageBox::warning(this, "Ошибка отправки", "Нельзя отправить пустое решение");
-        return;
-    }
-    std::cout << source;
+    Solution sol = Core::submitSolution(task.id, path_to_file);
+    result->setText(QString::fromStdString(sol.result));
 }
 
 

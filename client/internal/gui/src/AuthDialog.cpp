@@ -3,6 +3,8 @@
 #include <QMessageBox>
 #include <iostream>
 
+#include "Core.h"
+
 AuthDialog::AuthDialog(QWidget *parent) : QDialog(parent) {
     setupUi(this);
 }
@@ -64,15 +66,13 @@ void AuthDialog::on_loginButton_clicked() {
         QMessageBox::warning(this, "Ошибка авторизации", "Логин и пароль не могут быть пустыми");
         return;
     }
-//    unsigned result = Core::login(log, pass);
-    unsigned result = 200;
+    unsigned result = Core::login(std::string(log), std::string(pass));
     switch (result) {
         case 200:
-            QMessageBox::warning(this, "Успешная авторизации", "Работает");
             accept();
             close();
             break;
-        case 403:
+        case 404:
             QMessageBox::warning(this, "Ошибка авторизации","Неправильный логин или пароль");
             break;
         default:

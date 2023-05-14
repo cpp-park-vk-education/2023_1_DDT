@@ -26,7 +26,7 @@ private slots:
 private:
 
     Task task;
-    std::string source;
+    std::string path_to_file;
 
     QWidget *centralwidget = nullptr;
     QGroupBox* taskBox = nullptr;

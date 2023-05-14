@@ -5,36 +5,23 @@
 #include <QApplication>
 
 #include "SolutionsWindow.h"
+#include "AddTaskDialog.h"
 #include "UIManager.h"
+#include "Core.h"
 
 TasksWindow::TasksWindow(QWidget *parent) : QMainWindow(parent) {
-    tasks_vector.push_back({1, "1 description                            1\n"
-                               "1\n"
-                               "2\n"
-                               "3\n"
-                               "4\n"
-                               "5\n"
-                               "6\n"
-                               "7\n"
-                               "8\n"
-                               "9\n"
-                               "10\n"
-                               "11\n"
-                               "12\n"
-                               "13\n"
-                               "14\n"});
-    tasks_vector.push_back({2, "2 description"});
-    tasks_vector.push_back({3, "3 description"});
-
     setupUi(this);
     connect(tasks, &QComboBox::currentIndexChanged, this, &TasksWindow::indexChanged);
     connect(goToTaskButton, &QPushButton::clicked, this, &TasksWindow::on_goToTaskButton_clicked);
     connect(backButton, &QPushButton::clicked, this, &TasksWindow::on_backButton_clicked);
+    connect(addTaskButton, &QPushButton::clicked, this, &TasksWindow::on_addTaskButton_clicked);
 }
 
 
 
 void TasksWindow::setupUi(QMainWindow *UserWindow) {
+    tasks_vector = Core::getAllTasks();
+
     QSizePolicy sizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
     sizePolicy.setHorizontalStretch(0);
     sizePolicy.setVerticalStretch(0);
@@ -76,10 +63,14 @@ void TasksWindow::setupUi(QMainWindow *UserWindow) {
     goToTaskButton = new QPushButton(this);
     goToTaskButton->setText(QString::fromUtf8("Перейти к сдаче"));
 
+    addTaskButton = new QPushButton(this);
+    addTaskButton->setText(QString::fromUtf8("Добавить задание"));
+
     backButton = new QPushButton(this);
     backButton->setText(QString::fromUtf8("Выйти"));
 
     buttonsLayout->addWidget(goToTaskButton);
+    buttonsLayout->addWidget(addTaskButton);
     buttonsLayout->addWidget(backButton);
 
     verticalLayout->addWidget(taskChooseGroupBox);
@@ -95,7 +86,7 @@ void TasksWindow::indexChanged() {
 }
 
 void TasksWindow::on_backButton_clicked() {
-    // Core::logout();
+    Core::logout();
     close();
     qobject_cast<UIManager*>(parent())->showEntryWindow();
 }
@@ -104,4 +95,23 @@ void TasksWindow::on_goToTaskButton_clicked() {
     hide();
     auto* solutionsWindow = new SolutionsWindow(tasks_vector[tasks->currentIndex()], this);
     solutionsWindow->show();
+}
+
+void TasksWindow::on_addTaskButton_clicked() {
+    AddTaskDialog addTaskDialog(this);
+    if (addTaskDialog.exec() == QDialog::Accepted) {
+        updateTasks();
+    }
+}
+
+void TasksWindow::updateTasks() {
+    tasks_vector = Core::getAllTasks();
+    tasks->clear();
+    for (int i = 0; i < tasks_vector.size(); i++) {
+        tasks->insertItem(i, QString::number(tasks_vector[i].id));
+    }
+    tasks->setCurrentIndex(0);
+
+    std::string description = tasks_vector[0].description;
+    taskDescription->setText(QString(description.c_str()));
 }

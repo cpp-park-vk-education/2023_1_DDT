@@ -20,6 +20,7 @@ public:
 
 public slots:
     void on_backButton_clicked();
+    void on_addTaskButton_clicked();
     void on_goToTaskButton_clicked();
     void indexChanged();
 
@@ -33,6 +34,7 @@ private:
     QComboBox* tasks = nullptr;
     QLabel* taskDescription = nullptr;
     QPushButton* goToTaskButton = nullptr;
+    QPushButton* addTaskButton = nullptr;
     QPushButton* backButton = nullptr;
     QWidget* buttonsWidget = nullptr;
     QHBoxLayout* buttonsLayout = nullptr;
@@ -40,6 +42,7 @@ private:
     std::vector<Task> tasks_vector;
 
     void setupUi(QMainWindow *UserWindow);
+    void updateTasks();
 };
 
 #endif  // USERWINDOW_H

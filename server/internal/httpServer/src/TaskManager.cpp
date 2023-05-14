@@ -2,6 +2,7 @@
 // Created by Николай Степанов on 03.05.2023.
 //
 #include "TaskManager.h"
+#include "TmpTaskService.h"
 
 TaskManager::TaskManager() : serializer(std::make_shared<Serializer>()) {}
 
@@ -11,7 +12,8 @@ void TaskManager::setService(std::shared_ptr<ITaskService> service) {
 
 http::message_generator TaskManager::createTask(http::request <http::string_body> &&req) {
     std::string description = serializer->deserialNewTaskData(req.body());
-    taskService->createTask(description);
+//    taskService->createTask(description);
+    TmpTaskService::createTask(description);
     http::response<http::empty_body> res{http::status::ok, req.version()};
     res.set(http::field::server, BOOST_BEAST_VERSION_STRING);
     res.set(http::field::content_type, "text/plain");
@@ -21,7 +23,8 @@ http::message_generator TaskManager::createTask(http::request <http::string_body
 }
 
 http::message_generator TaskManager::getAllTasks(http::request <http::string_body> &&req) {
-    std::vector<Task> tasks = taskService->getAllTasks();
+//    std::vector<Task> tasks = taskService->getAllTasks();
+    std::vector<Task> tasks = TmpTaskService::getAllTasks();
     http::response<http::string_body> res{http::status::ok, req.version()};
     res.set(http::field::server, BOOST_BEAST_VERSION_STRING);
     res.set(http::field::content_type, "text/plain");

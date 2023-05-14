@@ -21,6 +21,7 @@ public:
     std::string serialSolutions(const std::vector<Solution>& solutions);
     std::string serialAllTasks(const std::vector<Task>& tasks);
     std::string serialUserData(const User& user);
+    std::string serialSolution(const Solution& sol);
 };
 
 

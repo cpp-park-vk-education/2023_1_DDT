@@ -7,6 +7,8 @@
 #include "FileMethods.h"
 #include "MyCppAntlr.h"
 #include "PythonAntlr.h"
+#include "SolutionRepository.hpp"
+#include "TaskRepository.hpp"
 
 const std::string PLAGIAT_VERDICT = "Не, ну вы не палитесь. Плагиат.";
 const std::string NOT_PLAGIAT_VERDICT =
@@ -18,8 +20,8 @@ SolutionService::SolutionService(
     : solutionRepo(std::move(solutionRepo)), taskRepo(std::move(taskRepo)) {}
 
 SolutionService::SolutionService() {
-  // solutionRepo=std::make_unique<SolutionRepository>();
-  // taskRepo = std::make_unique<TaskRepository>();
+  solutionRepo = std::make_unique<SolutionRepository>();
+  taskRepo = std::make_unique<TaskRepository>();
 }
 
 void SolutionService::setAntlrWrapper(const std::string& fileExtension,
@@ -45,7 +47,7 @@ std::string SolutionService::setResultVerdict(float textBasedRes,
 std::pair<float, size_t> SolutionService::getMaxTextResMetric(
     std::vector<Solution>& solutions, const std::string& filedata,
     float treshold) {
-  std::pair<float, size_t> maxMatch = std::make_pair(0.0, 0ul);
+  std::pair<float, size_t> maxMatch = std::make_pair(0.0, 0);
   for (auto sol : solutions) {
     textMetric = std::make_unique<LevDistTextMetric>();
     textMetric->setData(filedata, sol.getSource());
@@ -70,7 +72,7 @@ std::pair<float, size_t> SolutionService::getMaxTextResMetric(
 // std::pair<float, size_t> SolutionService::getMaxTokenResMetric(
 //     std::vector<Solution>& solutions, const std::string& tokens,
 //     float treshold) {
-//   std::pair<float, size_t> maxMatch = std::make_pair(0.0, 0ul);
+//   std::pair<float, size_t> maxMatch = std::make_pair(0.0, 0);
 //   for (auto sol : solutions) {
 //     tokenMetric = std::make_unique<LivDistTokenMetric>();
 //     tokenMetric->setData(tokens, sol.getTokens());
@@ -108,52 +110,45 @@ Solution SolutionService::createSolution(size_t userId, size_t taskId,
     std::time_t now =
         std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
 
-    float treshold = taskRepo->getTaskById(taskId).getTreshhold();
+    float treshold = taskRepo->getTaskById(taskId).value().getTreshhold();
 
     std::vector<Solution> solutions =
         solutionRepo->getSolutionsByTaskId(taskId);
 
-    std::pair<float, long unsigned int> textBasedRes =
+    std::pair<float, size_t> textBasedRes =
         getMaxTextResMetric(solutions, filedata, treshold);
     // float tokenBasedRes getMaxTokenResMetric(solutions, codeParse.first,
     // treshold);
 
     std::string result = setResultVerdict(textBasedRes.first, 0, treshold);
-    // std::string result = setResultVerdict(textBasedRes.first, tokenBasedRes.first, treshold);
-    Solution sol = Solution(std::ctime(&now), userId, filedata, codeParse.first,
-                            codeParse.second, taskId, result);
+    // std::string result = setResultVerdict(textBasedRes.first,
+    // tokenBasedRes.first, treshold);
+    Solution sol =
+        Solution(std::ctime(&now), userId, filedata, codeParse.first,
+                 codeParse.second, taskId, result, textBasedRes.second);
     size_t id = solutionRepo->storeSolution(sol);
     sol.setId(id);
     return sol;
-  } catch (std::exception& e) {
-    throw e;
-  }
-}
-
-std::vector<Solution> SolutionService::getSolutionsByUserAndTaskId(
-    size_t userId, size_t taskId) {
-  try {
-    return solutionRepo->getSolutions(userId, taskId);
-  } catch (std::exception& e) {
-    throw e;
+  } catch (...) {
+    throw;
   }
 }
 
 void SolutionService::deleteSolutionById(size_t solId) {
   try {
     solutionRepo->deleteSolutionById(solId);
-  } catch (std::exception& e) {
-    throw e;
+  } catch (...) {
+    throw;
   }
 }
 
 std::pair<std::string, std::string> SolutionService::getMetrics(size_t solId) {
   try {
-    Solution sol = solutionRepo->getSolutionById(solId);
+    Solution sol = solutionRepo->getSolutionById(solId).value();
     std::string tokens = sol.getTokens();
     std::string astTree = sol.getAstTree();
     return std::make_pair(tokens, astTree);
-  } catch (std::exception& e) {
-    throw e;
+  } catch (...) {
+    throw;
   }
 }

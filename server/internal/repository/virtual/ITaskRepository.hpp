@@ -2,6 +2,7 @@
 #define SOURCEDOUT_ITASKREPOSITORY_HPP
 
 #include <iostream>
+#include <vector>
 #include "Task.hpp"
 #include <optional>
 
@@ -13,7 +14,7 @@ public:
 
     virtual std::vector<Task> getAllTasks() = 0;
 
-    virtual void updateTask(Task task) = 0;
+    virtual void updateTask(const Task&) = 0;
 
     virtual size_t storeTask(Task task) = 0;
 

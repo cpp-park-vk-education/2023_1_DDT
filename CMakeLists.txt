@@ -1,9 +1,6 @@
 set(CMAKE_CXX_STANDARD 20)
-<<<<<<< HEAD
 cmake_minimum_required(VERSION 3.16)
-=======
-cmake_minimum_required(VERSION 3.19)
->>>>>>> 0745844ad0c7971df126d33fb8539d97ecb2e910
+
 
 set(PROJECT_NAME "SourcedOut")
 

@@ -16,12 +16,13 @@ class Exception : public std::exception {
 class UserRepositoryMock : public IUserRepository {
  public:
   ~UserRepositoryMock() override = default;
-  MOCK_METHOD(User, getUserById, (size_t id), (override));
-  MOCK_METHOD(User, getUserByLogin, (std::string login), (override));
+  MOCK_METHOD(std::optional<User>, getUserById, (size_t id), (override));
+  MOCK_METHOD(std::optional<User>, getUserByLogin, (std::string login), (override));
   MOCK_METHOD(size_t, makeUser, (User user), (override));
   MOCK_METHOD(void, deleteUser, (User user), (override));
   MOCK_METHOD(void, deleteByUserId, (size_t id), (override));
   MOCK_METHOD(std::vector<User>, getAllUsers, (), (override));
+  MOCK_METHOD(void, update, (User user),(override));
 };
 
 struct UserServiceTest : public testing::Test {

@@ -104,7 +104,8 @@ TEST_F(SolutionServiceTest, createSolution) {
       .WillRepeatedly(::testing::Return(1));
 
   std::vector<Solution> solutions;
-  solutions.push_back(Solution(0, "", 1, "int main(){return 0;}", "", "", 1, ""));
+  solutions.push_back(
+      Solution(0, "", 1, "int main(){return 0;}", "", "", 1, ""));
   solutions.push_back(Solution(1, "", 1, "", "", "", 1, ""));
   EXPECT_CALL(*solutionMockPtr, getSolutionsByTaskId(1))
       .Times(1)
@@ -123,4 +124,5 @@ TEST_F(SolutionServiceTest, createSolution) {
             "[@4,10:10='{',<89>,1:10] [@5,11:16='return',<59>,1:11] "
             "[@6,18:18='0',<1>,1:18] [@7,19:19=';',<128>,1:19] "
             "[@8,20:20='}',<90>,1:20] [@9,21:20='<EOF>',<-1>,1:21] ");
+  EXPECT_EQ(sol.getResult(), "Красивое решение. А главное уникальное !");
 }

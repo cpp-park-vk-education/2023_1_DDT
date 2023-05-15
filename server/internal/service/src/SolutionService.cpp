@@ -61,36 +61,36 @@ std::pair<float, size_t> SolutionService::getMaxTextResMetric(
     }
     if (maxMatch.first < textBasedRes) {
       maxMatch.first = textBasedRes;
-      maxMatch.second = sol.getSenderId();
+      maxMatch.second = sol.getId();
     }
   }
   return maxMatch;
 }
 
-std::pair<float, size_t> SolutionService::getMaxTokenResMetric(
-    std::vector<Solution>& solutions, const std::string& tokens,
-    float treshold) {
-  std::pair<float, size_t> maxMatch = std::make_pair(0.0, 0ul);
-  for (auto sol : solutions) {
-    tokenMetric = std::make_unique<LivDistTokenMetric>();
-    tokenMetric->setData(tokens, sol.getTokens());
-    float tokenBasedRes = float(tokenMetric->getMetric());
-    std::cout << tokenBasedRes << std::endl;
+// std::pair<float, size_t> SolutionService::getMaxTokenResMetric(
+//     std::vector<Solution>& solutions, const std::string& tokens,
+//     float treshold) {
+//   std::pair<float, size_t> maxMatch = std::make_pair(0.0, 0ul);
+//   for (auto sol : solutions) {
+//     tokenMetric = std::make_unique<LivDistTokenMetric>();
+//     tokenMetric->setData(tokens, sol.getTokens());
+//     float tokenBasedRes = float(tokenMetric->getMetric());
+//     std::cout << tokenBasedRes << std::endl;
 
-    tokenMetric = std::make_unique<WShinglingTokenMetric>();
-    tokenMetric->setData(tokens, sol.getSource());
-    tokenBasedRes = (tokenBasedRes + float(tokenMetric->getMetric())) / 2;
+//     tokenMetric = std::make_unique<WShinglingTokenMetric>();
+//     tokenMetric->setData(tokens, sol.getSource());
+//     tokenBasedRes = (tokenBasedRes + float(tokenMetric->getMetric())) / 2;
 
-    if (tokenBasedRes > treshold) {
-      break;
-    }
-    if (maxMatch.first < tokenBasedRes) {
-      maxMatch.first = tokenBasedRes;
-      maxMatch.second = sol.getSenderId();
-    }
-  }
-  return maxMatch;
-}
+//     if (tokenBasedRes > treshold) {
+//       break;
+//     }
+//     if (maxMatch.first < tokenBasedRes) {
+//       maxMatch.first = tokenBasedRes;
+//       maxMatch.second = sol.getId();
+//     }
+//   }
+//   return maxMatch;
+// }
 
 Solution SolutionService::createSolution(size_t userId, size_t taskId,
                                          const std::string& filename,

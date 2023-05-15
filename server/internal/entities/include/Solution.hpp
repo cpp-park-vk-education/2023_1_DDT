@@ -8,10 +8,12 @@
 class Solution {
 public:
     Solution(size_t id, std::string sendDate, size_t senderId, std::string source,
-             std::string tokens, std::string astTree, size_t taskId, std::string result) noexcept;
+             std::string tokens, std::string astTree,
+             size_t taskId, std::string result, size_t orig_solution) noexcept;
 
-    Solution(std::string sendDate, size_t senderId, std::string source, std::string tokens, std::string astTree,
-             size_t taskId, std::string result) noexcept;
+    Solution(std::string sendDate, size_t senderId, std::string source, std::string tokens,
+             std::string astTree, size_t taskId, std::string result, size_t orig_solution) noexcept;
+
     Solution() noexcept;
 
     [[nodiscard]] size_t getId() const noexcept;
@@ -45,6 +47,10 @@ public:
 
     void setResult(const std::string &result) noexcept;
 
+    [[nodiscard]] size_t getOrigSolution() const;
+
+    void setOrigSolution(size_t origSolution);
+
     void setId(size_t id) noexcept;
 
     bool operator==(const Solution &rhs) const noexcept;
@@ -60,7 +66,7 @@ private:
     std::string astTree;
     size_t task_id;
     std::string result;
-public:
+    size_t orig_solution = 0;
 
 };
 

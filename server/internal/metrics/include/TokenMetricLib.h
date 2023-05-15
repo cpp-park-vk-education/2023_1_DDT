@@ -15,6 +15,7 @@
 
 
 class ITokenMetric{
+    public:
     virtual ~ITokenMetric() = default;
     virtual void countMetric() = 0;
     virtual void setData(std::vector<std::string> tokens1, std::vector<std::string> tokens2) = 0;

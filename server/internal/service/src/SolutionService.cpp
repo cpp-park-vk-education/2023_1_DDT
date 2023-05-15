@@ -118,8 +118,8 @@ Solution SolutionService::createSolution(size_t userId, size_t taskId,
     // float tokenBasedRes getMaxTokenResMetric(solutions, codeParse.first,
     // treshold);
 
-    std::string result = setResultVerdict(0, 0, treshold);
-    // std::string result = setResultVerdict(textBasedRes, tokenBasedRes, treshold);
+    std::string result = setResultVerdict(textBasedRes.first, 0, treshold);
+    // std::string result = setResultVerdict(textBasedRes.first, tokenBasedRes.first, treshold);
     Solution sol = Solution(std::ctime(&now), userId, filedata, codeParse.first,
                             codeParse.second, taskId, result);
     size_t id = solutionRepo->storeSolution(sol);

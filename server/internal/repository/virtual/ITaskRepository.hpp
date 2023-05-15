@@ -11,7 +11,7 @@ public:
 
     virtual std::vector<Task> getAllTasks() = 0;
 
-    virtual void updateTask(Task task) = 0;
+    virtual void updateTask(const Task& task) = 0;
 
     virtual size_t storeTask(Task task) = 0;
 

@@ -11,7 +11,7 @@
 
 using namespace pqxx;
 
-class UserRepository : IUserRepository {
+class UserRepository :public IUserRepository {
 public:
     explicit UserRepository();
 

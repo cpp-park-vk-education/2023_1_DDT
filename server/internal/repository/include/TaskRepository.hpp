@@ -10,7 +10,7 @@
 
 using namespace pqxx;
 
-class TaskRepository : ITaskRepository {
+class TaskRepository :public ITaskRepository {
 public:
     explicit TaskRepository();
     std::optional<Task> getTaskById(size_t id) override;

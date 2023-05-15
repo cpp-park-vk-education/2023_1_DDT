@@ -4,7 +4,6 @@
 #include <utility>
 
 #include "IAntlrWrapper.h"
-#include "IMetricRepository.hpp"
 #include "IMockMetrics.h"
 #include "ISolutionRepository.hpp"
 #include "ISolutionService.h"
@@ -14,13 +13,16 @@
 class SolutionService : ISolutionService {
  private:
   std::unique_ptr<ISolutionRepository> solutionRepo;
-  std::unique_ptr<IMetricRepository> metricRepo;
   std::unique_ptr<ITaskRepository> taskRepo;
   std::unique_ptr<IAntlrWrapper> antlr;
-  std::unique_ptr<IMockMetrics> metrics;
+  std::unique_ptr<IMockMetrics> textMetric;
+  std::unique_ptr<IMockMetrics> tokenMetric;
   void setAntlrWrapper(const std::string& fileExtension,
-                       const std::string& filename,
                        const std::string& filedata);
+  std::string setResultVerdict(float textBasedRes, float tokenBasedRes,
+                               float treshold);
+  std::pair<float, size_t> getMaxTextResMetric(std::vector<Solution>& solutions,
+                                               const std::string& filedata);
 
  public:
   explicit SolutionService(std::unique_ptr<ISolutionRepository> solutionRepo);

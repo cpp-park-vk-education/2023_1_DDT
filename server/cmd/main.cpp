@@ -1,21 +1,23 @@
 #include <iostream>
 
 #include "PythonAntlr.h"
+#include "MyCppAntlr.h"
 
 int main(int argc, const char* argv[]) {
   //   ifstream ins("/home/denis/2023_1_DDT/antlr/test.py");
-  std::ifstream ins("/home/denis/2023_1_DDT/server/pkg/antlr/testprogs/python/test.py");
+  std::ifstream ins(
+      "/home/denis/2023_1_DDT/server/pkg/antlr/testprogs/cpp/test.cpp");
 
-  PythonAntlr pA = PythonAntlr(ins);
+  MyCppAntlr pA = MyCppAntlr(ins);
 
-  std::vector<std::string> tokens = pA.getTokensArray();
+  std::vector<int> tokens = pA.getTokensTypes();
 
   std::cout << "Tokens:" << std::endl;
-  for (std::string token : tokens) {
+  for (int token : tokens) {
     std::cout << token << std::endl;
   }
 
-  std::cout << pA.getTreeString() << std::endl;
+  // std::cout << pA.getTreeString() << std::endl;
 
   return 0;
 }

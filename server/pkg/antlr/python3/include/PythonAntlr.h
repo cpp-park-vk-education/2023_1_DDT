@@ -19,7 +19,8 @@ class PythonAntlr:public IAntlrWrapper {
  public:
   PythonAntlr(std::istream &in);
   ~PythonAntlr() override = default;
-  std::vector<std::string> getTokensArray() override;
+  std::vector<antlr4::Token*> getTokens() override;
+  std::vector<int> getTokensTypes() override;
   std::pair<std::string, std::string> getTokensAndTree() override;
   std::string getTokensString() override;
   std::string getTreeString() override;

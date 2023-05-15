@@ -7,7 +7,6 @@
 #include "CPP14Lexer.h"
 #include "CPP14Parser.h"
 #include "IAntlrWrapper.h"
-#include "antlr4-runtime.h"
 
 class MyCppAntlr:public IAntlrWrapper {
  private:
@@ -19,7 +18,8 @@ class MyCppAntlr:public IAntlrWrapper {
  public:
   MyCppAntlr(std::istream &in);
   ~MyCppAntlr() override = default;
-  std::vector<std::string> getTokensArray() override;
+  std::vector<antlr4::Token*> getTokens() override;
+  std::vector<int> getTokensTypes() override;
   std::pair<std::string, std::string> getTokensAndTree() override;
   std::string getTokensString() override;
   std::string getTreeString() override;

@@ -13,8 +13,9 @@ const std::string NOT_PLAGIAT_VERDICT =
     "Красивое решение. А главное уникальное !";
 
 SolutionService::SolutionService(
-    std::unique_ptr<ISolutionRepository> solutionRepo)
-    : solutionRepo(std::move(solutionRepo)) {}
+    std::unique_ptr<ISolutionRepository> solutionRepo,
+    std::unique_ptr<ITaskRepository> taskRepo)
+    : solutionRepo(std::move(solutionRepo)), taskRepo(std::move(taskRepo)) {}
 
 SolutionService::SolutionService() {
   // solutionRepo=std::make_unique<SolutionRepository>();
@@ -42,16 +43,18 @@ std::string SolutionService::setResultVerdict(float textBasedRes,
 }
 
 std::pair<float, size_t> SolutionService::getMaxTextResMetric(
-    std::vector<Solution>& solutions, const std::string& filedata) {
-  std::pair<float, size_t> maxMatch = (0, 0);
+    std::vector<Solution>& solutions, const std::string& filedata,
+    float treshold) {
+  std::pair<float, size_t> maxMatch = std::make_pair(0.0, 0ul);
   for (auto sol : solutions) {
     textMetric = std::make_unique<LevDistTextMetric>();
     textMetric->setData(filedata, sol.getSource());
-    float textBasedRes = textMetric->getMetric();
+    float textBasedRes = float(textMetric->getMetric());
+    std::cout << textBasedRes << std::endl;
 
     textMetric = std::make_unique<JaccardTextMetric>();
     textMetric->setData(filedata, sol.getSource());
-    textBasedRes = (textBasedRes + textMetric->getMetric()) / 2;
+    textBasedRes = (textBasedRes + float(textMetric->getMetric())) / 2;
 
     if (textBasedRes > treshold) {
       break;
@@ -85,11 +88,13 @@ Solution SolutionService::createSolution(size_t userId, size_t taskId,
     std::vector<Solution> solutions =
         solutionRepo->getSolutionsByTaskId(taskId);
 
-    // float textBasedRes = getMaxTextResMetric(solutions, filedata);
+    std::pair<float, long unsigned int> textBasedRes =
+        getMaxTextResMetric(solutions, filedata, treshold);
+
     // TODO: вызов метрик
     // получил результат
 
-    std::string result = setResultVerdict(0, 0, treshold);
+    std::string result = setResultVerdict(textBasedRes.first, 0.5, treshold);
 
     Solution sol = Solution(std::ctime(&now), userId, filedata, codeParse.first,
                             codeParse.second, taskId, "");

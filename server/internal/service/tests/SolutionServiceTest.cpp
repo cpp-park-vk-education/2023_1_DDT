@@ -27,14 +27,28 @@ class SolutionRepositoryMock : public ISolutionRepository {
   MOCK_METHOD(void, deleteSolution, (Solution solution), (override));
 };
 
+class TaskRepositoryMock : public ITaskRepository {
+ public:
+  ~TaskRepositoryMock() override = default;
+  MOCK_METHOD(Task, getTaskById, (size_t id), (override));
+  MOCK_METHOD(void, updateTask, (Task task), (override));
+  MOCK_METHOD(int, storeTask, (Task task), (override));
+  MOCK_METHOD(void, deleteTask, (Task task), (override));
+  MOCK_METHOD(void, deleteTaskById, (size_t id), (override));
+  MOCK_METHOD(std::vector<Task>, getAllTasks, (), (override));
+};
+
 struct SolutionServiceTest : public testing::Test {
   SolutionService* ss;
-  SolutionRepositoryMock* mock_ptr;
+  SolutionRepositoryMock* solutionMockPtr;
+  TaskRepositoryMock* taskMockPtr;
 
   void SetUp() {
-    auto mock = std::make_unique<SolutionRepositoryMock>();
-    mock_ptr = mock.get();
-    ss = new SolutionService(std::move(mock));
+    auto sMock = std::make_unique<SolutionRepositoryMock>();
+    solutionMockPtr = sMock.get();
+    auto tMock = std::make_unique<TaskRepositoryMock>();
+    taskMockPtr = tMock.get();
+    ss = new SolutionService(std::move(sMock), std::move(tMock));
   }
   void TearDown() { delete ss; }
 };
@@ -47,7 +61,7 @@ TEST_F(SolutionServiceTest, getSolutionsByUserAndTaskId) {
   std::vector<Solution> solutions;
   solutions.push_back(Solution(0, "", 1, "", "", "", 1, ""));
   solutions.push_back(Solution(1, "", 1, "", "", "", 1, ""));
-  EXPECT_CALL(*mock_ptr, getSolutions(1, 1))
+  EXPECT_CALL(*solutionMockPtr, getSolutions(1, 1))
       .Times(1)
       .WillOnce(::testing::Return(solutions));
   std::vector<Solution> sols = ss->getSolutionsByUserAndTaskId(1, 1);
@@ -55,19 +69,19 @@ TEST_F(SolutionServiceTest, getSolutionsByUserAndTaskId) {
 }
 
 TEST_F(SolutionServiceTest, deleteSolution) {
-  EXPECT_CALL(*mock_ptr, deleteSolutionById(1)).Times(1);
+  EXPECT_CALL(*solutionMockPtr, deleteSolutionById(1)).Times(1);
   ss->deleteSolutionById(1);
 }
 
 TEST_F(SolutionServiceTest, deleteSolutionException) {
-  EXPECT_CALL(*mock_ptr, deleteSolutionById(-1))
+  EXPECT_CALL(*solutionMockPtr, deleteSolutionById(-1))
       .Times(1)
       .WillRepeatedly(NoSolutionException());
   EXPECT_THROW(ss->deleteSolutionById(-1), std::exception);
 }
 
 TEST_F(SolutionServiceTest, getMetrics) {
-  EXPECT_CALL(*mock_ptr, getSolutionById(1))
+  EXPECT_CALL(*solutionMockPtr, getSolutionById(1))
       .Times(1)
       .WillOnce(::testing::Return(
           Solution(1, "", 1, "", "tokens", "astTree", 1, "")));
@@ -77,20 +91,32 @@ TEST_F(SolutionServiceTest, getMetrics) {
 }
 
 TEST_F(SolutionServiceTest, getMetricsException) {
-  EXPECT_CALL(*mock_ptr, getSolutionById(-1))
+  EXPECT_CALL(*solutionMockPtr, getSolutionById(-1))
       .Times(1)
       .WillRepeatedly(NoSolutionException());
   EXPECT_THROW(ss->getMetrics(-1), std::exception);
 }
 
 TEST_F(SolutionServiceTest, createSolution) {
-  EXPECT_CALL(*mock_ptr,
+  EXPECT_CALL(*solutionMockPtr,
               storeSolution(Solution(0, "", 2, "source", "", "", 1, "")))
       .Times(1)
       .WillRepeatedly(::testing::Return(1));
+
+  std::vector<Solution> solutions;
+  solutions.push_back(Solution(0, "", 1, "int main(){return 0;}", "", "", 1, ""));
+  solutions.push_back(Solution(1, "", 1, "", "", "", 1, ""));
+  EXPECT_CALL(*solutionMockPtr, getSolutionsByTaskId(1))
+      .Times(1)
+      .WillOnce(::testing::Return(solutions));
+
+  EXPECT_CALL(*taskMockPtr, getTaskById(1))
+      .Times(1)
+      .WillOnce(::testing::Return(Task(1, "desription", 0.7f)));
+
   Solution sol = ss->createSolution(2, 1, "main.cpp", "int main(){return 0;}");
   EXPECT_EQ(sol.getId(), 1);
-  EXPECT_EQ(sol.getSource(), "main.cpp");
+  EXPECT_EQ(sol.getSource(), "int main(){return 0;}");
   EXPECT_EQ(sol.getTokens(),
             "[@0,0:2='int',<45>,1:0] [@1,4:7='main',<132>,1:4] "
             "[@2,8:8='(',<85>,1:8] [@3,9:9=')',<86>,1:9] "

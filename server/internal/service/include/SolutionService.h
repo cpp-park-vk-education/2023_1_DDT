@@ -15,17 +15,19 @@ class SolutionService : ISolutionService {
   std::unique_ptr<ISolutionRepository> solutionRepo;
   std::unique_ptr<ITaskRepository> taskRepo;
   std::unique_ptr<IAntlrWrapper> antlr;
-  std::unique_ptr<IMockMetrics> textMetric;
+  std::unique_ptr<ITextMetric> textMetric;
   std::unique_ptr<IMockMetrics> tokenMetric;
   void setAntlrWrapper(const std::string& fileExtension,
                        const std::string& filedata);
   std::string setResultVerdict(float textBasedRes, float tokenBasedRes,
                                float treshold);
   std::pair<float, size_t> getMaxTextResMetric(std::vector<Solution>& solutions,
-                                               const std::string& filedata);
+                                               const std::string& filedata,
+                                               float treshold);
 
  public:
-  explicit SolutionService(std::unique_ptr<ISolutionRepository> solutionRepo);
+  explicit SolutionService(std::unique_ptr<ISolutionRepository> solutionRepo,
+                           std::unique_ptr<ITaskRepository> taskRepo);
   SolutionService();
   void setMetrics(std::unique_ptr<IMockMetrics> metrics_);
   Solution createSolution(size_t userId, size_t taskId,

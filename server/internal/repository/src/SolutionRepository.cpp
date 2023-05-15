@@ -56,6 +56,23 @@ std::vector<Solution> SolutionRepository::getSolutionsByTaskId(size_t task_id) {
     }
 }
 
+std::optional<Solution> SolutionRepository::getOriginalSolution(size_t id) {
+    try {
+        auto c = manager->connection();
+        std::string sql = "SELECT * FROM solutions WHERE original_solution_id=" + std::to_string(id);
+        nontransaction n(*c);
+        result r(n.exec(sql));
+        manager->freeConnection(c);
+        if (r.empty())
+            return std::nullopt;
+        return makeSolution(r.begin());
+    } catch (...) {
+
+        throw;
+    }
+}
+
+
 size_t SolutionRepository::storeSolution(Solution solution) {
     try {
         auto c = manager->connection();
@@ -120,7 +137,8 @@ Solution SolutionRepository::makeSolution(const result::const_iterator &c) {
             c.at(c.column_number("tokens")).as<std::string>(),
             c.at(c.column_number("astTree")).as<std::string>(),
             c.at(c.column_number("task_id")).as<size_t>(),
-            c.at(c.column_number("result")).as<std::string>()};
+            c.at(c.column_number("result")).as<std::string>(),
+            c.at(c.column_number("original_solution_id")).as<size_t>()};
 }
 
 SolutionRepository::SolutionRepository() {

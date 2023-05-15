@@ -21,6 +21,8 @@ public:
     virtual void deleteSolutionById(size_t id) = 0;
 
     virtual void deleteSolution(Solution solution) = 0;
+
+    virtual std::optional<Solution> getOriginalSolution(size_t id) = 0;
 };
 
 #endif //SOURCEDOUT_ISOLUTIONREPOSITORY_HPP

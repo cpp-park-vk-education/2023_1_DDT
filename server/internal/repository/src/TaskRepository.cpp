@@ -19,7 +19,24 @@ std::optional<Task> TaskRepository::getTaskById(size_t id) {
     }
 }
 
-void TaskRepository::updateTask(Task task) {
+std::vector<Task> TaskRepository::getAllTasks() {
+    try {
+        auto c = manager->connection();
+        std::string sql = "SELECT * FROM tasks";
+        nontransaction n(*c);
+        result r(n.exec(sql));
+        manager->freeConnection(c);
+        std::vector<Task> users;
+        for (result::const_iterator k = r.begin(); k != r.end(); ++k)
+            users.push_back(makeTask(k));
+        return users;
+    } catch (...) {
+
+        throw;
+    }
+}
+
+void TaskRepository::updateTask(const Task &task) {
     try {
         auto c = manager->connection();
         std::string sql = (boost::format("UPDATE tasks SET description = '%s', treshold = '%s';") %

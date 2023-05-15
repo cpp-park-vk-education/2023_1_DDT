@@ -15,7 +15,9 @@ public:
     explicit TaskRepository();
     std::optional<Task> getTaskById(size_t id) override;
 
-    void updateTask(Task task) override;
+    std::vector<Task> getAllTasks() override;
+
+    void updateTask(const Task& task) override;
 
     size_t storeTask(Task task) override;
 

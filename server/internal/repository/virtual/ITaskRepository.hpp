@@ -9,6 +9,8 @@ class ITaskRepository {
 public:
     virtual std::optional<Task> getTaskById(size_t id) = 0;
 
+    virtual std::vector<Task> getAllTasks() = 0;
+
     virtual void updateTask(Task task) = 0;
 
     virtual size_t storeTask(Task task) = 0;

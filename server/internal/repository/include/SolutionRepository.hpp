@@ -29,6 +29,8 @@ public:
 
     void deleteSolution(Solution solution)  override;
 
+    std::optional<Solution> getOriginalSolution(size_t id) override;
+
 private:
     static Solution makeSolution(const result::const_iterator& c);
     std::shared_ptr<dbManager> manager;

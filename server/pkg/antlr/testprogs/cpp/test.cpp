@@ -1,11 +1,12 @@
 #include <iostream>
 
-using namespace std;
 
 int main()
 {
+    std::string res;
+    int a;
     if (true && true) {
-        cout << "Hello World!";
+        std::cout << "Hello World!";
     }
     return 0;
 }

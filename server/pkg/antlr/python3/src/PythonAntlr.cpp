@@ -9,13 +9,26 @@ PythonAntlr::PythonAntlr(std::istream& in) {
   parser_ptr = std::make_unique<antlrcpptest::Python3Parser>(&(*tokenStream_ptr));
 }
 
-std::vector<std::string> PythonAntlr::getTokensArray() {
+std::vector<antlr4::Token*> PythonAntlr::getTokens() {
   tokenStream_ptr->fill();
-  std::vector<std::string> ans(tokenStream_ptr->size());
+  std::vector<antlr4::Token*> ans(tokenStream_ptr->size());
 
   int i = 0;
-  for (antlr4::Token* token : tokenStream_ptr->getTokens()) {
-    ans[i] = token->toString();
+  for (antlr4::Token *token : tokenStream_ptr->getTokens()) {
+    ans[i] = token;
+    i++;
+  }
+
+  return ans;
+}
+
+std::vector<int> PythonAntlr::getTokensTypes() {
+  tokenStream_ptr->fill();
+  std::vector<int> ans(tokenStream_ptr->size());
+
+  int i = 0;
+  for (antlr4::Token *token : tokenStream_ptr->getTokens()) {
+    ans[i] = token->getType();
     i++;
   }
 

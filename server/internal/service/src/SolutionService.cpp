@@ -42,33 +42,33 @@ std::string SolutionService::setResultVerdict(float textBasedRes,
   return PLAGIAT_VERDICT;
 }
 
-std::pair<float, size_t> SolutionService::getMaxTextResMetric(
-    std::vector<Solution>& solutions, const std::string& filedata,
-    float treshold) {
-  std::pair<float, size_t> maxMatch = std::make_pair(0.0, 0ul);
-  for (auto sol : solutions) {
-    textMetric = std::make_unique<LevDistTextMetric>();
-    textMetric->setData(filedata, sol.getSource());
-    float textBasedRes = float(textMetric->getMetric());
-    std::cout << textBasedRes << std::endl;
+// std::pair<float, size_t> SolutionService::getMaxTextResMetric(
+//     std::vector<Solution>& solutions, const std::string& filedata,
+//     float treshold) {
+//   std::pair<float, size_t> maxMatch = std::make_pair(0.0, 0ul);
+//   for (auto sol : solutions) {
+//     textMetric = std::make_unique<LevDistTextMetric>();
+//     textMetric->setData(filedata, sol.getSource());
+//     float textBasedRes = float(textMetric->getMetric());
+//     std::cout << textBasedRes << std::endl;
 
-    textMetric = std::make_unique<JaccardTextMetric>();
-    textMetric->setData(filedata, sol.getSource());
-    textBasedRes = (textBasedRes + float(textMetric->getMetric())) / 2;
+//     textMetric = std::make_unique<JaccardTextMetric>();
+//     textMetric->setData(filedata, sol.getSource());
+//     textBasedRes = (textBasedRes + float(textMetric->getMetric())) / 2;
 
-    if (textBasedRes > treshold) {
-      break;
-    }
-    if (maxMatch.first < textBasedRes) {
-      maxMatch.first = textBasedRes;
-      maxMatch.second = sol.getId();
-    }
-  }
-  return maxMatch;
-}
+//     if (textBasedRes > treshold) {
+//       break;
+//     }
+//     if (maxMatch.first < textBasedRes) {
+//       maxMatch.first = textBasedRes;
+//       maxMatch.second = sol.getSenderId();
+//     }
+//   }
+//   return maxMatch;
+// }
 
 // std::pair<float, size_t> SolutionService::getMaxTokenResMetric(
-//     std::vector<Solution>& solutions, const std::string& tokens,
+//     std::vector<Solution>& solutions, std::vector<int>& tokens,
 //     float treshold) {
 //   std::pair<float, size_t> maxMatch = std::make_pair(0.0, 0ul);
 //   for (auto sol : solutions) {
@@ -86,7 +86,7 @@ std::pair<float, size_t> SolutionService::getMaxTextResMetric(
 //     }
 //     if (maxMatch.first < tokenBasedRes) {
 //       maxMatch.first = tokenBasedRes;
-//       maxMatch.second = sol.getId();
+//       maxMatch.second = sol.getSenderId();
 //     }
 //   }
 //   return maxMatch;
@@ -103,25 +103,29 @@ Solution SolutionService::createSolution(size_t userId, size_t taskId,
     }
 
     setAntlrWrapper(fileExtension.first, filedata);
-    std::pair<std::string, std::string> codeParse = antlr->getTokensAndTree();
+    std::vector<int> tokensTypes = antlr->getTokensTypes();
+    std::string astTree = antlr->getTreeString();
 
     std::time_t now =
         std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
 
+
     float treshold = taskRepo->getTaskById(taskId).getTreshhold();
+
 
     std::vector<Solution> solutions =
         solutionRepo->getSolutionsByTaskId(taskId);
 
-    std::pair<float, long unsigned int> textBasedRes =
-        getMaxTextResMetric(solutions, filedata, treshold);
-    // float tokenBasedRes getMaxTokenResMetric(solutions, codeParse.first,
+    // float textBasedRes = getMaxTextResMetric(solutions, filedata, treshold);
+    // float tokenBasedRes getMaxTokenResMetric(solutions, tokensTypes,
     // treshold);
 
-    std::string result = setResultVerdict(textBasedRes.first, 0, treshold);
-    // std::string result = setResultVerdict(textBasedRes.first, tokenBasedRes.first, treshold);
-    Solution sol = Solution(std::ctime(&now), userId, filedata, codeParse.first,
-                            codeParse.second, taskId, result);
+    std::string result = setResultVerdict(0, 0, treshold);
+    // std::string result = setResultVerdict(textBasedRes, tokenBasedRes,
+    // treshold);
+    Solution sol =
+        Solution(std::ctime(&now), userId, filedata, antlr->getTokensString(),
+                 astTree, taskId, result);
     size_t id = solutionRepo->storeSolution(sol);
     sol.setId(id);
     return sol;

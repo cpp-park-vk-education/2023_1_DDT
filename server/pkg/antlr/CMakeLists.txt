@@ -10,6 +10,7 @@ set(THREADS_PREFER_PTHREAD_FLAG ON)
 include(ExternalAntlr4Cpp)
 include_directories(${ANTLR4_INCLUDE_DIRS})
 
+
 set(ANTLR_EXECUTABLE /usr/local/lib/antlr-4.12.0-complete.jar)
 find_package(ANTLR REQUIRED)
 

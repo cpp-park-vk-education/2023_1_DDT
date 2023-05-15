@@ -42,22 +42,49 @@ std::string SolutionService::setResultVerdict(float textBasedRes,
 }
 
 std::pair<float, size_t> SolutionService::getMaxTextResMetric(
-    std::vector<Solution>& solutions, const std::string& filedata) {
-  std::pair<float, size_t> maxMatch = (0, 0);
+    std::vector<Solution>& solutions, const std::string& filedata,
+    float treshold) {
+  std::pair<float, size_t> maxMatch = std::make_pair(0.0, 0ul);
   for (auto sol : solutions) {
     textMetric = std::make_unique<LevDistTextMetric>();
     textMetric->setData(filedata, sol.getSource());
-    float textBasedRes = textMetric->getMetric();
+    float textBasedRes = float(textMetric->getMetric());
+    std::cout << textBasedRes << std::endl;
 
     textMetric = std::make_unique<JaccardTextMetric>();
     textMetric->setData(filedata, sol.getSource());
-    textBasedRes = (textBasedRes + textMetric->getMetric()) / 2;
+    textBasedRes = (textBasedRes + float(textMetric->getMetric())) / 2;
 
     if (textBasedRes > treshold) {
       break;
     }
     if (maxMatch.first < textBasedRes) {
       maxMatch.first = textBasedRes;
+      maxMatch.second = sol.getSenderId();
+    }
+  }
+  return maxMatch;
+}
+
+std::pair<float, size_t> SolutionService::getMaxTokenResMetric(
+    std::vector<Solution>& solutions, const std::string& tokens,
+    float treshold) {
+  std::pair<float, size_t> maxMatch = std::make_pair(0.0, 0ul);
+  for (auto sol : solutions) {
+    tokenMetric = std::make_unique<LivDistTokenMetric>();
+    tokenMetric->setData(tokens, sol.getTokens());
+    float tokenBasedRes = float(tokenMetric->getMetric());
+    std::cout << tokenBasedRes << std::endl;
+
+    tokenMetric = std::make_unique<WShinglingTokenMetric>();
+    tokenMetric->setData(tokens, sol.getSource());
+    tokenBasedRes = (tokenBasedRes + float(tokenMetric->getMetric())) / 2;
+
+    if (tokenBasedRes > treshold) {
+      break;
+    }
+    if (maxMatch.first < tokenBasedRes) {
+      maxMatch.first = tokenBasedRes;
       maxMatch.second = sol.getSenderId();
     }
   }
@@ -85,14 +112,15 @@ Solution SolutionService::createSolution(size_t userId, size_t taskId,
     std::vector<Solution> solutions =
         solutionRepo->getSolutionsByTaskId(taskId);
 
-    // float textBasedRes = getMaxTextResMetric(solutions, filedata);
-    // TODO: вызов метрик
-    // получил результат
+    // float textBasedRes = getMaxTextResMetric(solutions, filedata, treshold);
+    // float tokenBasedRes getMaxTokenResMetric(solutions, codeParse.first,
+    // treshold);
 
     std::string result = setResultVerdict(0, 0, treshold);
+    // std::string result = setResultVerdict(textBasedRes, tokenBasedRes, treshold);
 
     Solution sol = Solution(std::ctime(&now), userId, filedata, codeParse.first,
-                            codeParse.second, taskId, "");
+                            codeParse.second, taskId, result);
     size_t id = solutionRepo->storeSolution(sol);
     sol.setId(id);
     return sol;

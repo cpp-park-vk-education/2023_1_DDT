@@ -4,7 +4,8 @@
 
 int main(int argc, const char* argv[]) {
   //   ifstream ins("/home/denis/2023_1_DDT/antlr/test.py");
-  std::ifstream ins("/home/denis/2023_1_DDT/server/pkg/antlr/testprogs/python/test.py");
+  std::ifstream ins(
+      "/home/denis/2023_1_DDT/server/pkg/antlr/testprogs/python/test.py");
 
   PythonAntlr pA = PythonAntlr(ins);
 
@@ -16,6 +17,7 @@ int main(int argc, const char* argv[]) {
   }
 
   std::cout << pA.getTreeString() << std::endl;
+  std::cout << "test" << std::endl;
 
   return 0;
 }

@@ -8,7 +8,12 @@
 #include "ISolutionRepository.hpp"
 #include "ISolutionService.h"
 #include "ITaskRepository.hpp"
+<<<<<<< HEAD
 #include "TextMetricsLib.h"
+=======
+// #include "TextMetricsLib.h"
+// #include "TokenMetricsLib.h"
+>>>>>>> 3efd3f12481336474203daec86d6b5075747e8c0
 
 class SolutionService : ISolutionService {
  private:
@@ -17,6 +22,8 @@ class SolutionService : ISolutionService {
   std::unique_ptr<IAntlrWrapper> antlr;
   std::unique_ptr<ITextMetric> textMetric;
   std::unique_ptr<IMockMetrics> tokenMetric;
+  // std::unique_ptr<ITextMetric> textMetric;
+  // std::unique_ptr<ITokenMetric> tokenMetric;
   void setAntlrWrapper(const std::string& fileExtension,
                        const std::string& filedata);
   std::string setResultVerdict(float textBasedRes, float tokenBasedRes,
@@ -24,6 +31,10 @@ class SolutionService : ISolutionService {
   std::pair<float, size_t> getMaxTextResMetric(std::vector<Solution>& solutions,
                                                const std::string& filedata,
                                                float treshold);
+
+  std::pair<float, size_t> getMaxTokenResMetric(
+      std::vector<Solution>& solutions, const std::string& tokens,
+      float treshold);
 
  public:
   explicit SolutionService(std::unique_ptr<ISolutionRepository> solutionRepo,

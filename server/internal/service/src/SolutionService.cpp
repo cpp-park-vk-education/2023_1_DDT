@@ -67,6 +67,31 @@ std::pair<float, size_t> SolutionService::getMaxTextResMetric(
   return maxMatch;
 }
 
+std::pair<float, size_t> SolutionService::getMaxTokenResMetric(
+    std::vector<Solution>& solutions, const std::string& tokens,
+    float treshold) {
+  std::pair<float, size_t> maxMatch = std::make_pair(0.0, 0ul);
+  for (auto sol : solutions) {
+    tokenMetric = std::make_unique<LivDistTokenMetric>();
+    tokenMetric->setData(tokens, sol.getTokens());
+    float tokenBasedRes = float(tokenMetric->getMetric());
+    std::cout << tokenBasedRes << std::endl;
+
+    tokenMetric = std::make_unique<WShinglingTokenMetric>();
+    tokenMetric->setData(tokens, sol.getSource());
+    tokenBasedRes = (tokenBasedRes + float(tokenMetric->getMetric())) / 2;
+
+    if (tokenBasedRes > treshold) {
+      break;
+    }
+    if (maxMatch.first < tokenBasedRes) {
+      maxMatch.first = tokenBasedRes;
+      maxMatch.second = sol.getSenderId();
+    }
+  }
+  return maxMatch;
+}
+
 Solution SolutionService::createSolution(size_t userId, size_t taskId,
                                          const std::string& filename,
                                          const std::string& filedata) {
@@ -90,14 +115,13 @@ Solution SolutionService::createSolution(size_t userId, size_t taskId,
 
     std::pair<float, long unsigned int> textBasedRes =
         getMaxTextResMetric(solutions, filedata, treshold);
+    // float tokenBasedRes getMaxTokenResMetric(solutions, codeParse.first,
+    // treshold);
 
-    // TODO: вызов метрик
-    // получил результат
-
-    std::string result = setResultVerdict(textBasedRes.first, 0.5, treshold);
-
+    std::string result = setResultVerdict(0, 0, treshold);
+    // std::string result = setResultVerdict(textBasedRes, tokenBasedRes, treshold);
     Solution sol = Solution(std::ctime(&now), userId, filedata, codeParse.first,
-                            codeParse.second, taskId, "");
+                            codeParse.second, taskId, result);
     size_t id = solutionRepo->storeSolution(sol);
     sol.setId(id);
     return sol;

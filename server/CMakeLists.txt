@@ -12,6 +12,7 @@ ELSE()
 ENDIF()
 
 find_library(PQXX_LIB pqxx)
+find_package(libpqxx REQUIRED)
 find_package(GTest REQUIRED)
 find_package(nlohmann_json REQUIRED)
 message(STATUS ${nlohmann_json_LIBRARIES})

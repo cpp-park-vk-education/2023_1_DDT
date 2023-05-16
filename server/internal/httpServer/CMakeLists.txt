@@ -10,8 +10,15 @@ include_directories(${INCLUDE_DIRS} ${Boost_INCLUDE_DIR} ${libRepository_INCLUDE
 add_library(${PROJECT_NAME} ${SOURCES} ${INCLUDES})
 add_executable(HttpServer_run main.cpp)
 
-target_link_libraries(${PROJECT_NAME} ${SERVICE_lib_LIB} ${libEntities_LIB} ${Boost_LIBRARIES})
-target_link_libraries(HttpServer_run ${PROJECT_NAME} ${Boost_LIBRARIES} ${libpqxx_LIBRARIES} ${SERVICE_lib_LIB} ${libRepository_LIB} ${libEntities_LIB} ${ANTLR4_LIB} ${METRICS_LIBRARY})
+target_link_libraries(${PROJECT_NAME} ${SERVICE_lib_LIBRARY} ${libEntities_LIB} ${Boost_LIBRARIES})
+
+message("a = ${SERVICE_lib_LIBRARY}")
+message("a = ${libRepository_LIB}")
+message("a = ${libEntities_LIB}")
+message("a = ${ANTLR4_LIB}")
+message("a = ${METRICS_LIBRARY}")
+
+target_link_libraries(HttpServer_run ${libpqxx_LIBRARIES} ${Boost_LIBRARIES} ${PROJECT_NAME} ${SERVICE_lib_LIBRARY} ${libRepository_LIB} ${libEntities_LIB} ${ANTLR4_LIB} ${METRICS_LIBRARY})
 
 set(HTTPSERVER_LIB ${PROJECT_NAME})
 set(HTTPSERVER_LIB ${HTTPSERVER_LIB} PARENT_SCOPE)

@@ -4,15 +4,17 @@
 #include <boost/property_tree/ptree.hpp>
 #include <boost/property_tree/json_parser.hpp>
 
-std::tuple<std::size_t, std::string, std::size_t> Serializer::deserialNewSolutionData(const std::string &val) {
+std::tuple<std::size_t, std::size_t, std::string, std::string>
+Serializer::deserialNewSolutionData(const std::string &val) {
     std::stringstream ss;
     ss << val;
     boost::property_tree::ptree json;
     boost::property_tree::read_json(ss, json);
-    std::tuple<std::size_t, std::string, std::size_t> res = {
+    std::tuple<std::size_t, std::size_t, std::string, std::string> res = {
         json.get<std::size_t>("user_id"),
-        json.get<std::string>("source"),
-        json.get<std::size_t>("task_id")
+        json.get<std::size_t>("task_id"),
+        json.get<std::string>("filename"),
+        json.get<std::string>("filedata")
     };
     return res;
 }

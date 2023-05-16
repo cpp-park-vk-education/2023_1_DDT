@@ -30,8 +30,8 @@ std::vector<Task> Core::getAllTasks() {
     return client.getAllTasks();
 }
 
-Solution Core::submitSolution(const int &task_id, const std::string &path_to_file) {
-    return client.submitSolution(user_id, task_id, path_to_file);
+Solution Core::submitSolution(const int &task_id, const std::string& filename, const std::string &path_to_file) {
+    return client.submitSolution(user_id, task_id, filename, path_to_file);
 }
 
 unsigned int Core::createTask(const std::string &desc) {

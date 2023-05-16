@@ -19,7 +19,8 @@ public:
     std::pair<unsigned, User> loginUser(const std::string &login, const std::string &password);
     std::pair<unsigned, User> registerUser(const std::string &login, const std::string &username,
                                            const std::string &password);
-    Solution submitSolution(const int& user_id, const int &task_id, const std::string &path_to_solution);
+    Solution submitSolution(const int& user_id, const int &task_id, const std::string& filename,
+                            const std::string &path_to_solution);
     unsigned int getAllSolutionsForTask(const int& user_id, const int& task_id);
     std::vector<Task> getAllTasks();
     unsigned int createTask(const std::string& desc);

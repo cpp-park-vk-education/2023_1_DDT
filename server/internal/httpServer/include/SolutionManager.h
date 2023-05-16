@@ -7,7 +7,7 @@
 
 #include "Serializer.h"
 #include "ISolutionManager.h"
-#include "ISolutionService.h"
+#include "SolutionService.h"
 
 namespace beast = boost::beast;
 namespace http = boost::beast::http;

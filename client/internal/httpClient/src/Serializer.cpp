@@ -52,15 +52,17 @@ std::vector<Task> Serializer::deserialAllTasks(std::string_view body) {
     return tasks;
 }
 
-std::string Serializer::serialSolutionData(const int &user_id, const int &task_id, const std::string& path_to_file) {
+std::string Serializer::serialSolutionData(const int &user_id, const int &task_id, const std::string& filename,
+                                           const std::string& path_to_file) {
     boost::property_tree::ptree json;
     json.put("user_id", user_id);
     json.put("task_id", task_id);
+    json.put("filename", filename);
     std::ifstream file(path_to_file);
     std::ostringstream sstr;
     sstr << file.rdbuf();
     std::string source = sstr.str();
-    json.put("source", source);
+    json.put("filedata", source);
     std::stringstream out;
     boost::property_tree::write_json(out, json);
     return out.str();

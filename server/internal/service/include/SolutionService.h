@@ -11,7 +11,7 @@
 #include "TextMetricsLib.h"
 #include "TokenMetricLib.h"
 
-class SolutionService : ISolutionService {
+class SolutionService : public ISolutionService {
  private:
   std::unique_ptr<ISolutionRepository> solutionRepo;
   std::unique_ptr<ITaskRepository> taskRepo;
@@ -28,13 +28,13 @@ class SolutionService : ISolutionService {
 
   std::pair<float, size_t> getMaxTokenResMetric(
       std::vector<Solution>& solutions, const std::string& tokens,
-      float treshold);
+      float treshold) {};
 
  public:
-  explicit SolutionService(std::unique_ptr<ISolutionRepository> solutionRepo,
-                           std::unique_ptr<ITaskRepository> taskRepo);
+//  explicit SolutionService(std::unique_ptr<ISolutionRepository> solutionRepo,
+//                           std::unique_ptr<ITaskRepository> taskRepo);
   SolutionService();
-  void setMetrics(std::unique_ptr<IMockMetrics> metrics_);
+  void setMetrics(std::unique_ptr<IMockMetrics> metrics_) {};
   Solution createSolution(size_t userId, size_t taskId,
                           const std::string& filename,
                           const std::string& filedata) override;

@@ -5,7 +5,7 @@
 
 #include "Serializer.h"
 #include "ITaskManager.h"
-#include "ITaskService.h"
+#include "TaskService.h"
 
 class TaskManager : public ITaskManager {
 public:

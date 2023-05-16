@@ -34,9 +34,6 @@ class Router : public std::enable_shared_from_this<Router> {
     std::shared_ptr<IUserManager> userManager;
     std::shared_ptr<ITaskManager> taskManager;
     std::string doc_root;
-
-    http::response<http::string_body> getBadRequest(const http::request<http::string_body>& request,
-                                                    beast::string_view why);
 };
 
 

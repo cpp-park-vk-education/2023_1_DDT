@@ -11,7 +11,7 @@
 
 class Serializer {
 public:
-    std::tuple<std::size_t, std::string, std::size_t> deserialNewSolutionData(const std::string& val);
+    std::tuple<std::size_t, std::size_t, std::string, std::string> deserialNewSolutionData(const std::string& val);
     std::tuple<std::size_t, std::size_t> deserialTaskData(const std::string &val);
     std::string deserialNewTaskData(const std::string &val);
     size_t deserialSolutionData(const std::string& val);

@@ -4,8 +4,8 @@
 #include "UserValidator.h"
 #include "UserRepository.hpp"
 
-UserService::UserService(std::unique_ptr<IUserRepository> userRepo)
-    : userRepo(std::move(userRepo)) {}
+//UserService::UserService(std::unique_ptr<IUserRepository> userRepo)
+//    : userRepo(std::move(userRepo)) {}
 
 UserService::UserService() {
   userRepo = std::make_unique<UserRepository>();

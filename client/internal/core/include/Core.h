@@ -14,7 +14,7 @@ public:
 
     static std::vector<Task> getAllTasks();
 
-    static Solution submitSolution(const int& task_id, const std::string& path_to_file);
+    static Solution submitSolution(const int& task_id, const std::string& filename, const std::string& path_to_file);
 
     static unsigned int createTask(const std::string &desc);
 

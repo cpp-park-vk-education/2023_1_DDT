@@ -5,12 +5,12 @@
 #include "IUserService.h"
 #include "UserValidator.h"
 
-class UserService : IUserService {
+class UserService : public IUserService {
  private:
   std::unique_ptr<IUserRepository> userRepo;
 
  public:
-  explicit UserService(std::unique_ptr<IUserRepository> userRepo);
+//  explicit UserService(std::unique_ptr<IUserRepository> userRepo);
   UserService();
   User createUser(const std::string& login, const std::string& username,
                   const std::string& password) override;

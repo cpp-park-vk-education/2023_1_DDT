@@ -14,10 +14,10 @@ const std::string PLAGIAT_VERDICT = "Не, ну вы не палитесь. Пл
 const std::string NOT_PLAGIAT_VERDICT =
     "Красивое решение. А главное уникальное !";
 
-SolutionService::SolutionService(
-    std::unique_ptr<ISolutionRepository> solutionRepo,
-    std::unique_ptr<ITaskRepository> taskRepo)
-    : solutionRepo(std::move(solutionRepo)), taskRepo(std::move(taskRepo)) {}
+//SolutionService::SolutionService(
+//    std::unique_ptr<ISolutionRepository> solutionRepo,
+//    std::unique_ptr<ITaskRepository> taskRepo)
+//    : solutionRepo(std::move(solutionRepo)), taskRepo(std::move(taskRepo)) {}
 
 SolutionService::SolutionService() {
   solutionRepo = std::make_unique<SolutionRepository>();

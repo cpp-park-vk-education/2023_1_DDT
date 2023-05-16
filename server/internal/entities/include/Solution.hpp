@@ -7,7 +7,6 @@
 
 class Solution {
 public:
-    Solution() =default;
     Solution(size_t id, std::string sendDate, size_t senderId, std::string source,
              std::string tokens, std::string astTree,
              size_t taskId, std::string result, size_t orig_solution) noexcept;

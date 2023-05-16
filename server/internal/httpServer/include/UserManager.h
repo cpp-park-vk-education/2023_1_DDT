@@ -6,7 +6,7 @@
 
 #include "Serializer.h"
 #include "IUserManager.h"
-#include "IUserService.h"
+#include "UserService.h"
 
 class UserManager : public IUserManager {
  public:
@@ -17,10 +17,6 @@ class UserManager : public IUserManager {
  private:
     std::shared_ptr<IUserService> userService;
     std::shared_ptr<Serializer> serializer;
-
-    // for tests with client
-    int count = 0;
-    std::vector<User> users;
 };
 
 #endif  // APP_HTTPSERVER_HTTPSERVER_MANAGERS_USERMANAGER_H_

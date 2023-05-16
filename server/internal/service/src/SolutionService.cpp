@@ -79,26 +79,11 @@ std::pair<float, size_t> SolutionService::getMaxTokenResMetric(
     tokenMetric->setData(tokens,
                          Utils::convertStringIntoIntArray(sol.getTokens()));
     float tokenBasedRes = float(tokenMetric->getMetric());
-    std::cout << tokenBasedRes << std::endl;
-
-    std::cout << "Tokens from tokens" << std::endl;
-    for (int t : tokens) {
-      std::cout << t << " ";
-    }
-    std::cout << std::endl;
-
-    std::cout << "Tokens from BD" << std::endl;
-    for (int t : Utils::convertStringIntoIntArray(sol.getTokens())) {
-      std::cout << t << " ";
-    }
-    std::cout << std::endl;
 
     tokenMetric = std::make_unique<WShinglingTokenMetric>();
     tokenMetric->setData(tokens,
                          Utils::convertStringIntoIntArray(sol.getTokens()));
     tokenBasedRes = (tokenBasedRes + float(tokenMetric->getMetric())) / 2;
-
-    std::cout << tokenBasedRes << std::endl;
 
     if (maxMatch.first < tokenBasedRes) {
       maxMatch.first = tokenBasedRes;
@@ -151,9 +136,10 @@ Solution SolutionService::createSolution(size_t userId, size_t taskId,
       }
     }
 
-    Solution sol = Solution(std::ctime(&now), userId, filedata,
-                            Utils::convertIntArrayIntoString(tokensTypes),
-                            astTree, taskId, result, plagiatUserId);
+    Solution sol =
+        Solution(std::ctime(&now), userId, filedata, taskId,
+                 result, Utils::convertIntArrayIntoString(tokensTypes), astTree,
+                 plagiatUserId);
     size_t id = solutionRepo->storeSolution(sol);
     sol.setId(id);
     return sol;

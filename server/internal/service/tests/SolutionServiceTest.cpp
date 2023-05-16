@@ -14,7 +14,8 @@ class Exception : public std::exception {
 class SolutionRepositoryMock : public ISolutionRepository {
  public:
   ~SolutionRepositoryMock() override = default;
-  MOCK_METHOD(std::optional<Solution>, getSolutionById, (size_t id), (override));
+  MOCK_METHOD(std::optional<Solution>, getSolutionById, (size_t id),
+              (override));
   MOCK_METHOD(std::vector<Solution>, getSolutionsBySenderId, (size_t sender_id),
               (override));
   MOCK_METHOD(std::vector<Solution>, getSolutionsByTaskId, (size_t task_id),
@@ -23,7 +24,8 @@ class SolutionRepositoryMock : public ISolutionRepository {
   MOCK_METHOD(void, updateSolution, (Solution solution), (override));
   MOCK_METHOD(void, deleteSolutionById, (size_t id), (override));
   MOCK_METHOD(void, deleteSolution, (Solution solution), (override));
-  MOCK_METHOD(std::optional<Solution>, getOriginalSolution, (size_t id), (override));
+  MOCK_METHOD(std::optional<Solution>, getOriginalSolution, (size_t id),
+              (override));
 };
 
 class TaskRepositoryMock : public ITaskRepository {
@@ -72,7 +74,7 @@ TEST_F(SolutionServiceTest, getMetrics) {
   EXPECT_CALL(*solutionMockPtr, getSolutionById(1))
       .Times(1)
       .WillOnce(::testing::Return(
-          Solution(1, "", 1, "", "tokens", "astTree", 1, "", 1)));
+          Solution(1, "", 1, "",  1, "", "tokens", "astTree", 1)));
   std::pair<std::string, std::string> metrics = ss->getMetrics(1);
   EXPECT_EQ(metrics.first, "tokens");
   EXPECT_EQ(metrics.second, "astTree");
@@ -87,14 +89,13 @@ TEST_F(SolutionServiceTest, getMetricsException) {
 
 TEST_F(SolutionServiceTest, createSolution) {
   EXPECT_CALL(*solutionMockPtr,
-              storeSolution(Solution(0, "", 2, "source", "", "", 1, "", 1)))
+              storeSolution(Solution(0, "", 2, "source", 1, "", "", "", 1)))
       .Times(1)
       .WillRepeatedly(::testing::Return(1));
 
   std::vector<Solution> solutions;
-  solutions.push_back(
-      Solution(0, "", 1, "int main(){return 0;}", "45 132 85 86 89 59 1 128 90 -1", "", 1, "",-1));
-  //solutions.push_back(Solution(1, "", 1, "", "", "", 1, ""));
+  solutions.push_back(Solution(0, "", 1, "int main(){return 0;}", 1, "",
+                               "45 132 85 86 89 59 1 128 90 -1", "", -1));
   EXPECT_CALL(*solutionMockPtr, getSolutionsByTaskId(1))
       .Times(1)
       .WillOnce(::testing::Return(solutions));

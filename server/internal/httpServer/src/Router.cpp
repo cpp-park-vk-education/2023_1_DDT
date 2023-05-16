@@ -22,6 +22,8 @@ http::message_generator Router::handleRequest(http::request<http::string_body> &
         return getBadRequest(req, "Illegal request-target");
     }
 
+    std::cout << req.target() << std::endl;
+
     if (req.target() == "/solution/submit") {
         return solutionManager->createSolution(std::move(req));
     } else if (req.target() == "/solution/all") {

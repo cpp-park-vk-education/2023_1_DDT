@@ -28,7 +28,7 @@ add_custom_target(
 
 add_library(${LIB_NAME} ${SOURCES} ${HEADERS})
 target_include_directories(${LIB_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include ${CMAKE_CURRENT_SOURCE_DIR}/virtual)
-target_link_libraries(${LIB_NAME} ${Boost_LIBRARIES} ${libpqxx_LIBRARIES} ${libEntities_LIB} ${libDbManager_LIB})
+target_link_libraries(${LIB_NAME} ${Boost_LIBRARIES} ${PQXX_LIB} ${libEntities_LIB} ${libDbManager_LIB})
 
 set(libRepository_LIB ${LIB_NAME})
 set(libRepository_LIB ${libRepository_LIB} PARENT_SCOPE)

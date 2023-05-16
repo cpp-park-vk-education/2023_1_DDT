@@ -18,7 +18,7 @@ message("a = ${libEntities_LIB}")
 message("a = ${ANTLR4_LIB}")
 message("a = ${METRICS_LIBRARY}")
 
-target_link_libraries(HttpServer_run ${libpqxx_LIBRARIES} ${Boost_LIBRARIES} ${PROJECT_NAME} ${SERVICE_lib_LIBRARY} ${libRepository_LIB} ${libEntities_LIB} ${ANTLR4_LIB} ${METRICS_LIBRARY})
+target_link_libraries(HttpServer_run ${PQXX_LIB} ${Boost_LIBRARIES} ${PROJECT_NAME} ${SERVICE_lib_LIBRARY} ${libRepository_LIB} ${libEntities_LIB} ${ANTLR4_LIB} ${METRICS_LIBRARY})
 
 set(HTTPSERVER_LIB ${PROJECT_NAME})
 set(HTTPSERVER_LIB ${HTTPSERVER_LIB} PARENT_SCOPE)

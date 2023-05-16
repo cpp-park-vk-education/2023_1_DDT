@@ -18,6 +18,9 @@ int main(int argc, char* argv[])
 //                  "    http-server-async 0.0.0.0 8080 . 1\n";
 //        return EXIT_FAILURE;
 //    }
+
+    std::cout << "SERVER RUN" << std::endl;
+
     auto const address = net::ip::make_address("0.0.0.0");
     auto const port = static_cast<unsigned short>(std::atoi("8080"));
     auto const doc_root = std::make_shared<std::string>(".");

@@ -14,7 +14,7 @@ message("METRICS_lib_INCLUDE_DIRS=${METRICS_lib_INCLUDE_DIRS}")
 message("METRICS_LIBRARY=${METRICS_LIBRARY}")
 
 target_include_directories(${PROJECT_NAME} PUBLIC ${INCLUDE_DIRS} ${libEntities_INCLUDE_DIRS} ${libRepository_INCLUDE_DIRS} ${ANTLR4_LIB_INCLUDE_DIRS} ${METRICS_lib_INCLUDE_DIRS})
-target_link_libraries(${PROJECT_NAME} ${libRepository_LIB} ${libEntities_LIB} ${ANTLR4_LIB} ${METRICS_LIBRARY} ${libpqxx_LIBRARIES})
+target_link_libraries(${PROJECT_NAME} ${libRepository_LIB} ${libEntities_LIB} ${ANTLR4_LIB} ${METRICS_LIBRARY} ${PQXX_LIB})
 
 set(SERVICE_lib_LIBRARY ${PROJECT_NAME})
 set(SERVICE_lib_LIBRARY ${SERVICE_lib_LIBRARY} PARENT_SCOPE)

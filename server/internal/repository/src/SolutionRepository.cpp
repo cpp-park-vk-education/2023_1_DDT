@@ -27,11 +27,19 @@ std::vector<Solution> SolutionRepository::getSolutionsBySenderId(size_t sender_i
         auto c = manager->connection();
         std::string sql = "SELECT * FROM solutions WHERE sender_id=" + std::to_string(sender_id);
         nontransaction n(*c);
-        result r(n.exec(sql));
+        auto stream = stream_from::query(n, sql);
         std::vector<Solution> solutions;
+        std::tuple<size_t, std::string, size_t, std::string, size_t,
+                std::string, std::string, std::string, size_t> row;
+        while (stream >> row) {
+            solutions.emplace_back(
+                    get<0>(row), get<1>(row),
+                    get<2>(row), get<3>(row),
+                    get<4>(row), get<5>(row),
+                    get<6>(row), get<7>(row), get<8>(row));
+        }
+        stream.complete();
         manager->freeConnection(c);
-        for (result::const_iterator k = r.begin(); k != r.end(); ++k)
-            solutions.push_back(makeSolution(k));
         return solutions;
     } catch (...) {
 
@@ -44,11 +52,19 @@ std::vector<Solution> SolutionRepository::getSolutionsByTaskId(size_t task_id) {
         auto c = manager->connection();
         std::string sql = "SELECT * FROM solutions WHERE task_id=" + std::to_string(task_id);
         nontransaction n(*c);
-        result r(n.exec(sql));
+        auto stream = stream_from::query(n, sql);
         std::vector<Solution> solutions;
+        std::tuple<size_t, std::string, size_t, std::string, size_t,
+                std::string, std::string, std::string, size_t> row;
+        while (stream >> row) {
+            solutions.emplace_back(
+                    get<0>(row), get<1>(row),
+                    get<2>(row), get<3>(row),
+                    get<4>(row), get<5>(row),
+                    get<6>(row), get<7>(row), get<8>(row));
+        }
+        stream.complete();
         manager->freeConnection(c);
-        for (result::const_iterator k = r.begin(); k != r.end(); ++k)
-            solutions.push_back(makeSolution(k));
         return solutions;
     } catch (...) {
 
@@ -78,10 +94,10 @@ size_t SolutionRepository::storeSolution(Solution solution) {
         auto c = manager->connection();
 
         std::string sql = (
-                boost::format("INSERT INTO solutions (send_date,sender_id, source, task_id, result, tokens, astTree) "  \
-            "VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s') RETURNING id; ") % solution.getSendDate() %
+                boost::format("INSERT INTO solutions (send_date,sender_id, source, task_id, result, tokens, astTree, original_solution_id) "  \
+            "VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s') RETURNING id; ") % solution.getSendDate() %
                 solution.getSenderId() % solution.getSource() % solution.getTaskId() % solution.getResult() %
-                solution.getTokens() % solution.getAstTree()).str();
+                solution.getTokens() % solution.getAstTree() % solution.getOrigSolution()).str();
         work w(*c);
         row r = (w.exec1(sql));
         w.commit();
@@ -97,10 +113,11 @@ void SolutionRepository::updateSolution(Solution solution) {
         auto c = manager->connection();
 
         std::string sql = (boost::format(
-                "UPDATE solutions SET send_date = '%s', sender_id = '%s', source = '%s', task_id = '%s', result = '%s', tokens = '%s', astTree = '%s';")
+                "UPDATE solutions SET send_date = '%s', sender_id = '%s', source = '%s',"
+                " task_id = '%s', result = '%s', tokens = '%s', astTree = '%s', original_solution_id = '%s';")
                            % solution.getSendDate() % solution.getSenderId() % solution.getSource() %
                            solution.getTaskId() % solution.getResult() % solution.getTokens() %
-                           solution.getAstTree()).str();
+                           solution.getAstTree() % solution.getOrigSolution()).str();
         work w(*c);
         w.exec(sql);
         manager->freeConnection(c);
@@ -134,10 +151,10 @@ Solution SolutionRepository::makeSolution(const result::const_iterator &c) {
             c.at(c.column_number("send_date")).as<std::string>(),
             c.at(c.column_number("sender_id")).as<size_t>(),
             c.at(c.column_number("source")).as<std::string>(),
-            c.at(c.column_number("tokens")).as<std::string>(),
-            c.at(c.column_number("astTree")).as<std::string>(),
             c.at(c.column_number("task_id")).as<size_t>(),
             c.at(c.column_number("result")).as<std::string>(),
+            c.at(c.column_number("tokens")).as<std::string>(),
+            c.at(c.column_number("astTree")).as<std::string>(),
             c.at(c.column_number("original_solution_id")).as<size_t>()};
 }
 

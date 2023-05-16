@@ -11,6 +11,7 @@
 
 using namespace pqxx;
 
+
 class UserRepository : public IUserRepository {
 public:
     explicit UserRepository();

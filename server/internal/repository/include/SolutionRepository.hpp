@@ -12,7 +12,9 @@
 
 using namespace pqxx;
 
+
 class SolutionRepository : public ISolutionRepository {
+
 public:
     explicit SolutionRepository();
     std::optional<Solution> getSolutionById(size_t id) override;

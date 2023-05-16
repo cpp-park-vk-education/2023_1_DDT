@@ -16,7 +16,9 @@ int main(int argc, const char* argv[]) {
   std::vector<int> tokens2 = cppA2.getTokensTypes();
 
   LevDistTokenMetric lev;
+  WShinglingTokenMetric wsh;
   lev.setData(tokens1, tokens2);
+  wsh.setData(tokens1, tokens2);
 
   std::cout << "Tokens1:" << std::endl;
   for (int token : tokens1) {
@@ -30,8 +32,10 @@ int main(int argc, const char* argv[]) {
   }
   std::cout << std::endl;
 
+  std::cout << lev.getMetric() << std::endl << wsh.getMetric() << std::endl;
 
-  std::cout << lev.getMetric() << std::endl;
+  fin1.close();
+  fin2.close();
 
   return 0;
 }

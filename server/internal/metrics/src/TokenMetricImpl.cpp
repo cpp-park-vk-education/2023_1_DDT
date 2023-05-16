@@ -34,7 +34,44 @@ double LevDistTokenMetric::getMetric() {
     return  res;
 }
 
-double WShinglingTokenMetric::getMetric() {}
+double WShinglingTokenMetric::getMetric() {
+    unsigned long n = tokens1.size();
+    unsigned long m = tokens2.size();
+
+    if (n == 0 || m == 0 || (n < 3 && m < 3))
+        return 0;
+
+    std::vector <std::tuple <int, int, int> > sh1;
+    std::vector <std::tuple <int, int, int> > sh2;
+
+    for (size_t i = 0; i < n - 3; i++){
+        sh1.emplace_back(tokens1[i], tokens1[i+1], tokens1[i+2]);
+    }
+    for (size_t i = 0; i < m - 3; i++){
+        sh2.emplace_back(tokens2[i], tokens2[i+1], tokens2[i+2]);
+    }
+
+    std::set <std::tuple <int, int, int>> s1;
+    std::set <std::tuple <int, int, int>> s2;
+
+    for (auto &i : sh1) s1.insert(i);
+    for (auto &i : sh2) s2.insert(i);
+
+
+    std::set<std::tuple <int, int, int>> intersect_sets;
+    set_intersection(s1.begin(), s1.end(), s2.begin(), s2.end(),
+                     std::inserter(intersect_sets, intersect_sets.begin()));
+
+    std::set<std::tuple <int, int, int>> union_sets;
+    set_union(s1.begin(), s1.end(), s2.begin(), s2.end(),
+              std::inserter(union_sets, union_sets.begin()));
+
+    if (union_sets.empty())
+        return 0;
+    else
+        return static_cast<double> (intersect_sets.size()) / static_cast<double> (union_sets.size());
+
+}
 
 void PrepareDataTokenMetric::setData(std::vector<int> _tokens1, std::vector<int> _tokens2) {
     tokens1 = _tokens1;

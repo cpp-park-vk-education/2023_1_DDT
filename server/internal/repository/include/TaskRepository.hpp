@@ -3,19 +3,23 @@
 
 #include <boost/format.hpp>
 #include <fstream>
-#include "../virtual/ITaskRepository.hpp"
+#include "ITaskRepository.hpp"
 #include "pqxx/pqxx"
 #include "dbManager.hpp"
+#include <optional>
 
 using namespace pqxx;
 
 class TaskRepository : public ITaskRepository {
 public:
-    Task getTaskById(size_t id) override;
+    explicit TaskRepository();
+    std::optional<Task> getTaskById(size_t id) override;
 
-    void updateTask(Task task) override;
+    std::vector<Task> getAllTasks() override;
 
-    int storeTask(Task task) override;
+    void updateTask(const Task& task) override;
+
+    size_t storeTask(Task task) override;
 
     void deleteTask(Task task) override;
 

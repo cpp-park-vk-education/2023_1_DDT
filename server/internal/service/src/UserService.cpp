@@ -1,21 +1,48 @@
 #include "UserService.h"
 
-#include "Exeptions.h"
+#include "Exceptions.h"
+#include "UserValidator.h"
 #include "UserRepository.hpp"
 
-UserService::UserService()
-    : userRepo(std::make_unique<UserRepository>()) {
+UserService::UserService(std::unique_ptr<IUserRepository> userRepo)
+    : userRepo(std::move(userRepo)) {}
+
+UserService::UserService() {
+  userRepo = std::make_unique<UserRepository>();
 }
 
-User UserService::createUser(std::string login, std::string username,
-                             std::string password) {
-  if (login == "") {
-    throw ValidateExeption("invalid login");
+User UserService::createUser(const std::string& login, const std::string& username,
+                             const std::string& password) {
+  User user = User(login, password, username);
+  if (!UserValidator::validate(user)) {
+    throw ValidateException("invalid user params");
   }
-  size_t id = userRepo->makeUser(User(login, password, username));
-  return User(id, login, password, username);
+  try {
+    size_t id = userRepo->makeUser(user);
+    user.setId(id);
+    return user;
+  } catch (...) {
+    throw;
+  }
 }
 
-User UserService::getUserById(size_t id) { return userRepo->getUserById(id); }
+User UserService::login(const std::string& login, const std::string& password) {
+  try {
+    User u = userRepo->getUserByLogin(login).value();
+    if (u.getPassword() != password){
+      throw LoginException("incorrect password");
+    }
+    return u;
+  } catch (...) {
+    throw;
+  }
+}
 
-void UserService::deleteUser(size_t id) { userRepo->deleteByUserId(id); }
+
+void UserService::deleteUser(size_t id) {
+  try {
+    userRepo->deleteByUserId(id);
+  } catch (...) {
+    throw;
+  }
+}

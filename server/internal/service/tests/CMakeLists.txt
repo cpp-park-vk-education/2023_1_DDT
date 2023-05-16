@@ -10,7 +10,7 @@ find_package(GTest REQUIRED)
 
 add_executable(${PROJECT_NAME} ${SOURCES})
 
-target_link_libraries(${PROJECT_NAME} ${SERVICE_lib_LIBRARY} GTest::GTest gmock pthread)
+target_link_libraries(${PROJECT_NAME} ${SERVICE_lib_LIBRARY} GTest::GTest gmock)
 target_include_directories(${PROJECT_NAME} PUBLIC ${SERVICE_lib_INCLUDE_DIRS})
 
 

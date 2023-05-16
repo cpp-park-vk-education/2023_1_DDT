@@ -7,13 +7,13 @@
 
 class UserService : IUserService {
  private:
-  std::unique_ptr<IUserRepository> userRepo = std::make_unique<UserRepository>();
+  std::unique_ptr<IUserRepository> userRepo;
 
  public:
-  ~UserService() override = default;
-  explicit UserService();
-  User createUser(std::string login, std::string username,
-                  std::string password) override;
-  User getUserById(size_t id) override;
+  explicit UserService(std::unique_ptr<IUserRepository> userRepo);
+  UserService();
+  User createUser(const std::string& login, const std::string& username,
+                  const std::string& password) override;
+  User login(const std::string& login, const std::string& password) override;
   void deleteUser(size_t id) override;
 };

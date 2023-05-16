@@ -6,7 +6,7 @@
 #include "../include/dbConnection.hpp"
 
 dbConnection::dbConnection() {
-
+    establish_connection();
 }
 
 std::shared_ptr<pqxx::connection> dbConnection::connection() const {
@@ -14,7 +14,7 @@ std::shared_ptr<pqxx::connection> dbConnection::connection() const {
 }
 
 void dbConnection::establish_connection() {
-    pqxx::connection c(  "dbname =mydb" "user = postgres password =root hostaddr =172.28.224.1 port = 5432");
+    pqxx::connection c("dbname =mydb" "user = postgres password =root hostaddr =172.28.224.1 port = 5432");
     m_connection.reset(&c);
 
 }

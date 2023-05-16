@@ -27,7 +27,7 @@ class SolutionService : ISolutionService {
                                                float treshold);
 
   std::pair<float, size_t> getMaxTokenResMetric(
-      std::vector<Solution>& solutions, const std::string& tokens,
+      std::vector<Solution>& solutions, std::vector<int>& tokens,
       float treshold);
 
  public:

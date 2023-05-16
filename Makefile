@@ -14,7 +14,7 @@ server-run:
 	./build/server/cmd/Server
 
 test:
-	ctest --verbose --output-on-failure --test-dir  build/
+	ctest --verbose --test-dir  build/
 
 build-docker:
 	docker build . -f Dockerfile -t ddt-project 
@@ -27,6 +27,3 @@ dev:
 
 stop-docker:
 	docker stop app
-
-
-

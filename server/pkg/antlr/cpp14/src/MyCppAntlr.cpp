@@ -9,13 +9,26 @@ MyCppAntlr::MyCppAntlr(std::istream& in) {
   parser_ptr = std::make_unique<antlrcpptest::CPP14Parser>(&(*tokenStream_ptr));
 }
 
-std::vector<std::string> MyCppAntlr::getTokensArray() {
+std::vector<antlr4::Token*> MyCppAntlr::getTokens() {
   tokenStream_ptr->fill();
-  std::vector<std::string> ans(tokenStream_ptr->size());
+  std::vector<antlr4::Token*> ans(tokenStream_ptr->size());
 
   int i = 0;
   for (antlr4::Token* token : tokenStream_ptr->getTokens()) {
-    ans[i] = token->toString();
+    ans[i] = token;
+    i++;
+  }
+
+  return ans;
+}
+
+std::vector<int> MyCppAntlr::getTokensTypes() {
+  tokenStream_ptr->fill();
+  std::vector<int> ans(tokenStream_ptr->size());
+
+  int i = 0;
+  for (antlr4::Token *token : tokenStream_ptr->getTokens()) {
+    ans[i] = token->getType();
     i++;
   }
 
@@ -27,7 +40,7 @@ std::string MyCppAntlr::getTokensString() {
   std::string res;
 
   for (antlr4::Token* token : tokenStream_ptr->getTokens()) {
-    res += token->toString()+" ";
+    res += token->toString() + " ";
   }
 
   return res;

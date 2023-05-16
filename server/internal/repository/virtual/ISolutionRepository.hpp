@@ -8,6 +8,8 @@
 
 class ISolutionRepository {
 public:
+    virtual ~ISolutionRepository() = default;
+
     virtual std::optional<Solution> getSolutionById(size_t id) = 0;
 
     virtual std::vector<Solution> getSolutionsBySenderId(size_t sender_id) = 0;

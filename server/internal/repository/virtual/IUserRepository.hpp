@@ -7,6 +7,8 @@
 
 class IUserRepository {
 public:
+    virtual ~IUserRepository() = default;
+
     virtual std::optional<User> getUserById(size_t id) = 0;
 
     virtual std::optional<User> getUserByLogin(std::string login) = 0;

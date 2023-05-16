@@ -5,11 +5,19 @@ project(SourcedOut CXX)
 # find_package(antlr4-runtime REQUIRED)
 find_package(Boost 1.8.1 REQUIRED)
 # find_package(libpqxx REQUIRED)
-find_package(GTest REQUIRED)
+
 set(THREADS_PREFER_PTHREAD_FLAG ON)
 find_package(Threads REQUIRED)
 message(STATUS ${Boost_LIBRARIES})
 set(CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS} "-lpthread -pthread")
+
+option(BUILD_TESTS "build tests")
+#if(BUILD_TESTS)
+enable_testing()
+find_package(GTest REQUIRED)
+#endif()
+
+add_subdirectory(metrics)
+
 add_executable(${PROJECT_NAME} src/main.cpp)
-#add_executable(${PROJECT_NAME} text-basic-metrics/tbm_main.cpp text-basic-metrics/tbm_main.cpp) строка для запуска моей части в text-basic-metrics
-target_link_libraries(${PROJECT_NAME} ${Boost_LIBRARIES} ${antlr4-runtime_LIBRARIES} ${libpqxx_LIBRARIES} ${GTest_LIBRARIES})
+target_link_libraries(${PROJECT_NAME} ${Boost_LIBRARIES} ${antlr4-runtime_LIBRARIES} ${libpqxx_LIBRARIES} ${GTest_LIBRARIES} MetricsLib)

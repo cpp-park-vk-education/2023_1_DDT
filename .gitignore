@@ -3,3 +3,4 @@
 .vscode
 .idea
 CMakeUserPresets.json
+/metrics/cmake-build-debug"

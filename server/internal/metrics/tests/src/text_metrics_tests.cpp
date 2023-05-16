@@ -11,11 +11,11 @@
 #include "TextMetricsLib.h"
 #include "TokenMetricLib.h"
 
-class LivDistTextMetricTest : public ::testing::Test {
+class LevDistTextMetricTest : public ::testing::Test {
 protected:
-    std::unique_ptr <LevDistTextMetric> livDistTextMetric;
+    std::unique_ptr <LevDistTextMetric> levDistTextMetric;
     void SetUp(){
-        livDistTextMetric = std::make_unique <LevDistTextMetric>();
+        levDistTextMetric = std::make_unique <LevDistTextMetric>();
     }
     void TearDown(){}
 };
@@ -29,11 +29,11 @@ protected:
     void TearDown(){}
 };
 
-class LivDistTokenMetricTest : public ::testing::Test {
+class LevDistTokenMetricTest : public ::testing::Test {
 protected:
-    std::unique_ptr <LivDistTokenMetric> livDistTokenMetric;
+    std::unique_ptr <LevDistTokenMetric> levDistTokenMetric;
     void SetUp(){
-        livDistTokenMetric = std::make_unique <LivDistTokenMetric>();
+        levDistTokenMetric = std::make_unique <LevDistTokenMetric>();
     }
     void TearDown(){}
 };
@@ -49,7 +49,7 @@ protected:
 
 
 
-TEST_F(LivDistTextMetricTest, check_eq_progs) {
+TEST_F(LevDistTextMetricTest, check_eq_progs) {
     std::ifstream fin1;
     fin1.open("src/test-codes/code1.txt");
 
@@ -57,26 +57,23 @@ TEST_F(LivDistTextMetricTest, check_eq_progs) {
                        (std::istreambuf_iterator<char>()    ) );
 
     fin1.close();
-    livDistTextMetric->setData(text1, text1);
-    livDistTextMetric->countMetric();
+    levDistTextMetric->setData(text1, text1);
 
-    EXPECT_EQ(livDistTextMetric->getMetric(), 1);
+    EXPECT_EQ(levDistTextMetric->getMetric(), 1);
 }
 
-TEST_F(LivDistTextMetricTest, check_absolutely_not_eq_progs) {
+TEST_F(LevDistTextMetricTest, check_absolutely_not_eq_progs) {
 
-    livDistTextMetric->setData("a b c", "d e f g");
-    livDistTextMetric->countMetric();
+    levDistTextMetric->setData("a b c", "d e f g");
 
-    EXPECT_EQ(livDistTextMetric->getMetric() < 0.5, true);
+    EXPECT_EQ(levDistTextMetric->getMetric() < 0.5, true);
 }
 
-TEST_F(LivDistTextMetricTest, test_with_empty_prog) {
+TEST_F(LevDistTextMetricTest, test_with_empty_prog) {
 
-    livDistTextMetric->setData("a b c", "");
-    livDistTextMetric->countMetric();
+    levDistTextMetric->setData("a b c", "");
 
-    EXPECT_EQ(livDistTextMetric->getMetric(), 0);
+    EXPECT_EQ(levDistTextMetric->getMetric(), 0);
 }
 
 TEST_F(JaccardTextMetricTest, check_eq_progs){
@@ -88,7 +85,6 @@ TEST_F(JaccardTextMetricTest, check_eq_progs){
 
     fin1.close();
     jaccardTextMetric->setData(text1, text1);
-    jaccardTextMetric->countMetric();
 
     EXPECT_EQ(jaccardTextMetric->getMetric(), 1);
 }
@@ -96,7 +92,6 @@ TEST_F(JaccardTextMetricTest, check_eq_progs){
 TEST_F(JaccardTextMetricTest, check_absolutely_not_eq_progs) {
 
     jaccardTextMetric->setData("a b c", "d e f g");
-    jaccardTextMetric->countMetric();
 
     EXPECT_EQ(jaccardTextMetric->getMetric(), 0);
 }
@@ -104,75 +99,67 @@ TEST_F(JaccardTextMetricTest, check_absolutely_not_eq_progs) {
 TEST_F(JaccardTextMetricTest, test_with_empty_prog) {
 
     jaccardTextMetric->setData("a b c", "");
-    jaccardTextMetric->countMetric();
 
     EXPECT_EQ(jaccardTextMetric->getMetric(), 0);
 }
 
 
 
-TEST_F(LivDistTokenMetricTest, check_eq_progs) {
+TEST_F(LevDistTokenMetricTest, check_eq_progs) {
 
-    std::vector <std::string> tokens1 = {"a", "b", "c"};
-    std::vector <std::string> tokens2 = {"b", "a", "c"};
+    std::vector <int> tokens1 = {1, 2, 3};
 
-    livDistTokenMetric->setData(tokens1, tokens1);
-    livDistTokenMetric->countMetric();
+    levDistTokenMetric->setData(tokens1, tokens1);
 
-    EXPECT_EQ(livDistTokenMetric->getMetric(), 1);
+    EXPECT_EQ(levDistTokenMetric->getMetric(), 1);
 }
 
-TEST_F(LivDistTokenMetricTest, check_absolutely_not_eq_progs) {
+TEST_F(LevDistTokenMetricTest, check_absolutely_not_eq_progs) {
 
-    std::vector <std::string> tokens1 = {"a", "b", "c"};
-    std::vector <std::string> tokens2 = {"d", "e", "f", "o"};
+    std::vector <int> tokens1 = {1, 2, 3};
+    std::vector <int> tokens2 = {3, 4, 5, 6};
 
-    livDistTokenMetric->setData(tokens1, tokens1);
-    livDistTokenMetric->countMetric();
+    levDistTokenMetric->setData(tokens1, tokens2);
 
-    EXPECT_EQ(livDistTokenMetric->getMetric() < 0.5, true);
+    EXPECT_EQ(levDistTokenMetric->getMetric() < 0.5, true);
 }
 
-TEST_F(LivDistTokenMetricTest, test_with_empty_prog) {
+TEST_F(LevDistTokenMetricTest, test_with_empty_prog) {
 
-    std::vector <std::string> tokens1 = {"a", "b", "c"};
-    std::vector <std::string> tokens2 = {};
+    std::vector <int> tokens1 = {1, 2, 3};
+    std::vector <int> tokens2 = {};
 
-    livDistTokenMetric->setData(tokens1, tokens1);
-    livDistTokenMetric->countMetric();
+    levDistTokenMetric->setData(tokens1, tokens2);
 
-    EXPECT_EQ(livDistTokenMetric->getMetric(), 0);
+    EXPECT_EQ(levDistTokenMetric->getMetric(), 0);
 }
 
 TEST_F(WShinglingTokenMetricTest, check_eq_progs){
 
-    std::vector <std::string> tokens1 = {"a", "b", "c"};
-    std::vector <std::string> tokens2 = {"b", "a", "c"};
+    std::vector <int> tokens1 = {1, 2, 3, 4, 5, 6};
+    std::vector <int> tokens2 = {1, 2, 3, 4, 5, 6};
 
     wShinglingTokenMetric->setData(tokens1, tokens1);
-    wShinglingTokenMetric->countMetric();
 
     EXPECT_EQ(wShinglingTokenMetric->getMetric(), 1);
 }
 
 TEST_F(WShinglingTokenMetricTest, check_absolutely_not_eq_progs) {
 
-    std::vector <std::string> tokens1 = {"a", "b", "c"};
-    std::vector <std::string> tokens2 = {"d", "e", "f", "o"};
+    std::vector <int> tokens1 = {1, 2, 3};
+    std::vector <int> tokens2 = {4, 5, 6, 1};
 
     wShinglingTokenMetric->setData(tokens1, tokens1);
-    wShinglingTokenMetric->countMetric();
 
     EXPECT_EQ(wShinglingTokenMetric->getMetric(), 0);
 }
 
 TEST_F(WShinglingTokenMetricTest, test_with_empty_prog) {
 
-    std::vector <std::string> tokens1 = {"a", "b", "c"};
-    std::vector <std::string> tokens2 = {};
+    std::vector <int> tokens1 = {1, 2, 3};
+    std::vector <int> tokens2 = {};
 
     wShinglingTokenMetric->setData(tokens1, tokens1);
-    wShinglingTokenMetric->countMetric();
 
     EXPECT_EQ(wShinglingTokenMetric->getMetric(), 0);
 }

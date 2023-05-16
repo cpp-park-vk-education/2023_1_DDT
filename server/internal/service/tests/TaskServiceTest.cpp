@@ -15,9 +15,9 @@ class Exception : public std::exception {
 class TaskRepositoryMock : public ITaskRepository {
  public:
   ~TaskRepositoryMock() override = default;
-  MOCK_METHOD(Task, getTaskById, (size_t id), (override));
-  MOCK_METHOD(void, updateTask, (Task task), (override));
-  MOCK_METHOD(int, storeTask, (Task task), (override));
+  MOCK_METHOD(std::optional<Task>, getTaskById, (size_t id), (override));
+  MOCK_METHOD(void, updateTask, (const Task& task), (override));
+  MOCK_METHOD(size_t, storeTask, (Task task), (override));
   MOCK_METHOD(void, deleteTask, (Task task), (override));
   MOCK_METHOD(void, deleteTaskById, (size_t id), (override));
   MOCK_METHOD(std::vector<Task>, getAllTasks,(),(override));

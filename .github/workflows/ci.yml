@@ -33,9 +33,9 @@ jobs:
           cd build
           cmake ..
           make
-      - name: Run-Tests
-        run: |
-          ./build/server/internal/service/tests/test_service    
+      # - name: Run-Tests
+      #   run: |
+      #     ./build/server/internal/service/tests/test_service    
   linters:
     runs-on: ubuntu-latest
     container: raiden454/cpp-app

@@ -27,6 +27,7 @@ public:
 
 private:
     static Task makeTask(const result::const_iterator &c);
+
     std::shared_ptr<dbManager> manager;
 };
 

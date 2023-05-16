@@ -46,9 +46,9 @@ TEST(TaskRepository_CRUD_Test, CRUD) {
 TEST(SolutionRepository_CRUD_Test, CRUD) {
     SolutionRepository rep;
 
-    Solution solution("01.01.1970", 1, ":/C/Users", "tokens.txt", "tree.txt", 1, "result", 1);
+    Solution solution("01.01.1970", 1, ":/C/Users", 1, "result","tokens.txt", "tree.txt",  1);
     size_t id = rep.storeSolution(solution);
-    EXPECT_NO_FATAL_FAILURE(rep.getSolutionById(1));
+    EXPECT_NO_FATAL_FAILURE(rep.getSolutionById(163));
     solution.setId(id);
     std::optional<Solution> new_solution_opt = rep.getSolutionById(id);
     Solution new_solution;
@@ -101,8 +101,9 @@ TEST(UserRepository_CRUD_Test, loginLikeId) {
 TEST(SolutionRepository_CRUD_Test, CRUD_getSolutionsBySenderId) {
     SolutionRepository rep;
 
-    Solution solution1("01.01.1970", 1, ":/C/Users", "tokens.txt", "tree.txt", 1, "result", 1);
-    Solution solution2("01.01.1970", 1, "/home/usr", "tokens.txt", "tree.txt", 1, "result", 1);
+    Solution solution1("01.01.1970", 1, ":/C/Users", 1, "result","tokens.txt", "tree.txt",  1);
+    Solution solution2("01.01.1970", 1, "home/usr", 1, "result","tokens.txt", "tree.txt",  1);
+
 
     size_t id1 = rep.storeSolution(solution1);
     solution1.setId(id1);
@@ -110,8 +111,8 @@ TEST(SolutionRepository_CRUD_Test, CRUD_getSolutionsBySenderId) {
     size_t id2 = rep.storeSolution(solution2);
     solution2.setId(id2);
     EXPECT_EQ(solution2, rep.getSolutionById(id2));
-    std::vector<Solution> v = {{id1, "01.01.1970", 1, ":/C/Users", "tokens.txt", "tree.txt", 1, "result", 1},
-                               {id2, "01.01.1970", 1, "/home/usr", "tokens.txt", "tree.txt", 1, "result", 1}};
+    std::vector<Solution> v = {{id1,"01.01.1970", 1, ":/C/Users", 1, "result","tokens.txt", "tree.txt",  1},
+                               {id2, "01.01.1970", 1, "home/usr", 1, "result","tokens.txt", "tree.txt",  1}};
     std::vector<Solution> new_v = rep.getSolutionsBySenderId(solution1.getSenderId());
     EXPECT_EQ(v, new_v);
     EXPECT_NO_FATAL_FAILURE(rep.deleteSolution(solution1));
@@ -122,8 +123,9 @@ TEST(SolutionRepository_CRUD_Test, CRUD_getSolutionsBySenderId) {
 TEST(SolutionRepository_CRUD_Test, CRUD_getSolutionsByTaskId) {
     SolutionRepository rep;
 
-    Solution solution1("01.01.1970", 1, ":/C/Users", "tokens.txt", "tree.txt", 1, "result", 1);
-    Solution solution2("01.01.1970", 1, "/home/usr", "tokens.txt", "tree.txt", 1, "result", 1);
+    Solution solution1("01.01.1970", 1, ":/C/Users", 1, "result","tokens.txt", "tree.txt",  1);
+    Solution solution2("01.01.1970", 1, "home/usr", 1, "result","tokens.txt", "tree.txt",  1);
+
 
     size_t id1 = rep.storeSolution(solution1);
     solution1.setId(id1);
@@ -138,8 +140,7 @@ TEST(SolutionRepository_CRUD_Test, CRUD_getSolutionsByTaskId) {
 }
 TEST(SolutionRepository_CRUD_Test, tryToAddWithNotExistingTask){
     SolutionRepository rep;
-
-    Solution solution("01.01.1970", 1, ":/C/Users", "tokens.txt", "tree.txt", 100500, "result", 1);
+    Solution solution("01.01.1970", 1, ":/C/Users", 100500, "result","tokens.txt", "tree.txt",  1);
     try{
         rep.storeSolution(solution);
     }catch(pqxx::foreign_key_violation &e){
@@ -150,7 +151,7 @@ TEST(SolutionRepository_CRUD_Test, tryToAddWithNotExistingTask){
 TEST(SolutionRepository_CRUD_Test, tryToStoreWithNotExistingSender){
     SolutionRepository rep;
 
-    Solution solution("01.01.1970", 100500, ":/C/Users", "tokens.txt", "tree.txt", 1, "result", 1);
+    Solution solution("01.01.1970", 100500,":/C/Users", 100500, "result","tokens.txt", "tree.txt",  1);
     try{
         rep.storeSolution(solution);
     }catch(pqxx::foreign_key_violation &keyViolation){

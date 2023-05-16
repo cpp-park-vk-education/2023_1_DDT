@@ -10,7 +10,7 @@ class SolutionService : ISolutionService {
   std::unique_ptr<ISolutionRepository> solutionRepo;
   // std::unique_ptr<IAntlrWrapper> antlr
  public:
-  explicit SolutionService(std::unique_ptr<ISolutionRepository> solutionRepo);
+  explicit SolutionService();
   Solution createSolution(size_t userId, size_t taskId,
                           std::string source) override;
   std::vector<Solution> getSolutionsByUserAndTaskId(size_t userId,

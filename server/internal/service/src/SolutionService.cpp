@@ -1,8 +1,9 @@
 #include "SolutionService.h"
 
-SolutionService::SolutionService(
-    std::unique_ptr<ISolutionRepository> solutionRepo)
-    : solutionRepo(std::move(solutionRepo)) {}
+#include "SolutionRepository.hpp"
+
+SolutionService::SolutionService()
+    : solutionRepo(std::make_unique<SolutionRepository>()) {}
 
 Solution SolutionService::createSolution(size_t userId, size_t taskId,
                                          std::string source) {

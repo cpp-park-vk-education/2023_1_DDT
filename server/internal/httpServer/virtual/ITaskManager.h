@@ -4,14 +4,15 @@
 #include <memory>
 #include <string>
 
-#include "Response.h"
-#include "Request.h"
-#include "Serializer.h"
+#include <boost/beast.hpp>
+
+namespace beast = boost::beast;
+namespace http = boost::beast::http;
 
 class ITaskManager {
 public:
-    virtual Response createTask(const Request &req) = 0;
-    virtual Response getAllTasks(const Request &req) = 0;
+    virtual http::message_generator createTask(http::request<http::string_body>&& req) = 0;
+    virtual http::message_generator getAllTasks(http::request<http::string_body>&& req) = 0;
 };
 
 #endif  // APP_HTTPSERVER_HTTPSERVER_MANAGERS_ITaskMANAGER_H_

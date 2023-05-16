@@ -3,25 +3,25 @@
 
 #include <memory>
 #include <string>
+#include <boost/beast.hpp>
 
-#include "Response.h"
-#include "Request.h"
 #include "Serializer.h"
 #include "ISolutionManager.h"
 #include "ISolutionService.h"
 
+namespace beast = boost::beast;
+namespace http = boost::beast::http;
+
 class SolutionManager : public ISolutionManager {
  public:
     SolutionManager();
-    Response getAllSolutions(const Request &req) override;
-    Response createSolution(const Request &req) override;
-    Response getMetrics(const Request &req) override;
+    http::message_generator getAllSolutions(http::request<http::string_body>&& req) override;
+    http::message_generator createSolution(http::request<http::string_body>&& req) override;
     void setService(std::shared_ptr<ISolutionService> service);
 
  private:
     std::shared_ptr<ISolutionService> solutionService;
     std::shared_ptr<Serializer> serializer;
-    static std::string getParam(const std::string& path, const std::string& name);
 };
 
 #endif  // APP_HTTPSERVER_HTTPSERVER_MANAGERS_SolutionMANAGER_H_

@@ -10,7 +10,7 @@ class TaskService : public ITaskService {
   std::unique_ptr<ITaskRepository> taskRepo;
 
  public:
-  TaskService(std::unique_ptr<ITaskRepository> taskRepo);
+  TaskService();
   ~TaskService() override = default;
   Task createTask(std::string desc) override;
   Task getTask(size_t id) override;

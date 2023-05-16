@@ -15,29 +15,28 @@
 
 
 class ITokenMetric{
-    virtual void countMetric() = 0;
-    virtual void setData(std::vector<std::string> tokens1, std::vector<std::string> tokens2) = 0;
+    public:
+    virtual ~ITokenMetric() = default;
+    virtual void setData(std::vector<int> tokens1, std::vector<int> tokens2) = 0;
     virtual double getMetric() = 0;
 };
 
 class PrepareDataTokenMetric : public ITokenMetric{
 public:
-    void setData(std::vector<std::string> _tokens1, std::vector<std::string> _tokens2) override;
-    double getMetric() override;
+    void setData(std::vector<int> _tokens1, std::vector<int> _tokens2) override;
 protected:
-    std::vector <std::string> tokens1;
-    std::vector <std::string> tokens2;
-    double metric_res{};
+    std::vector <int> tokens1;
+    std::vector <int> tokens2;
 };
 
-class LivDistTokenMetric : public PrepareDataTokenMetric{
+class LevDistTokenMetric : public PrepareDataTokenMetric{
 public:
-    void countMetric() override;
+    double getMetric() override;
 };
 
 class WShinglingTokenMetric : public PrepareDataTokenMetric{
 public:
-    void countMetric() override;
+    double getMetric() override;
 };
 
 #endif //SOURCEDOUT_TOKENMETRICLIB_H

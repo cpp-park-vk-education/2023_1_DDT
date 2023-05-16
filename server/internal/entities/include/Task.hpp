@@ -6,18 +6,30 @@ class Task{
 private:
     size_t id;
     std::string description;
+    float treshhold;
 
 public:
-    Task()=default;
-    ~Task() = default;
-    Task(size_t id, std::string description);
+    Task(size_t id, std::string description_, float  treshold_) noexcept;
 
-    explicit Task(std::string description);
+    Task(std::string description_, float treshold_) noexcept;
 
-    [[nodiscard]] size_t getId() const;
+    Task() noexcept;
 
-    [[nodiscard]] const std::string &getDescription() const;
+    [[nodiscard]] size_t getId() const noexcept;
 
-    void setDescription(const std::string &description);
+    [[nodiscard]] const std::string &getDescription() const noexcept;
+
+    float getTreshhold() const noexcept;
+
+    void setTreshhold(float treshhold) noexcept;
+
+    void setDescription(const std::string &description) noexcept;
+
+    void setId(size_t id) noexcept;
+
+    bool operator==(const Task &rhs) const noexcept;
+
+    bool operator!=(const Task &rhs) const noexcept;
+
 };
 #endif //SOURCEDOUT_TASK_HPP

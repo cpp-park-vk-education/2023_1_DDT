@@ -4,13 +4,10 @@
 
 class UserValidator {
  private:
-  User user;
-  bool validateLogin();
-  bool validatePassword();
-  bool validateUsername();
+  static bool validateLogin(const std::string& login);
+  static bool validatePassword(const std::string& password);
+  static bool validateUsername(const std::string& username);
 
  public:
-  explicit UserValidator(User user);
-  bool validateUser();
-  ~UserValidator() = default;
+  static bool validate(const User& user);
 };

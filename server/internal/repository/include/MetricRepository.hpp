@@ -8,7 +8,7 @@
 
 using namespace pqxx;
 
-class MetricRepository : IMetricRepository {
+class MetricRepository :public IMetricRepository {
 public:
     explicit MetricRepository();
 

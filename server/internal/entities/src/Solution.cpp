@@ -3,26 +3,24 @@
 #include <utility>
 #include "Solution.hpp"
 
-Solution::Solution(size_t id, std::string sendDate, unsigned long senderId,
-                   std::string source, std::string tokens,
-                   std::string astTree, unsigned long taskId,
-                   std::string result, size_t orig_solution_) noexcept:
+Solution::Solution(size_t id, std::string sendDate, size_t senderId,
+                   std::string source, size_t taskId, std::string result,
+                   std::string tokens, std::string astTree,
+                   size_t orig_solution) noexcept:
         id(id), send_date(std::move(sendDate)), sender_id(senderId),
         source(std::move(source)), tokens(std::move(tokens)),
         astTree(std::move(astTree)),
-        task_id(taskId), result(std::move(result)), orig_solution(orig_solution_) {}
+        task_id(taskId), result(std::move(result)), orig_solution(orig_solution) {}
 
-
-Solution::Solution(std::string sendDate, unsigned long senderId,
-                   std::string source, std::string tokens,
-                   std::string astTree, unsigned long taskId,
-                   std::string result, size_t orig_solution_) noexcept:
+Solution::Solution(std::string sendDate, size_t senderId,
+                   std::string source, size_t taskId, std::string result,
+                   std::string tokens, std::string astTree,
+                   size_t orig_solution) noexcept:
         id(0), send_date(std::move(sendDate)), sender_id(senderId),
         source(std::move(source)), tokens(std::move(tokens)),
         astTree(std::move(astTree)),
-        task_id(taskId), result(std::move(result)), orig_solution(orig_solution_) {}
+        task_id(taskId), result(std::move(result)), orig_solution(orig_solution) {}
 
-Solution::Solution() noexcept: id(0), sender_id(0), task_id(0), orig_solution(0) {}
 
 size_t Solution::getId() const noexcept {
     return id;
@@ -102,5 +100,9 @@ size_t Solution::getOrigSolution() const {
 
 void Solution::setOrigSolution(size_t origSolution) {
     orig_solution = origSolution;
+}
+
+Solution::Solution()noexcept :id(0), sender_id(0), task_id(0){
+
 }
 

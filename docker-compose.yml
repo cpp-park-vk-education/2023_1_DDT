@@ -1,0 +1,31 @@
+version: "3.9"
+
+volumes:
+  database-volume:
+  server-volume:
+
+services:
+  postgres:
+    build:
+      context: ./Docker
+      dockerfile: db.Dockerfile
+    restart: always
+    image: postgres
+    environment:
+      POSTGRES_DB: "test"
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "asdwasd4545"
+    ports:
+      - "5431:5431"
+    volumes:
+      - database-volume:/var/lib/postgresql/data
+  server:
+    image: raiden454/cpp-app:latest
+    volumes:
+      - server-volume:/project 
+    command: make server-run
+    restart: always
+    ports:
+      - "8081:8081"
+    depends_on:
+      - postgres

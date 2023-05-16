@@ -11,7 +11,7 @@
 #include "TextMetricsLib.h"
 #include "TokenMetricLib.h"
 
-class SolutionService : ISolutionService {
+class SolutionService : public ISolutionService {
  private:
   std::unique_ptr<ISolutionRepository> solutionRepo;
   std::unique_ptr<ITaskRepository> taskRepo;

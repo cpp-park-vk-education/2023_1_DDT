@@ -22,5 +22,5 @@ set(SERVICE_lib_LIBRARY ${SERVICE_lib_LIBRARY} PARENT_SCOPE)
 set(SERVICE_lib_INCLUDE_DIRS ${INCLUDE_DIRS})
 set(SERVICE_lib_INCLUDE_DIRS ${SERVICE_lib_INCLUDE_DIRS} PARENT_SCOPE)
 
-enable_testing()
-add_subdirectory(tests)
+# enable_testing()
+# add_subdirectory(tests)

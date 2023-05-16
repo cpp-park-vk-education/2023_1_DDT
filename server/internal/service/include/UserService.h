@@ -5,7 +5,7 @@
 #include "IUserService.h"
 #include "UserValidator.h"
 
-class UserService : IUserService {
+class UserService : public IUserService {
  private:
   std::unique_ptr<IUserRepository> userRepo;
 

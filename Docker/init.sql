@@ -92,7 +92,7 @@ SET row_security = off;
 -- Name: mydb; Type: DATABASE; Schema: -; Owner: postgres
 --
 
-CREATE DATABASE mydb WITH TEMPLATE = template0 ENCODING = 'UTF8' LOCALE_PROVIDER = libc LOCALE = 'Russian_Russia.1251';
+CREATE DATABASE mydb WITH TEMPLATE = template0 ENCODING = 'UTF8' LOCALE_PROVIDER = libc LOCALE = 'en_US.utf8';
 
 
 ALTER DATABASE mydb OWNER TO postgres;

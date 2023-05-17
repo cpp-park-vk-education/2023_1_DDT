@@ -2,7 +2,6 @@ version: "3.9"
 
 volumes:
   database-volume:
-  server-volume:
 
 services:
   postgres:
@@ -12,17 +11,17 @@ services:
     restart: always
     image: postgres
     environment:
-      POSTGRES_DB: "test"
-      POSTGRES_USER: "postgres"
-      POSTGRES_PASSWORD: "asdwasd4545"
+      POSTGRES_DB: "tmp"
+      POSTGRES_USER: "tmp"
+      POSTGRES_PASSWORD: "tmp"
     ports:
-      - "5431:5431"
+      - "5432:5432"
     volumes:
       - database-volume:/var/lib/postgresql/data
   server:
     image: raiden454/cpp-app:latest
     volumes:
-      - server-volume:/project 
+      - .:/project
     command: make server-run
     restart: always
     ports:

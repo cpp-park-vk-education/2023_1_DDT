@@ -205,7 +205,7 @@ CREATE TABLE public.solutions (
     id integer NOT NULL,
     send_date date NOT NULL,
     sender_id integer,
-    source character varying(255),
+    source character varying,
     task_id integer,
     result character varying,
     tokens character varying,

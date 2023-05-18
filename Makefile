@@ -3,7 +3,7 @@ generate:
 	cmake -B build/
 	
 build-project:
-	cd ./build && make
+	cd ./build && make --no-print-directory
 
 clean:
 	rm -rf build

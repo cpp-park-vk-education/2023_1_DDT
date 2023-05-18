@@ -2,5 +2,5 @@
 
 class IMockMetrics {
  public:
-  virtual void countMetric();
+    virtual void countMetric();
 };

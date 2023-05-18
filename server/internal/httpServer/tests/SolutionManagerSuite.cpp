@@ -1,11 +1,11 @@
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 
-#include "SolutionManager.h"
 #include "ISolutionService.h"
+#include "SolutionManager.h"
 
 class SolutionServiceMock : public ISolutionService {
-public:
+ public:
     SolutionServiceMock() = default;
     MOCK_METHOD(Solution, createSolution, (size_t userId, size_t taskId, std::string source), (override));
     MOCK_METHOD(std::vector<Solution>, getSolutionsByUserAndTaskId, (size_t userId, size_t taskId), (override));
@@ -14,10 +14,8 @@ public:
 };
 
 class SolutionManagerSuite : public ::testing::Test {
-protected:
-    void SetUp() override {
-        manager.setService(solutionService);
-    }
+ protected:
+    void SetUp() override { manager.setService(solutionService); }
 
     std::shared_ptr<SolutionServiceMock> solutionService = std::make_shared<SolutionServiceMock>();
     SolutionManager manager;

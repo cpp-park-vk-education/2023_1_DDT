@@ -1,8 +1,10 @@
+#include "TaskRepository.hpp"
+
 #include <iostream>
-#include "Task.hpp"
 #include <pqxx/pqxx>
 #include <utility>
-#include "TaskRepository.hpp"
+
+#include "Task.hpp"
 
 std::optional<Task> TaskRepository::getTaskById(size_t id) {
     try {
@@ -28,14 +30,13 @@ std::vector<Task> TaskRepository::getAllTasks() {
         auto stream = stream_from::query(n, sql);
         std::vector<Task> tasks;
         std::tuple<size_t, std::string, float> row;
-        while(stream >> row){
+        while (stream >> row) {
             tasks.emplace_back(get<0>(row), get<1>(row), get<2>(row));
         }
         stream.complete();
         manager->freeConnection(c);
         return tasks;
     } catch (...) {
-
         throw;
     }
 }
@@ -44,7 +45,8 @@ void TaskRepository::updateTask(const Task &task) {
     try {
         auto c = manager->connection();
         std::string sql = (boost::format("UPDATE tasks SET description = '%s', treshold = '%s';") %
-                           task.getDescription() % task.getTreshhold()).str();
+                           task.getDescription() % task.getTreshhold())
+                              .str();
         work w(*c);
         w.exec(sql);
         manager->freeConnection(c);
@@ -56,8 +58,10 @@ void TaskRepository::updateTask(const Task &task) {
 size_t TaskRepository::storeTask(Task task) {
     try {
         auto c = manager->connection();
-        std::string sql = (boost::format("INSERT INTO tasks (description, treshold) "  \
-            "VALUES ('%s', '%s') RETURNING id; ") % task.getDescription() % task.getTreshhold()).str();
+        std::string sql = (boost::format("INSERT INTO tasks (description, treshold) "
+                                         "VALUES ('%s', '%s') RETURNING id; ") %
+                           task.getDescription() % task.getTreshhold())
+                              .str();
         work w(*c);
         row r = w.exec1(sql);
         w.commit();
@@ -68,9 +72,7 @@ size_t TaskRepository::storeTask(Task task) {
     }
 }
 
-void TaskRepository::deleteTask(Task task) {
-    deleteTaskById(task.getId());
-}
+void TaskRepository::deleteTask(Task task) { deleteTaskById(task.getId()); }
 
 void TaskRepository::deleteTaskById(size_t task_id) {
     try {
@@ -86,12 +88,8 @@ void TaskRepository::deleteTaskById(size_t task_id) {
 }
 
 Task TaskRepository::makeTask(const result::const_iterator &c) {
-    return {c.at(c.column_number("id")).as<size_t>(),
-            c.at(c.column_number("description")).as<std::string>(),
+    return {c.at(c.column_number("id")).as<size_t>(), c.at(c.column_number("description")).as<std::string>(),
             c.at(c.column_number("treshold")).as<float>()};
 }
 
-
-TaskRepository::TaskRepository() {
-    manager = std::make_shared<dbManager>();
-}
+TaskRepository::TaskRepository() { manager = std::make_shared<dbManager>(); }

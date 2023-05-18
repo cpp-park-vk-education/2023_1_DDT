@@ -1,12 +1,13 @@
 #ifndef SOURCEDOUT_IUSERREPOSITORY_HPP
 #define SOURCEDOUT_IUSERREPOSITORY_HPP
 
-#include <vector>
-#include "User.hpp"
 #include <optional>
+#include <vector>
+
+#include "User.hpp"
 
 class IUserRepository {
-public:
+ public:
     virtual ~IUserRepository() = default;
 
     virtual std::optional<User> getUserById(size_t id) = 0;
@@ -22,7 +23,6 @@ public:
     virtual void deleteByUserId(size_t user_id) = 0;
 
     virtual std::vector<User> getAllUsers() = 0;
-
 };
 
-#endif //SOURCEDOUT_IUSERREPOSITORY_HPP
+#endif  // SOURCEDOUT_IUSERREPOSITORY_HPP

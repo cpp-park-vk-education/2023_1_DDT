@@ -1,21 +1,18 @@
 #include "Serializer.h"
 
-#include <sstream>
-#include <boost/property_tree/ptree.hpp>
 #include <boost/property_tree/json_parser.hpp>
+#include <boost/property_tree/ptree.hpp>
+#include <sstream>
 
-std::tuple<std::size_t, std::size_t, std::string, std::string>
-Serializer::deserialNewSolutionData(const std::string &val) {
+std::tuple<std::size_t, std::size_t, std::string, std::string> Serializer::deserialNewSolutionData(
+    const std::string &val) {
     std::stringstream ss;
     ss << val;
     boost::property_tree::ptree json;
     boost::property_tree::read_json(ss, json);
     std::tuple<std::size_t, std::size_t, std::string, std::string> res = {
-        json.get<std::size_t>("user_id"),
-        json.get<std::size_t>("task_id"),
-        json.get<std::string>("filename"),
-        json.get<std::string>("filedata")
-    };
+        json.get<std::size_t>("user_id"), json.get<std::size_t>("task_id"), json.get<std::string>("filename"),
+        json.get<std::string>("filedata")};
     return res;
 }
 
@@ -32,10 +29,7 @@ std::tuple<std::size_t, std::size_t> Serializer::deserialTaskData(const std::str
     ss << val;
     boost::property_tree::ptree json;
     boost::property_tree::read_json(ss, json);
-    std::tuple<std::size_t, std::size_t> res = {
-            json.get<std::size_t>("user_id"),
-            json.get<std::size_t>("task_id")
-    };
+    std::tuple<std::size_t, std::size_t> res = {json.get<std::size_t>("user_id"), json.get<std::size_t>("task_id")};
     return res;
 }
 
@@ -52,10 +46,7 @@ std::tuple<std::string, std::string> Serializer::deserialUserData(const std::str
     ss << val;
     boost::property_tree::ptree json;
     boost::property_tree::read_json(ss, json);
-    std::tuple<std::string, std::string> res = {
-            json.get<std::string>("login"),
-            json.get<std::string>("password")
-    };
+    std::tuple<std::string, std::string> res = {json.get<std::string>("login"), json.get<std::string>("password")};
     return res;
 }
 
@@ -65,10 +56,7 @@ std::tuple<std::string, std::string, std::string> Serializer::deserialNewUserDat
     boost::property_tree::ptree json;
     boost::property_tree::read_json(ss, json);
     std::tuple<std::string, std::string, std::string> res = {
-            json.get<std::string>("login"),
-            json.get<std::string>("password"),
-            json.get<std::string>("username")
-    };
+        json.get<std::string>("login"), json.get<std::string>("password"), json.get<std::string>("username")};
     return res;
 }
 

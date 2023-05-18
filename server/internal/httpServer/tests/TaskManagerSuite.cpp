@@ -1,11 +1,11 @@
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 
-#include "TaskManager.h"
 #include "ITaskService.h"
+#include "TaskManager.h"
 
 class TaskServiceMock : public ITaskService {
-public:
+ public:
     TaskServiceMock() = default;
     ~TaskServiceMock() = default;
 
@@ -16,10 +16,8 @@ public:
 };
 
 class TaskManagerSuite : public ::testing::Test {
-protected:
-    void SetUp() override {
-        manager.setService(taskService);
-    }
+ protected:
+    void SetUp() override { manager.setService(taskService); }
 
     std::shared_ptr<TaskServiceMock> taskService = std::make_shared<TaskServiceMock>();
     TaskManager manager;

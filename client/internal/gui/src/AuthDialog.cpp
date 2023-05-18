@@ -5,9 +5,7 @@
 
 #include "Core.h"
 
-AuthDialog::AuthDialog(QWidget *parent) : QDialog(parent) {
-    setupUi(this);
-}
+AuthDialog::AuthDialog(QWidget *parent) : QDialog(parent) { setupUi(this); }
 
 void AuthDialog::setupUi(QDialog *AuthDialog) {
     QSizePolicy sizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
@@ -73,7 +71,7 @@ void AuthDialog::on_loginButton_clicked() {
             close();
             break;
         case 404:
-            QMessageBox::warning(this, "Ошибка авторизации","Неправильный логин или пароль");
+            QMessageBox::warning(this, "Ошибка авторизации", "Неправильный логин или пароль");
             break;
         default:
             QMessageBox::critical(this, "Авторизация невозможна", "Нет соединения с сервером");

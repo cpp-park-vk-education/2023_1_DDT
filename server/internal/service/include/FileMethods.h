@@ -9,6 +9,5 @@ inline const std::string UNKNOWN_EXTENSION = "";
 
 class FileMethods {
  public:
-  static std::pair<std::string, bool> checkFileExtension(
-      const std::string& filename);
+    static std::pair<std::string, bool> checkFileExtension(const std::string& filename);
 };

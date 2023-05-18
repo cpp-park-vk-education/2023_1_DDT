@@ -4,8 +4,8 @@
 #include <memory>
 #include <string>
 
-#include "Serializer.h"
 #include "IUserManager.h"
+#include "Serializer.h"
 #include "UserService.h"
 
 class UserManager : public IUserManager {
@@ -14,6 +14,7 @@ class UserManager : public IUserManager {
     http::message_generator loginUser(http::request<http::string_body>&& req) override;
     http::message_generator registerUser(http::request<http::string_body>&& req) override;
     void setService(std::shared_ptr<IUserService> service);
+
  private:
     std::shared_ptr<IUserService> userService;
     std::shared_ptr<Serializer> serializer;

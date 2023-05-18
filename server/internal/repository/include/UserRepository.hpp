@@ -1,20 +1,20 @@
 #ifndef SOURCEDOUT_USERREPOSITORY_HPP
 #define SOURCEDOUT_USERREPOSITORY_HPP
 
-#include <iostream>
-#include "IUserRepository.hpp"
-#include "dbManager.hpp"
-#include <pqxx/pqxx>
 #include <boost/format.hpp>
 #include <fstream>
+#include <iostream>
 #include <optional>
+#include <pqxx/pqxx>
+
+#include "IUserRepository.hpp"
+#include "dbManager.hpp"
 
 using namespace pqxx;
 
-
 class UserRepository : public IUserRepository {
-public:
-    explicit UserRepository();
+ public:
+    UserRepository();
 
     std::optional<User> getUserById(size_t id) override;
 
@@ -30,11 +30,10 @@ public:
 
     void update(User user) override;
 
-
-private:
+ private:
     static User makeUser(const result::const_iterator &c);
 
     std::shared_ptr<dbManager> manager;
 };
 
-#endif //SOURCEDOUT_USERREPOSITORY_HPP
+#endif  // SOURCEDOUT_USERREPOSITORY_HPP

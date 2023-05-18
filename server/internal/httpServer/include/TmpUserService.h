@@ -1,11 +1,12 @@
 #pragma once
 
-#include <vector>
 #include <string>
+#include <vector>
+
 #include "User.hpp"
 
 class TmpUserService {
-public:
+ public:
     static std::pair<User, bool> login(std::string_view login, std::string_view password) {
         bool found = false;
         User user;

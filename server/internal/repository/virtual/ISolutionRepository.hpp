@@ -2,12 +2,13 @@
 #define SOURCEDOUT_ISOLUTIONREPOSITORY_HPP
 
 #include <iostream>
-#include <vector>
-#include "Solution.hpp"
 #include <optional>
+#include <vector>
+
+#include "Solution.hpp"
 
 class ISolutionRepository {
-public:
+ public:
     virtual ~ISolutionRepository() = default;
 
     virtual std::optional<Solution> getSolutionById(size_t id) = 0;
@@ -27,4 +28,4 @@ public:
     virtual std::optional<Solution> getOriginalSolution(size_t id) = 0;
 };
 
-#endif //SOURCEDOUT_ISOLUTIONREPOSITORY_HPP
+#endif  // SOURCEDOUT_ISOLUTIONREPOSITORY_HPP

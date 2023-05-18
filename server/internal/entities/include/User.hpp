@@ -6,13 +6,13 @@
 #define SOURCEDOUT_USER_HPP
 
 class User {
-private:
+ private:
     size_t id;
     std::string login;
     std::string password;
     std::string username;
 
-public:
+ public:
     User(size_t id_, std::string login_, std::string password_, std::string username_) noexcept;
 
     User(std::string login_, std::string password_, std::string username_) noexcept;
@@ -42,4 +42,4 @@ public:
     bool operator!=(const User &rhs) const noexcept;
 };
 
-#endif //SOURCEDOUT_USER_HPP
+#endif  // SOURCEDOUT_USER_HPP

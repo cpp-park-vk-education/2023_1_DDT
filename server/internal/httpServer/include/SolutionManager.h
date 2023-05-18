@@ -1,12 +1,12 @@
 #ifndef APP_HTTPSERVER_HTTPSERVER_MANAGERS_SolutionMANAGER_H_
 #define APP_HTTPSERVER_HTTPSERVER_MANAGERS_SolutionMANAGER_H_
 
+#include <boost/beast.hpp>
 #include <memory>
 #include <string>
-#include <boost/beast.hpp>
 
-#include "Serializer.h"
 #include "ISolutionManager.h"
+#include "Serializer.h"
 #include "SolutionService.h"
 
 namespace beast = boost::beast;

@@ -1,20 +1,20 @@
 #ifndef SOURCEDOUT_SOLUTIONREPOSITORY_HPP
 #define SOURCEDOUT_SOLUTIONREPOSITORY_HPP
 
-#include <iostream>
-#include <pqxx/pqxx>
 #include <boost/format.hpp>
 #include <fstream>
+#include <iostream>
+#include <optional>
+#include <pqxx/pqxx>
+
 #include "ISolutionRepository.hpp"
 #include "dbManager.hpp"
-#include <optional>
-
 
 using namespace pqxx;
 
 class SolutionRepository : public ISolutionRepository {
-public:
-    explicit SolutionRepository();
+ public:
+    SolutionRepository();
 
     std::optional<Solution> getSolutionById(size_t id) override;
 
@@ -32,7 +32,7 @@ public:
 
     std::optional<Solution> getOriginalSolution(size_t id) override;
 
-private:
+ private:
     static Solution makeSolution(const result::const_iterator &c);
 
     std::shared_ptr<dbManager> manager;

@@ -1,16 +1,15 @@
 #ifndef APP_HTTPSERVER_HTTPSERVER_MANAGERS_IUserMANAGER_H_
 #define APP_HTTPSERVER_HTTPSERVER_MANAGERS_IUserMANAGER_H_
 
+#include <boost/beast.hpp>
 #include <memory>
 #include <string>
-
-#include <boost/beast.hpp>
 
 namespace beast = boost::beast;
 namespace http = boost::beast::http;
 
 class IUserManager {
-public:
+ public:
     virtual http::message_generator loginUser(http::request<http::string_body>&& req) = 0;
     virtual http::message_generator registerUser(http::request<http::string_body>&& req) = 0;
 };

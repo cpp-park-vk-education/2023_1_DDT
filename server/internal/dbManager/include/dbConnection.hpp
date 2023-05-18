@@ -3,24 +3,23 @@
 #define SOURCEDOUT_DBCONNECTION_HPP
 
 #include <pqxx/connection.hxx>
-//#include "dotenv.h"
-//using namespace dotenv;
+// #include "dotenv.h"
+//  using namespace dotenv;
 class dbConnection {
-public:
+ public:
     dbConnection();
     [[nodiscard]] std::shared_ptr<pqxx::connection> connection() const;
-private:
+
+ private:
     void establish_connection();
 
     std::string m_dbhost = "localhost";
-    int         m_dbport = 5432;
+    int m_dbport = 5432;
     std::string m_dbname = "demo";
     std::string m_dbuser = "postgres";
     std::string m_dbpass = "postgres";
 
-    std::shared_ptr<pqxx::connection>  m_connection;
-
+    std::shared_ptr<pqxx::connection> m_connection;
 };
 
-
-#endif //SOURCEDOUT_DBCONNECTION_HPP
+#endif  // SOURCEDOUT_DBCONNECTION_HPP

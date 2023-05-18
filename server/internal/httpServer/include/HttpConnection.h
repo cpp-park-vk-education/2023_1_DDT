@@ -1,10 +1,9 @@
 #ifndef SOURCEDOUT_HTTPSERVER_HTTPCONNECTION_H
 #define SOURCEDOUT_HTTPSERVER_HTTPCONNECTION_H
 
-
 #include <boost/asio.hpp>
-#include <boost/noncopyable.hpp>
 #include <boost/beast.hpp>
+#include <boost/noncopyable.hpp>
 
 #include "Router.h"
 
@@ -15,8 +14,7 @@ using tcp = boost::asio::ip::tcp;
 
 class HttpConnection : public std::enable_shared_from_this<HttpConnection> {
  public:
-    explicit HttpConnection(tcp::socket&& socket_,
-                            std::shared_ptr<std::string const> const& doc_root_);
+    explicit HttpConnection(tcp::socket&& socket_, std::shared_ptr<std::string const> const& doc_root_);
     void run();
     void read();
     void handleRead(beast::error_code e, std::size_t bytes_transferred);

@@ -4,7 +4,7 @@
 #include <iostream>
 
 class MetricStat {
-public:
+ public:
     MetricStat() noexcept;
 
     MetricStat(size_t solutionId, float textBasedRes, float tokenBasedRes, float treeBasedRes, bool verdict,
@@ -45,7 +45,7 @@ public:
 
     bool operator!=(const MetricStat &rhs) const noexcept;
 
-private:
+ private:
     size_t id;
     size_t solution_id;
     float text_based_res;
@@ -55,4 +55,4 @@ private:
     float mean_res;
 };
 
-#endif //SOURCEDOUT_METRICSTAT_HPP
+#endif  // SOURCEDOUT_METRICSTAT_HPP

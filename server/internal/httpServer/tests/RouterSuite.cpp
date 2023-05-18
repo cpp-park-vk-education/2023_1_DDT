@@ -1,35 +1,35 @@
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 
-#include "Router.h"
 #include "ISolutionManager.h"
 #include "ITaskManager.h"
 #include "IUserManager.h"
+#include "Router.h"
 
 class SolutionManagerMock : public ISolutionManager {
-public:
+ public:
     SolutionManagerMock() = default;
-    MOCK_METHOD(Response, getAllSolutions, (const Request &req), (override));
+    MOCK_METHOD(Response, getAllSolutions, (const Request& req), (override));
     MOCK_METHOD(Response, createSolution, (const Request& req), (override));
     MOCK_METHOD(Response, getMetrics, (const Request& req), (override));
 };
 
 class TaskManagerMock : public ITaskManager {
-public:
+ public:
     TaskManagerMock() = default;
-    MOCK_METHOD(Response, createTask, (const Request &req), (override));
+    MOCK_METHOD(Response, createTask, (const Request& req), (override));
     MOCK_METHOD(Response, getAllTasks, (const Request& req), (override));
 };
 
 class UserManagerMock : public IUserManager {
-public:
+ public:
     UserManagerMock() = default;
-    MOCK_METHOD(Response, loginUser, (const Request &req), (override));
+    MOCK_METHOD(Response, loginUser, (const Request& req), (override));
     MOCK_METHOD(Response, registerUser, (const Request& req), (override));
 };
 
 class RouterSuite : public ::testing::Test {
-protected:
+ protected:
     void SetUp() override {
         router.setSolutionManager(solutionManager);
         router.setUserManager(userManager);

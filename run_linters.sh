@@ -25,6 +25,6 @@ echo -e "\nRUN cpplint.py"
 check_log "cpplint --extensions=cpp,hpp --recursive ./server/* ./client/*" "Can't open for reading"
 
 echo - e "\nRUN cppcheck"
-check_log "cppcheck src --std=c++17 --enable=all --inconclusive --error-exitcode=1 -I src/ --suppress=missingIncludeSystem --suppress=unusedFunction --suppress=functionStatic --suppress=uninitMemberVar --suppress=unmatchedSuppression" "\(information\)"
+check_log "cppcheck server --std=c++17 --enable=all" "\(information\)"
 
 echo -e "SUCCESS"

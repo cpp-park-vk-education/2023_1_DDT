@@ -7,7 +7,7 @@ namespace beast = boost::beast;
 namespace http = boost::beast::http;
 
 class ISolutionManager {
-public:
+ public:
     virtual http::message_generator getAllSolutions(http::request<http::string_body>&& req) = 0;
     virtual http::message_generator createSolution(http::request<http::string_body>&& req) = 0;
 };

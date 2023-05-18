@@ -1,11 +1,11 @@
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 
-#include "UserManager.h"
 #include "IUserService.h"
+#include "UserManager.h"
 
 class UserServiceMock : public IUserService {
-public:
+ public:
     UserServiceMock() = default;
     ~UserServiceMock() = default;
     MOCK_METHOD(User, createUser, (std::string login, std::string username, std::string password), (override));
@@ -14,10 +14,8 @@ public:
 };
 
 class UserManagerSuite : public ::testing::Test {
-protected:
-    void SetUp() override {
-        manager.setService(userService);
-    }
+ protected:
+    void SetUp() override { manager.setService(userService); }
 
     std::shared_ptr<UserServiceMock> userService = std::make_shared<UserServiceMock>();
     UserManager manager;

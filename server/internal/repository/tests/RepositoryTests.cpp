@@ -1,10 +1,12 @@
-#include <gtest/gtest.h>
 #include <gmock/gmock.h>
+#include <gtest/gtest.h>
+
+#include <optional>
+
 #include "MetricRepository.hpp"
-#include "UserRepository.hpp"
 #include "SolutionRepository.hpp"
 #include "TaskRepository.hpp"
-#include <optional>
+#include "UserRepository.hpp"
 
 TEST(UserRepository_CRUD_Test, CRUD) {
     UserRepository rep;
@@ -35,8 +37,7 @@ TEST(TaskRepository_CRUD_Test, CRUD) {
     task.setId(id);
     std::optional<Task> new_task_opt = rep.getTaskById(id);
     Task new_task;
-    if (new_task_opt)
-        new_task = new_task_opt.value();
+    if (new_task_opt) new_task = new_task_opt.value();
     EXPECT_EQ(task, new_task);
     new_task.setDescription("new_test_description");
     EXPECT_NO_FATAL_FAILURE(rep.updateTask(new_task));
@@ -52,8 +53,7 @@ TEST(SolutionRepository_CRUD_Test, CRUD) {
     solution.setId(id);
     std::optional<Solution> new_solution_opt = rep.getSolutionById(id);
     Solution new_solution;
-    if (new_solution_opt)
-        new_solution = new_solution_opt.value();
+    if (new_solution_opt) new_solution = new_solution_opt.value();
     EXPECT_EQ(solution, new_solution);
     new_solution.setSource(":/D");
     EXPECT_NO_FATAL_FAILURE(rep.updateSolution(new_solution));
@@ -68,8 +68,7 @@ TEST(MetricRepository_CRUD_Test, CRUD) {
     metricStat.setId(id);
     std::optional<MetricStat> new_stat_opt = rep.getById(id);
     MetricStat new_stat;
-    if (new_stat_opt)
-        new_stat = new_stat_opt.value();
+    if (new_stat_opt) new_stat = new_stat_opt.value();
     EXPECT_EQ(metricStat, new_stat);
     new_stat.setMeanRes(1);
     EXPECT_NO_FATAL_FAILURE(rep.updateMetric(new_stat));
@@ -78,8 +77,7 @@ TEST(MetricRepository_CRUD_Test, CRUD) {
 
 TEST(UserRepository_CRUD_Test, getAllUsers) {
     UserRepository rep;
-    std::vector<User> v = {{"test@test.com",  "test",  "testuser"},
-                           {"test2@test.com", "test2", "testuser2"}};
+    std::vector<User> v = {{"test@test.com", "test", "testuser"}, {"test2@test.com", "test2", "testuser2"}};
     EXPECT_NO_FATAL_FAILURE(rep.getAllUsers());
     std::vector<User> new_v = rep.getAllUsers();
     EXPECT_EQ(v, new_v);
@@ -95,7 +93,6 @@ TEST(UserRepository_CRUD_Test, loginLikeId) {
     User new_user;
     EXPECT_EQ(new_user_id, new_user_login);
     EXPECT_NO_FATAL_FAILURE(rep.deleteUser(user));
-
 }
 
 TEST(SolutionRepository_CRUD_Test, CRUD_getSolutionsBySenderId) {
@@ -104,7 +101,6 @@ TEST(SolutionRepository_CRUD_Test, CRUD_getSolutionsBySenderId) {
     Solution solution1("01.01.1970", 1, ":/C/Users", 1, "result", "tokens.txt", "tree.txt", 1);
     Solution solution2("01.01.1970", 1, "home/usr", 1, "result", "tokens.txt", "tree.txt", 1);
 
-
     size_t id1 = rep.storeSolution(solution1);
     solution1.setId(id1);
     EXPECT_EQ(solution1, rep.getSolutionById(id1));
@@ -112,12 +108,11 @@ TEST(SolutionRepository_CRUD_Test, CRUD_getSolutionsBySenderId) {
     solution2.setId(id2);
     EXPECT_EQ(solution2, rep.getSolutionById(id2));
     std::vector<Solution> v = {{id1, "01.01.1970", 1, ":/C/Users", 1, "result", "tokens.txt", "tree.txt", 1},
-                               {id2, "01.01.1970", 1, "home/usr",  1, "result", "tokens.txt", "tree.txt", 1}};
+                               {id2, "01.01.1970", 1, "home/usr", 1, "result", "tokens.txt", "tree.txt", 1}};
     std::vector<Solution> new_v = rep.getSolutionsBySenderId(solution1.getSenderId());
     EXPECT_EQ(v, new_v);
     EXPECT_NO_FATAL_FAILURE(rep.deleteSolution(solution1));
     EXPECT_NO_FATAL_FAILURE(rep.deleteSolution(solution2));
-
 }
 
 TEST(SolutionRepository_CRUD_Test, CRUD_getSolutionsByTaskId) {
@@ -125,7 +120,6 @@ TEST(SolutionRepository_CRUD_Test, CRUD_getSolutionsByTaskId) {
 
     Solution solution1("01.01.1970", 1, ":/C/Users", 1, "result", "tokens.txt", "tree.txt", 1);
     Solution solution2("01.01.1970", 1, "home/usr", 1, "result", "tokens.txt", "tree.txt", 1);
-
 
     size_t id1 = rep.storeSolution(solution1);
     solution1.setId(id1);
@@ -136,7 +130,6 @@ TEST(SolutionRepository_CRUD_Test, CRUD_getSolutionsByTaskId) {
     EXPECT_EQ(v, new_v);
     EXPECT_NO_FATAL_FAILURE(rep.deleteSolution(solution1));
     EXPECT_NO_FATAL_FAILURE(rep.deleteSolution(solution2));
-
 }
 
 TEST(SolutionRepository_CRUD_Test, tryToAddWithNotExistingTask) {

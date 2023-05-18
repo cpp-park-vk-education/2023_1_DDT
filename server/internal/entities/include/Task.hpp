@@ -2,14 +2,14 @@
 #define SOURCEDOUT_TASK_HPP
 #include <iostream>
 #include <utility>
-class Task{
-private:
+class Task {
+ private:
     size_t id;
     std::string description;
     float treshhold;
 
-public:
-    Task(size_t id, std::string description_, float  treshold_) noexcept;
+ public:
+    Task(size_t id, std::string description_, float treshold_) noexcept;
 
     Task(std::string description_, float treshold_) noexcept;
 
@@ -30,6 +30,5 @@ public:
     bool operator==(const Task &rhs) const noexcept;
 
     bool operator!=(const Task &rhs) const noexcept;
-
 };
-#endif //SOURCEDOUT_TASK_HPP
+#endif  // SOURCEDOUT_TASK_HPP

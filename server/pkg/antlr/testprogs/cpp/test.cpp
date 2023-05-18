@@ -1,8 +1,6 @@
 #include <iostream>
 
-
-int main()
-{
+int main() {
     std::string res;
     int a;
     if (true && true) {
@@ -10,4 +8,3 @@ int main()
     }
     return 0;
 }
-

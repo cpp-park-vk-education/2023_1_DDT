@@ -3,16 +3,11 @@
 #include "TmpUserService.h"
 #include "Utils.h"
 
-UserManager::UserManager() :
-    serializer(std::make_shared<Serializer>()),
-    userService(std::make_shared<UserService>()) {};
+UserManager::UserManager() : serializer(std::make_shared<Serializer>()), userService(std::make_shared<UserService>()) {}
 
-void UserManager::setService(std::shared_ptr<IUserService> service) {
-    userService = service;
-}
+void UserManager::setService(std::shared_ptr<IUserService> service) { userService = service; }
 
-http::message_generator UserManager::loginUser(http::request <http::string_body> &&req) {
-
+http::message_generator UserManager::loginUser(http::request<http::string_body> &&req) {
     std::string login, password;
     std::tie(login, password) = serializer->deserialUserData(req.body());
 
@@ -44,9 +39,9 @@ http::message_generator UserManager::loginUser(http::request <http::string_body>
     }
 }
 
-http::message_generator UserManager::registerUser(http::request <http::string_body> &&req) {
+http::message_generator UserManager::registerUser(http::request<http::string_body> &&req) {
     std::string login, password, username;
-    std::tie(login, password, username) = serializer->deserialNewUserData(req.body());\
+    std::tie(login, password, username) = serializer->deserialNewUserData(req.body());
 
     try {
         User user = userService->createUser(login, username, password);

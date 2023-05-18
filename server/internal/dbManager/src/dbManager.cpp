@@ -1,10 +1,7 @@
 
 #include "dbManager.hpp"
 
-
-dbManager::dbManager() {
-    createPool();
-}
+dbManager::dbManager() { createPool(); }
 
 void dbManager::createPool() {
     std::lock_guard<std::mutex> locker_(m_mutex);

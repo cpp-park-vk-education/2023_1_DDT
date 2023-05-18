@@ -3,17 +3,17 @@
 
 #include <boost/format.hpp>
 #include <fstream>
-#include "ITaskRepository.hpp"
-#include "pqxx/pqxx"
-#include "dbManager.hpp"
 #include <optional>
+
+#include "ITaskRepository.hpp"
+#include "dbManager.hpp"
+#include "pqxx/pqxx"
 
 using namespace pqxx;
 
-
 class TaskRepository : public ITaskRepository {
-public:
-    explicit TaskRepository();
+ public:
+    TaskRepository();
     std::optional<Task> getTaskById(size_t id) override;
 
     std::vector<Task> getAllTasks() override;
@@ -26,10 +26,10 @@ public:
 
     void deleteTaskById(size_t task_id) override;
 
-private:
-    static Task makeTask(const result::const_iterator &c);
+ private:
+    static Task makeTask(const result::const_iterator& c);
 
     std::shared_ptr<dbManager> manager;
 };
 
-#endif //SOURCEDOUT_TASKREPOSITORY_HPP
+#endif  // SOURCEDOUT_TASKREPOSITORY_HPP

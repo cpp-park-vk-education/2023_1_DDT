@@ -44,7 +44,7 @@ Solution HttpClientManager::submitSolution(const int &user_id, const int &task_i
                                            const std::string &path_to_sound) {
     std::string body = serializer->serialSolutionData(user_id, task_id, filename, path_to_sound);
     http::response<http::dynamic_body> res = client->makeGetRequest("/solution/submit", body);
-    unsigned status = res.result_int();
+    // unsigned status = res.result_int();
     std::string res_body;
     for (auto seq : res.body().data()) {
         auto* cbuf = boost::asio::buffer_cast<const char*>(seq);

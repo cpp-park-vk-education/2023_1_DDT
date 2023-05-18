@@ -1,16 +1,15 @@
 #include "EntryWindow.h"
 
-#include <QMenuBar>
-#include <QStatusBar>
 #include <QApplication>
 #include <QCoreApplication>
+#include <QMenuBar>
+#include <QStatusBar>
+
 #include "AuthDialog.h"
 #include "SignUpDialog.h"
 #include "UIManager.h"
 
-EntryWindow::EntryWindow(QWidget *parent) : QMainWindow(parent) {
-    setupUi(this);
-}
+EntryWindow::EntryWindow(QWidget *parent) : QMainWindow(parent) { setupUi(this); }
 
 void EntryWindow::setupUi(QMainWindow *EntryWindow) {
     EntryWindow->resize(600, 600);
@@ -19,7 +18,6 @@ void EntryWindow::setupUi(QMainWindow *EntryWindow) {
     sizePolicy.setVerticalStretch(0);
     sizePolicy.setHeightForWidth(EntryWindow->sizePolicy().hasHeightForWidth());
     EntryWindow->setSizePolicy(sizePolicy);
-
 
     centralwidget = new QWidget(EntryWindow);
     verticalLayout = new QVBoxLayout(centralwidget);
@@ -74,22 +72,20 @@ void EntryWindow::retranslateUi(QMainWindow *EntryWindow) {
     exitButton->setText(QCoreApplication::translate("EntryWindow", "Выйти", nullptr));
 }
 
-void EntryWindow::on_exitButton_clicked() {
-    QApplication::quit();
-}
+void EntryWindow::on_exitButton_clicked() { QApplication::quit(); }
 
 void EntryWindow::on_loginButton_clicked() {
     AuthDialog authDialog(this);
     if (authDialog.exec() == QDialog::Accepted) {
         hide();
-        qobject_cast<UIManager*>(parent())->showTasksWindow();
+        qobject_cast<UIManager *>(parent())->showTasksWindow();
     }
 }
 
 void EntryWindow::on_signUpButton_clicked() {
-    SignUpDialog signupDialog( this );
+    SignUpDialog signupDialog(this);
     if (signupDialog.exec() == QDialog::Accepted) {
         hide();
-        qobject_cast<UIManager*>(parent())->showTasksWindow();
+        qobject_cast<UIManager *>(parent())->showTasksWindow();
     }
 }

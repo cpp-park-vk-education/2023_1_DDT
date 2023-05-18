@@ -11,7 +11,7 @@ clean:
 rebuild: clean generate build-project
 
 server-run:
-	./build/server/cmd/
+	./build/server/cmd/Server
 
 test:
 	ctest --verbose --test-dir  build/

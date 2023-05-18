@@ -54,7 +54,7 @@ std::pair<float, size_t> SolutionService::getMaxTextResMetric(std::vector<Soluti
 
         if (maxMatch.first < textBasedRes) {
             maxMatch.first = textBasedRes;
-            maxMatch.second = sol.getSenderId();
+            maxMatch.second = sol.getId();
         }
 
         if (textBasedRes > treshold) {
@@ -68,6 +68,10 @@ std::pair<float, size_t> SolutionService::getMaxTokenResMetric(std::vector<Solut
                                                                std::vector<int>& tokens, float treshold) {
     std::pair<float, size_t> maxMatch = std::make_pair(0.0, 0ul);
     for (auto sol : solutions) {
+        std::cout << "Convert to string" << std::endl;
+        std::cout << Utils::convertIntArrayIntoString(tokens) << std::endl;
+        std::cout << sol.getTokens() << std::endl;
+
         tokenMetric = std::make_unique<LevDistTokenMetric>();
         tokenMetric->setData(tokens, Utils::convertStringIntoIntArray(sol.getTokens()));
         float tokenBasedRes = float(tokenMetric->getMetric());
@@ -78,7 +82,7 @@ std::pair<float, size_t> SolutionService::getMaxTokenResMetric(std::vector<Solut
 
         if (maxMatch.first < tokenBasedRes) {
             maxMatch.first = tokenBasedRes;
-            maxMatch.second = sol.getSenderId();
+            maxMatch.second = sol.getId();
         }
 
         if (tokenBasedRes > treshold) {
@@ -111,17 +115,24 @@ Solution SolutionService::createSolution(size_t userId, size_t taskId, const std
 
         std::string result = setResultVerdict(textBasedRes.first, tokenBasedRes.first, treshold);
 
-        size_t plagiatUserId = -1;
+        int plagiatSolId = 1;
         if (result == PLAGIAT_VERDICT) {
             if (textBasedRes.first > tokenBasedRes.first) {
-                plagiatUserId = textBasedRes.second;
+                plagiatSolId = textBasedRes.second;
             } else {
-                plagiatUserId = tokenBasedRes.second;
+                plagiatSolId = tokenBasedRes.second;
             }
         }
 
+        std::cout << "Plagiat" << std::endl;
+        std::cout << plagiatSolId << std::endl;
+
         Solution sol = Solution(std::ctime(&now), userId, filedata, taskId, result,
-                                Utils::convertIntArrayIntoString(tokensTypes), astTree, plagiatUserId);
+                                Utils::convertIntArrayIntoString(tokensTypes), astTree, plagiatSolId);
+
+        std::cout << "Dick" << std::endl;
+        std::cout << sol.getOrigSolution() << std::endl;
+
         size_t id = solutionRepo->storeSolution(sol);
         sol.setId(id);
         return sol;
@@ -144,6 +155,14 @@ std::pair<std::string, std::string> SolutionService::getMetrics(size_t solId) {
         std::string tokens = sol.getTokens();
         std::string astTree = sol.getAstTree();
         return std::make_pair(tokens, astTree);
+    } catch (...) {
+        throw;
+    }
+}
+
+std::vector<Solution> SolutionService::getSolutionsByUserAndTaskId(size_t user_id, size_t task_id) {
+    try {
+        return solutionRepo->getSolutionsByTaskIdAndSenderId(user_id,task_id);
     } catch (...) {
         throw;
     }

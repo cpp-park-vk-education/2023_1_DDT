@@ -28,7 +28,12 @@ std::vector<int> PythonAntlr::getTokensTypes() {
 
     int i = 0;
     for (antlr4::Token* token : tokenStream_ptr->getTokens()) {
-        ans[i] = token->getType();
+        if (token->getText() == "<EOF>") {
+            std::cout << "\nHERE\n" << std::endl;
+            ans[i] = -1;
+        } else {
+            ans[i] = token->getType();
+        }
         i++;
     }
 

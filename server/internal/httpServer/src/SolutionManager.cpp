@@ -39,7 +39,7 @@ http::message_generator SolutionManager::getAllSolutions(http::request<http::str
     size_t user_id, task_id;
     std::tie(user_id, task_id) = serializer->deserialTaskData(req.body());
     std::vector<Solution> solutions;
-    //    solutions = solutionService->getSolutionsByUserAndTaskId(user_id, task_id);
+    solutions = solutionService->getSolutionsByUserAndTaskId(user_id, task_id);
     http::response<http::string_body> res{http::status::ok, req.version()};
     res.set(http::field::server, BOOST_BEAST_VERSION_STRING);
     res.set(http::field::content_type, "text/plain");

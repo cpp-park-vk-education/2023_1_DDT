@@ -65,7 +65,7 @@ std::vector<Solution> SolutionRepository::getSolutionsByTaskId(size_t task_id) {
 std::vector<Solution> SolutionRepository::getSolutionsByTaskIdAndSenderId(size_t task_id, size_t sender_id) {
     try {
         auto c = manager->connection();
-        std::string sql = (boost::format ("SELECT * FROM solutions WHERE task_id='%s' AND sender_id='%s';") % task_id % sender_id).str();
+        std::string sql = (boost::format ("SELECT * FROM solutions WHERE task_id='%s' AND sender_id='%s'") % task_id % sender_id).str();
         nontransaction n(*c);
         auto stream = stream_from::query(n, sql);
         std::vector<Solution> solutions;

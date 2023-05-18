@@ -36,15 +36,16 @@ double WShinglingTokenMetric::getMetric() {
     unsigned long n = tokens1.size();
     unsigned long m = tokens2.size();
 
-    if (n == 0 || m == 0 || (n < 3 && m < 3)) return 0;
+    if (n < 3 || m < 3)
+        return 0;
 
     std::vector<std::tuple<int, int, int>> sh1;
     std::vector<std::tuple<int, int, int>> sh2;
 
-    for (size_t i = 0; i < n - 3; i++) {
+    for (size_t i = 0; i < n - 2; i++) {
         sh1.emplace_back(tokens1[i], tokens1[i + 1], tokens1[i + 2]);
     }
-    for (size_t i = 0; i < m - 3; i++) {
+    for (size_t i = 0; i < m - 2; i++) {
         sh2.emplace_back(tokens2[i], tokens2[i + 1], tokens2[i + 2]);
     }
 
@@ -67,6 +68,6 @@ double WShinglingTokenMetric::getMetric() {
 }
 
 void PrepareDataTokenMetric::setData(std::vector<int> _tokens1, std::vector<int> _tokens2) {
-    tokens1 = _tokens1;
-    tokens2 = _tokens2;
+    tokens1 = std::move(_tokens1);
+    tokens2 = std::move(_tokens2);
 }

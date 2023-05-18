@@ -61,9 +61,9 @@ TEST_F(WShinglingTokenMetricTest, check_eq_progs) {
 
 TEST_F(WShinglingTokenMetricTest, check_absolutely_not_eq_progs) {
     std::vector<int> tokens1 = {1, 2, 3};
-    std::vector<int> tokens2 = {4, 5, 6, 1};
+    std::vector<int> tokens2 = {4, 5, 6, 9};
 
-    wShinglingTokenMetric->setData(tokens1, tokens1);
+    wShinglingTokenMetric->setData(tokens1, tokens2);
 
     EXPECT_EQ(wShinglingTokenMetric->getMetric(), 0);
 }
@@ -72,7 +72,28 @@ TEST_F(WShinglingTokenMetricTest, test_with_empty_prog) {
     std::vector<int> tokens1 = {1, 2, 3};
     std::vector<int> tokens2 = {};
 
-    wShinglingTokenMetric->setData(tokens1, tokens1);
+    wShinglingTokenMetric->setData(tokens1, tokens2);
 
     EXPECT_EQ(wShinglingTokenMetric->getMetric(), 0);
+}
+
+TEST_F(WShinglingTokenMetricTest, test_with_small_prog) {
+    std::vector<int> tokens1 = {1, 2, 3, 4};
+    std::vector<int> tokens2 = {9};
+
+    wShinglingTokenMetric->setData(tokens1, tokens2);
+
+    EXPECT_EQ(wShinglingTokenMetric->getMetric(), 0);
+}
+
+TEST_F(WShinglingTokenMetricTest, test_with_big_size) {
+    std::vector <int> tokens = {9, 45, 132, 85, 86, 89, 78, 45, 132, 128, 45, 132, 101, 1,
+                                128, 132, 127, 132, 103, 103, 132, 128, 84, 85, 132, 115, 1, 86,
+                                89, 43, 85, 132, 97, 1, 86, 132, 120, 128, 132, 113, 1, 128, 90,
+                                132, 127, 132, 102, 102, 132, 128, 59, 1, 128, 90, -1};
+
+    wShinglingTokenMetric->setData(tokens, tokens);
+
+    double res = wShinglingTokenMetric->getMetric();
+    EXPECT_EQ(res, 1);
 }

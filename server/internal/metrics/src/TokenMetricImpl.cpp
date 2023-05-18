@@ -31,7 +31,7 @@ double LevDistTokenMetric::getMetric() {
     if (n == 0 || m == 0)
         return 0;
     double res = 1.0 - static_cast<double> (lev[n-1][m-1]) / static_cast<double> (std::max(n ,m));
-    return  res;
+    return res;
 }
 
 double WShinglingTokenMetric::getMetric() {
@@ -44,10 +44,10 @@ double WShinglingTokenMetric::getMetric() {
     std::vector <std::tuple <int, int, int> > sh1;
     std::vector <std::tuple <int, int, int> > sh2;
 
-    for (size_t i = 0; i < n - 3; i++){
+    for (size_t i = 0; i < n - 2; i++){
         sh1.emplace_back(tokens1[i], tokens1[i+1], tokens1[i+2]);
     }
-    for (size_t i = 0; i < m - 3; i++){
+    for (size_t i = 0; i < m - 2; i++){
         sh2.emplace_back(tokens2[i], tokens2[i+1], tokens2[i+2]);
     }
 

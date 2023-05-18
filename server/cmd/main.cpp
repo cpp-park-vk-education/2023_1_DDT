@@ -37,5 +37,12 @@ int main(int argc, const char* argv[]) {
   fin1.close();
   fin2.close();
 
+  std::vector <int> tokens3 = {9, 45, 132, 85, 86, 89, 78, 45, 132, 128, 45, 132, 101, 1,
+                               128, 132, 127, 132, 103, 103, 132, 128, 84, 85, 132, 115, 1, 86,
+                               89, 43, 85, 132, 97, 1, 86, 132, 120, 128, 132, 113, 1, 128, 90,
+                               132, 127, 132, 102, 102, 132, 128, 59, 1, 128, 90, -1};
+
+  wsh.setData(tokens3, tokens3);
+  std::cout << wsh.getMetric() << std::endl;
   return 0;
 }

@@ -11,6 +11,19 @@ defaults:
     shell: bash
 
 jobs:
+  Format:
+    runs-on: ubuntu-latest
+    container: raiden454/cpp-app
+    steps:
+      - uses: actions/checkout@v3
+      - run: make format
+  Lint:
+    runs-on: ubuntu-latest
+    container: raiden454/cpp-app
+    needs: [Format]
+    steps:
+      - uses: actions/checkout@v3
+      - run: make lint        
   build:
     runs-on: ubuntu-latest
     container: raiden454/cpp-app
@@ -20,12 +33,3 @@ jobs:
         run: make rebuild
       - name: Run-Tests
         run: make test   
-  linters:
-    runs-on: ubuntu-latest
-    container: raiden454/cpp-app
-    steps:
-      - uses: actions/checkout@v3
-      - name: Cppcheck
-        run: make check
-      - name: Cpplint
-        run: make lint

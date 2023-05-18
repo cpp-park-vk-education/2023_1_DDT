@@ -47,6 +47,8 @@ RUN tar xvf boost_1_82_0.tar.gz
 WORKDIR boost_1_82_0 
 RUN ./bootstrap.sh --prefix=/usr/ 
 RUN ./b2 install
+
+RUN apt install -y clang-format
  
 WORKDIR /project 
  

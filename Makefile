@@ -11,7 +11,7 @@ clean:
 rebuild: clean generate build-project
 
 server-run:
-	./build/server/cmd/Server
+	./build/server/cmd/
 
 test:
 	ctest --verbose --test-dir  build/
@@ -20,7 +20,10 @@ check:
 	cppcheck server --std=c++17 --enable=all
 
 lint:
-	cpplint --extensions=cpp,hpp,h --recursive ./server/* ./client/*
+	./run_linters.sh
+
+format:
+	./run_format.sh
 
 dev:
 	docker run --rm -it \

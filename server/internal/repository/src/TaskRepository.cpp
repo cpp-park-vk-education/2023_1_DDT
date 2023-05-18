@@ -1,6 +1,7 @@
 #include <iostream>
 #include "Task.hpp"
 #include <pqxx/pqxx>
+#include <utility>
 #include "TaskRepository.hpp"
 
 std::optional<Task> TaskRepository::getTaskById(size_t id) {
@@ -24,12 +25,15 @@ std::vector<Task> TaskRepository::getAllTasks() {
         auto c = manager->connection();
         std::string sql = "SELECT * FROM tasks";
         nontransaction n(*c);
-        result r(n.exec(sql));
+        auto stream = stream_from::query(n, sql);
+        std::vector<Task> tasks;
+        std::tuple<size_t, std::string, float> row;
+        while(stream >> row){
+            tasks.emplace_back(get<0>(row), get<1>(row), get<2>(row));
+        }
+        stream.complete();
         manager->freeConnection(c);
-        std::vector<Task> users;
-        for (result::const_iterator k = r.begin(); k != r.end(); ++k)
-            users.push_back(makeTask(k));
-        return users;
+        return tasks;
     } catch (...) {
 
         throw;
@@ -86,6 +90,7 @@ Task TaskRepository::makeTask(const result::const_iterator &c) {
             c.at(c.column_number("description")).as<std::string>(),
             c.at(c.column_number("treshold")).as<float>()};
 }
+
 
 TaskRepository::TaskRepository() {
     manager = std::make_shared<dbManager>();

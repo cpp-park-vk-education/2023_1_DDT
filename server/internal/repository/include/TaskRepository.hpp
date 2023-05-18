@@ -10,6 +10,7 @@
 
 using namespace pqxx;
 
+
 class TaskRepository : public ITaskRepository {
 public:
     explicit TaskRepository();
@@ -27,6 +28,7 @@ public:
 
 private:
     static Task makeTask(const result::const_iterator &c);
+
     std::shared_ptr<dbManager> manager;
 };
 

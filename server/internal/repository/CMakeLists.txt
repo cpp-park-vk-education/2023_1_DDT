@@ -42,3 +42,5 @@ message(dbManager = "${libDbManager_LIB}")
 message("libRepository_LIB = ${libRepository_LIB}")
 message("libRepository_INCLUDE_DIRS = ${libRepository_INCLUDE_DIRS}")
 
+# enable_testing()
+# add_subdirectory(tests)

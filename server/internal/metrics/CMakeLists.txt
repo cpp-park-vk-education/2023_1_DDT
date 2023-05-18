@@ -24,5 +24,5 @@ set(METRICS_lib_INCLUDE_DIRS ${METRICS_lib_INCLUDE_DIRS} PARENT_SCOPE)
 
 enable_testing()
 #if(BUILD_TESTS)
-# add_subdirectory(tests)
+add_subdirectory(tests)
 #endif()

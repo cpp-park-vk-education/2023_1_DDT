@@ -9,15 +9,16 @@
 #include "PythonAntlr.h"
 #include "SolutionRepository.hpp"
 #include "TaskRepository.hpp"
+#include "Utils.h"
 
 const std::string PLAGIAT_VERDICT = "Не, ну вы не палитесь. Плагиат.";
 const std::string NOT_PLAGIAT_VERDICT =
     "Красивое решение. А главное уникальное !";
 
-//SolutionService::SolutionService(
-//    std::unique_ptr<ISolutionRepository> solutionRepo,
-//    std::unique_ptr<ITaskRepository> taskRepo)
-//    : solutionRepo(std::move(solutionRepo)), taskRepo(std::move(taskRepo)) {}
+SolutionService::SolutionService(
+   std::unique_ptr<ISolutionRepository> solutionRepo,
+   std::unique_ptr<ITaskRepository> taskRepo)
+   : solutionRepo(std::move(solutionRepo)), taskRepo(std::move(taskRepo)) {}
 
 SolutionService::SolutionService() {
   solutionRepo = std::make_unique<SolutionRepository>();
@@ -52,47 +53,49 @@ std::pair<float, size_t> SolutionService::getMaxTextResMetric(
     textMetric = std::make_unique<LevDistTextMetric>();
     textMetric->setData(filedata, sol.getSource());
     float textBasedRes = float(textMetric->getMetric());
-    std::cout << textBasedRes << std::endl;
 
     textMetric = std::make_unique<JaccardTextMetric>();
     textMetric->setData(filedata, sol.getSource());
     textBasedRes = (textBasedRes + float(textMetric->getMetric())) / 2;
 
-    if (textBasedRes > treshold) {
-      break;
-    }
     if (maxMatch.first < textBasedRes) {
       maxMatch.first = textBasedRes;
-      maxMatch.second = sol.getId();
+      maxMatch.second = sol.getSenderId();
+    }
+
+    if (textBasedRes > treshold) {
+      break;
     }
   }
   return maxMatch;
 }
 
-// std::pair<float, size_t> SolutionService::getMaxTokenResMetric(
-//     std::vector<Solution>& solutions, const std::string& tokens,
-//     float treshold) {
-//   std::pair<float, size_t> maxMatch = std::make_pair(0.0, 0);
-//   for (auto sol : solutions) {
-//     tokenMetric = std::make_unique<LivDistTokenMetric>();
-//     tokenMetric->setData(tokens, sol.getTokens());
-//     float tokenBasedRes = float(tokenMetric->getMetric());
-//     std::cout << tokenBasedRes << std::endl;
+std::pair<float, size_t> SolutionService::getMaxTokenResMetric(
+    std::vector<Solution>& solutions, std::vector<int>& tokens,
+    float treshold) {
+  std::pair<float, size_t> maxMatch = std::make_pair(0.0, 0ul);
+  for (auto sol : solutions) {
+    tokenMetric = std::make_unique<LevDistTokenMetric>();
+    tokenMetric->setData(tokens,
+                         Utils::convertStringIntoIntArray(sol.getTokens()));
+    float tokenBasedRes = float(tokenMetric->getMetric());
 
-//     tokenMetric = std::make_unique<WShinglingTokenMetric>();
-//     tokenMetric->setData(tokens, sol.getSource());
-//     tokenBasedRes = (tokenBasedRes + float(tokenMetric->getMetric())) / 2;
+    tokenMetric = std::make_unique<WShinglingTokenMetric>();
+    tokenMetric->setData(tokens,
+                         Utils::convertStringIntoIntArray(sol.getTokens()));
+    tokenBasedRes = (tokenBasedRes + float(tokenMetric->getMetric())) / 2;
 
-//     if (tokenBasedRes > treshold) {
-//       break;
-//     }
-//     if (maxMatch.first < tokenBasedRes) {
-//       maxMatch.first = tokenBasedRes;
-//       maxMatch.second = sol.getId();
-//     }
-//   }
-//   return maxMatch;
-// }
+    if (maxMatch.first < tokenBasedRes) {
+      maxMatch.first = tokenBasedRes;
+      maxMatch.second = sol.getSenderId();
+    }
+
+    if (tokenBasedRes > treshold) {
+      break;
+    }
+  }
+  return maxMatch;
+}
 
 Solution SolutionService::createSolution(size_t userId, size_t taskId,
                                          const std::string& filename,
@@ -105,7 +108,8 @@ Solution SolutionService::createSolution(size_t userId, size_t taskId,
     }
 
     setAntlrWrapper(fileExtension.first, filedata);
-    std::pair<std::string, std::string> codeParse = antlr->getTokensAndTree();
+    std::vector<int> tokensTypes = antlr->getTokensTypes();
+    std::string astTree = antlr->getTreeString();
 
     std::time_t now =
         std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
@@ -117,15 +121,25 @@ Solution SolutionService::createSolution(size_t userId, size_t taskId,
 
     std::pair<float, size_t> textBasedRes =
         getMaxTextResMetric(solutions, filedata, treshold);
-    // float tokenBasedRes getMaxTokenResMetric(solutions, codeParse.first,
-    // treshold);
+    std::pair<float, size_t> tokenBasedRes =
+        getMaxTokenResMetric(solutions, tokensTypes, treshold);
 
-    std::string result = setResultVerdict(textBasedRes.first, 0, treshold);
-    // std::string result = setResultVerdict(textBasedRes.first,
-    // tokenBasedRes.first, treshold);
+    std::string result =
+        setResultVerdict(textBasedRes.first, tokenBasedRes.first, treshold);
+
+    size_t plagiatUserId = -1;
+    if (result == PLAGIAT_VERDICT) {
+      if (textBasedRes.first > tokenBasedRes.first) {
+        plagiatUserId = textBasedRes.second;
+      } else {
+        plagiatUserId = tokenBasedRes.second;
+      }
+    }
+
     Solution sol =
-        Solution(std::ctime(&now), userId, filedata, codeParse.first,
-                 codeParse.second, taskId, result, textBasedRes.second);
+        Solution(std::ctime(&now), userId, filedata, taskId,
+                 result, Utils::convertIntArrayIntoString(tokensTypes), astTree,
+                 plagiatUserId);
     size_t id = solutionRepo->storeSolution(sol);
     sol.setId(id);
     return sol;

@@ -1,8 +1,8 @@
 #include "TaskService.h"
 #include "TaskRepository.hpp"
 
-//TaskService::TaskService(std::unique_ptr<ITaskRepository> taskRepo)
-//    : taskRepo(std::move(taskRepo)) {}
+TaskService::TaskService(std::unique_ptr<ITaskRepository> taskRepo)
+   : taskRepo(std::move(taskRepo)) {}
 
 TaskService::TaskService() { taskRepo = std::make_unique<TaskRepository>(); }
 

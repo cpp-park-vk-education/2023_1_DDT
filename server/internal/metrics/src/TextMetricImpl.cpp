@@ -30,7 +30,7 @@ std::string PrepareDataTextMetric::deleteComments(const std::string& text) {
     bool s_comm = false;
     bool m_comm = false;
 
-    for (int i = 0; i < modif.size(); i++){
+    for (size_t i = 0; i < modif.size(); i++){
         if (s_comm && modif[i] == '\0')
             s_comm = false;
         else if  (m_comm && modif[i] == '*' && modif[i + 1] == '/')
@@ -44,7 +44,7 @@ std::string PrepareDataTextMetric::deleteComments(const std::string& text) {
 
         else if (modif[i] != '\0')
             res += modif[i];
-        else if (res.size() > 0 && res[res.size() - 1] != '\n')
+        else if (!res.empty() && res[res.size() - 1] != '\n')
             res += '\n';
     }
     return res;
@@ -70,10 +70,10 @@ double LevDistTextMetric::getMetric(){
 
     std::vector <std::vector <int> > lev (n, std::vector <int> (m, 0));
 
-    for (int i = 0; i < n; i++){
-        for (int j = 0; j < m; j++){
+    for (size_t i = 0; i < n; i++){
+        for (size_t j = 0; j < m; j++){
             if (std::min(i, j) == 0){
-                lev[i][j] = std::max(i, j);
+                lev[i][j] = static_cast <int> (std::max(i, j));
             }
             else{
                 x = lev[i-1][j];

@@ -11,17 +11,16 @@ clean:
 rebuild: clean generate build-project
 
 server-run:
-	./build/server/internal/httpServer/HttpServer_run
+	./build/server/cmd/Server
 
 test:
-	ctest --verbose --output-on-failure --test-dir  build/
+	ctest --verbose --test-dir  build/
 
 check:
 	cppcheck server --std=c++17 --enable=all
 
 lint:
 	cpplint --extensions=cpp,hpp,h --recursive ./server/* ./client/*
-
 
 dev:
 	docker run --rm -it \
@@ -36,3 +35,4 @@ stop-docker:
 run-docker-compose:
 	docker compose down --volumes
 	docker compose up -d --build
+

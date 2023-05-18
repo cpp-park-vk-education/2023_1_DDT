@@ -27,12 +27,12 @@ class SolutionService : public ISolutionService {
                                                float treshold);
 
   std::pair<float, size_t> getMaxTokenResMetric(
-      std::vector<Solution>& solutions, const std::string& tokens,
-      float treshold) {};
+      std::vector<Solution>& solutions, std::vector<int>& tokens,
+      float treshold);
 
  public:
-//  explicit SolutionService(std::unique_ptr<ISolutionRepository> solutionRepo,
-//                           std::unique_ptr<ITaskRepository> taskRepo);
+ explicit SolutionService(std::unique_ptr<ISolutionRepository> solutionRepo,
+                          std::unique_ptr<ITaskRepository> taskRepo);
   SolutionService();
   void setMetrics(std::unique_ptr<IMockMetrics> metrics_) {};
   Solution createSolution(size_t userId, size_t taskId,

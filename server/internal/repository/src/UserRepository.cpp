@@ -79,11 +79,14 @@ std::vector<User> UserRepository::getAllUsers() {
         auto c = manager->connection();
         std::string sql = "SELECT * FROM Users";
         nontransaction n(*c);
-        result r(n.exec(sql));
-        manager->freeConnection(c);
+        auto stream = stream_from::query(n, sql);
         std::vector<User> users;
-        for (result::const_iterator k = r.begin(); k != r.end(); ++k)
-            users.push_back(makeUser(k));
+        std::tuple<size_t, std::string, std::string, std::string> row;
+        while(stream >> row){
+            users.emplace_back(get<0>(row), get<1>(row), get<2>(row), get<3>(row));
+        }
+        stream.complete();
+        manager->freeConnection(c);
         return users;
     } catch (...) {
         

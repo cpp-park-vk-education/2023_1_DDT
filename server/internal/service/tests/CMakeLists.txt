@@ -1,8 +1,5 @@
 project(test_service)
 
-set(CMAKE_CXX_STANDARD 20)
-add_compile_options(-coverage)
-
 file(GLOB SOURCES *.cpp)
 
 enable_testing()

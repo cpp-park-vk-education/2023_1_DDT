@@ -5,9 +5,6 @@
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 
-#include <fstream>
-#include <sstream>
-
 #include "TextMetricsLib.h"
 
 class LevDistTextMetricTest : public ::testing::Test {
@@ -29,14 +26,8 @@ protected:
 };
 
 TEST_F(LevDistTextMetricTest, check_eq_progs) {
-    std::ifstream fin1;
-    fin1.open("src/test-codes/code1.txt");
 
-    std::string text1( (std::istreambuf_iterator<char>(fin1) ),
-                       (std::istreambuf_iterator<char>()    ) );
-
-    fin1.close();
-    levDistTextMetric->setData(text1, text1);
+    levDistTextMetric->setData("a b c d e f", "a b c d e f");
 
     EXPECT_EQ(levDistTextMetric->getMetric(), 1);
 }
@@ -56,14 +47,8 @@ TEST_F(LevDistTextMetricTest, test_with_empty_prog) {
 }
 
 TEST_F(JaccardTextMetricTest, check_eq_progs){
-    std::ifstream fin1;
-    fin1.open("src/test-codes/code1.txt");
 
-    std::string text1( (std::istreambuf_iterator<char>(fin1) ),
-                       (std::istreambuf_iterator<char>()    ) );
-
-    fin1.close();
-    jaccardTextMetric->setData(text1, text1);
+    jaccardTextMetric->setData("a b c d e f", "d e a b c f");
 
     EXPECT_EQ(jaccardTextMetric->getMetric(), 1);
 }

@@ -318,7 +318,7 @@ ALTER TABLE ONLY public.users ALTER COLUMN id SET DEFAULT nextval('public."Users
 --
 
 COPY public.metricstat (id, solution_id, text_based_res, token_based_res, tree_based_res, verdict, mean_res) FROM stdin;
-15	1	1	1	1	t	1
+1	1	1	1	1	t	1
 \.
 
 
@@ -340,7 +340,7 @@ COPY public.solutions (id, send_date, sender_id, source, task_id, result, tokens
 --
 
 COPY public.tasks (id, description, treshold) FROM stdin;
-27	orher_description	0.1
+2	orher_description	0.1
 1	description	0.5
 \.
 
@@ -354,15 +354,6 @@ COPY public.tasks (id, description, treshold) FROM stdin;
 COPY public.users (id, login, password, username) FROM stdin;
 1	qwerty200468@gmail.com	123	tolik
 2	qwerty200468@gmail.com	123	tolik
-3	qwerty200468@gmail.com	123	tolik
-4	qwerty200468@gmail.com	123	tolik
-5	qwerty200468@gmail.com	123	tolik
-6	qwerty200468@gmail.com	123	tolik
-7	qwerty200468@gmail.com	123	tolik
-8	qwerty200468@gmail.com	123	tolik
-9	qwerty200468@gmail.com	123	tolik
-10	qwerty200468@gmail.com	123	tolik
-52	qwerty200468@gmail.com	123	tolik
 \.
 
 
@@ -372,7 +363,7 @@ COPY public.users (id, login, password, username) FROM stdin;
 -- Name: Users_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public."Users_id_seq"', 78, true);
+SELECT pg_catalog.setval('public."Users_id_seq"', 1, true);
 
 
 --
@@ -381,7 +372,7 @@ SELECT pg_catalog.setval('public."Users_id_seq"', 78, true);
 -- Name: metricstat_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.metricstat_id_seq', 36, true);
+SELECT pg_catalog.setval('public.metricstat_id_seq', 1, true);
 
 
 --
@@ -390,7 +381,7 @@ SELECT pg_catalog.setval('public.metricstat_id_seq', 36, true);
 -- Name: solutions_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.solutions_id_seq', 150, true);
+SELECT pg_catalog.setval('public.solutions_id_seq', 1, true);
 
 
 --
@@ -399,7 +390,7 @@ SELECT pg_catalog.setval('public.solutions_id_seq', 150, true);
 -- Name: tasks_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.tasks_id_seq', 34, true);
+SELECT pg_catalog.setval('public.tasks_id_seq', 1, true);
 
 
 --

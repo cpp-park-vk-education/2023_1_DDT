@@ -62,6 +62,27 @@ std::vector<Solution> SolutionRepository::getSolutionsByTaskId(size_t task_id) {
     }
 }
 
+std::vector<Solution> SolutionRepository::getSolutionsByTaskIdAndSenderId(size_t task_id, size_t sender_id) {
+    try {
+        auto c = manager->connection();
+        std::string sql = (boost::format ("SELECT * FROM solutions WHERE task_id='%s' AND sender_id='%s';") % task_id % sender_id).str();
+        nontransaction n(*c);
+        auto stream = stream_from::query(n, sql);
+        std::vector<Solution> solutions;
+        std::tuple<size_t, std::string, size_t, std::string, size_t, std::string, std::string, std::string, size_t> row;
+        while (stream >> row) {
+            solutions.emplace_back(get<0>(row), get<1>(row), get<2>(row), get<3>(row), get<4>(row), get<5>(row),
+                                   get<6>(row), get<7>(row), get<8>(row));
+        }
+        stream.complete();
+        manager->freeConnection(c);
+        return solutions;
+    } catch (...) {
+        throw;
+    }
+}
+
+
 std::optional<Solution> SolutionRepository::getOriginalSolution(size_t id) {
     try {
         auto c = manager->connection();
@@ -144,3 +165,4 @@ Solution SolutionRepository::makeSolution(const result::const_iterator &c) {
 }
 
 SolutionRepository::SolutionRepository() { manager = std::make_shared<dbManager>(); }
+

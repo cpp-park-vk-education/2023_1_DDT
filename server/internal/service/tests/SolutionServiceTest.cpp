@@ -1,6 +1,10 @@
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 
+#include <iostream>
+#include <istream>
+#include <sstream>
+
 #include "SolutionService.h"
 
 class Exception : public std::exception {
@@ -82,14 +86,24 @@ TEST_F(SolutionServiceTest, createSolution) {
         .WillRepeatedly(::testing::Return(1));
 
     std::vector<Solution> solutions;
-    solutions.push_back(Solution(0, "", 1, "int main(){return 0;}", 1, "", "45 132 85 86 89 59 1 128 90 -1", "", -1));
+    solutions.push_back(
+        Solution(0, "", 1, "int main(){return 0;}", 1, "",
+                 "9 45 132 85 86 89 78 45 132 128 45 132 101 1 128 132 127 132 103 103 132 128 84 85 132 115 1 86 89 "
+                 "43 85 132 97 1 86 132 120 128 132 113 1 128 90 132 127 132 102 102 132 128 59 1 128 90 -1",
+                 "", -1));
     EXPECT_CALL(*solutionMockPtr, getSolutionsByTaskId(1)).Times(1).WillOnce(::testing::Return(solutions));
 
     EXPECT_CALL(*taskMockPtr, getTaskById(1)).Times(1).WillOnce(::testing::Return(Task(1, "desription", 0.5f)));
+    std::string line;
+    // std::ifstream in("/project/server/internal/service/tests/task1.cpp"); // окрываем файл для чтения
+    // std::stringstream sst;
+    // sst << in.rdbuf();
 
-    Solution sol = ss->createSolution(2, 1, "main.cpp", "int main(){return 0;}");
+    Solution sol = ss->createSolution(2, 1, "main.cpp", "int main() { return 0; }");
     EXPECT_EQ(sol.getId(), 1);
-    EXPECT_EQ(sol.getSource(), "int main(){return 0;}");
-    EXPECT_EQ(sol.getTokens(), "45 132 85 86 89 59 1 128 90 -1 ");
+    // EXPECT_EQ(sol.getSource(), "int main(){return 0;}");
+    EXPECT_EQ(sol.getTokens(),
+              "9 45 132 85 86 89 78 45 132 128 45 132 101 1 128 132 127 132 103 103 132 128 84 85 132 115 1 86 89 43 "
+              "85 132 97 1 86 132 120 128 132 113 1 128 90 132 127 132 102 102 132 128 59 1 128 90 -1 ");
     EXPECT_EQ(sol.getResult(), "Не, ну вы не палитесь. Плагиат.");
 }

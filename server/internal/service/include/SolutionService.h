@@ -34,5 +34,6 @@ class SolutionService : public ISolutionService {
     Solution createSolution(size_t userId, size_t taskId, const std::string& filename,
                             const std::string& filedata) override;
     void deleteSolutionById(size_t solId) override;
+    std::vector<Solution> getSolutionsByUserAndTaskId(size_t user_id, size_t task_id);
     std::pair<std::string, std::string> getMetrics(size_t solId) override;
 };

@@ -25,6 +25,3 @@ dev:
 
 stop-docker:
 	docker stop app
-
-
-

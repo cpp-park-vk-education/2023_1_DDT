@@ -10,8 +10,7 @@ void dbManager::createPool() {
     std::lock_guard<std::mutex> locker_(m_mutex);
 
     for (auto i = 0; i < POOL_SIZE; i++) {
-        connection_pool.emplace(std::make_shared<pqxx::connection>(
-                "dbname =mydb user = temp password =temp hostaddr =db port = 5432"));
+        connection_pool.emplace(std::make_shared<pqxx::connection>());
     }
 }
 

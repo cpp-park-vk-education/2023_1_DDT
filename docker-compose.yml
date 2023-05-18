@@ -25,6 +25,8 @@ services:
     image: raiden454/cpp-app:latest
     networks:
       - db-network
+    env_file:
+      - .env  
     volumes:
       - .:/project
     command: make server-run

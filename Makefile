@@ -16,6 +16,13 @@ server-run:
 test:
 	ctest --verbose --output-on-failure --test-dir  build/
 
+check:
+	cppcheck server --std=c++17 --enable=all
+
+lint:
+	cpplint --extensions=cpp,hpp,h --recursive ./server/* ./client/*
+
+
 dev:
 	docker run --rm -it \
 		-v $(PWD):/project \

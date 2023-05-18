@@ -16,34 +16,16 @@ jobs:
     container: raiden454/cpp-app
     steps:
       - uses: actions/checkout@v3
-      - name: Installing
-        run: |
-          apt update
-          git clone https://github.com/google/googletest.git -b release-1.11.0
-          cd googletest
-          mkdir build
-          cd build
-          cmake .. -DBUILD_GMOCK=ON
-          make
-          make install
-          cd ../..
       - name: Building
-        run: |
-          mkdir build
-          cd build
-          cmake ..
-          make
+        run: make rebuild
       - name: Run-Tests
-        run: |
-          ./build/server/internal/service/tests/test_service    
+        run: make test   
   linters:
     runs-on: ubuntu-latest
     container: raiden454/cpp-app
     steps:
       - uses: actions/checkout@v3
       - name: Cppcheck
-        run: |
-          cppcheck server --std=c++17 --enable=all
+        run: make check
       - name: Cpplint
-        run: |
-          cpplint --extensions=cpp,hpp,h --recursive ./server/*
+        run: make lint

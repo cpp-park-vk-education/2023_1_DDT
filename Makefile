@@ -25,3 +25,7 @@ dev:
 
 stop-docker:
 	docker stop app
+
+run-docker-compose:
+	docker compose down --volumes
+	docker compose up -d --build

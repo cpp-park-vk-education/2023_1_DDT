@@ -19,12 +19,14 @@ int main(int argc, char* argv[])
 //        return EXIT_FAILURE;
 //    }
 
-    std::cout << "SERVER RUN" << std::endl;
+    std::cout << "SERVER RUN12" << std::endl;
 
     auto const address = net::ip::make_address("0.0.0.0");
     auto const port = static_cast<unsigned short>(std::atoi("8080"));
     auto const doc_root = std::make_shared<std::string>(".");
     auto const threads = std::max<int>(1, std::atoi("1"));
+
+    std::cout << "SERVER INIT" << std::endl;
 
     // The io_context is required for all I/O
     net::io_context ioc{threads};

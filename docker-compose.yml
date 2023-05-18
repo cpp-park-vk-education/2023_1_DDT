@@ -4,27 +4,38 @@ volumes:
   database-volume:
 
 services:
-  postgres:
+  db:
+    image: postgres
+    container_name: db
+    restart: always
     build:
       context: ./Docker
       dockerfile: db.Dockerfile
-    restart: always
-    image: postgres
     environment:
-      POSTGRES_DB: "tmp"
-      POSTGRES_USER: "tmp"
-      POSTGRES_PASSWORD: "tmp"
+      POSTGRES_DB: "temp"
+      POSTGRES_USER: "temp"
+      POSTGRES_PASSWORD: "temp"
+    volumes:
+      - database-volume:/var/lib/postgresql/data  
     ports:
       - "5432:5432"
-    volumes:
-      - database-volume:/var/lib/postgresql/data
+    networks:
+      - db-network  
   server:
     image: raiden454/cpp-app:latest
+    networks:
+      - db-network
     volumes:
       - .:/project
     command: make server-run
-    restart: always
     ports:
-      - "8081:8081"
+      - "8080:8080"
     depends_on:
-      - postgres
+      - db
+    links:
+      - db:db  
+    
+networks:
+  db-network:
+    driver: bridge
+    name: db_network

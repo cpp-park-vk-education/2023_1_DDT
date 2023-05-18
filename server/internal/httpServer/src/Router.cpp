@@ -13,7 +13,7 @@ Router::Router(std::string_view doc_root_) :
 
 
 http::message_generator Router::handleRequest(http::request<http::string_body> &&req) {
-
+    std::cout << req << std::endl;
     if(req.method() != http::verb::get && req.method() != http::verb::post)
         return getBadRequest(req, "Unknown HTTP-method");
 

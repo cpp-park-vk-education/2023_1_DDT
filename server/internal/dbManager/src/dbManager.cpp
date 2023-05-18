@@ -11,7 +11,7 @@ void dbManager::createPool() {
 
     for (auto i = 0; i < POOL_SIZE; i++) {
         connection_pool.emplace(std::make_shared<pqxx::connection>(
-                "dbname =mydb user = postgres password =root hostaddr =172.28.224.1 port = 5432"));
+                "dbname =mydb user = temp password =temp hostaddr =db port = 5432"));
     }
 }
 

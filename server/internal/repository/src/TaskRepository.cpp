@@ -46,7 +46,7 @@ void TaskRepository::updateTask(const Task &task) {
         auto c = manager->connection();
         std::string sql = (boost::format("UPDATE tasks SET description = '%s', treshold = '%s', name = '%s';") %
                            task.getDescription() % task.getTreshhold() % task.getName())
-                .str();
+                              .str();
         work w(*c);
         w.exec(sql);
         manager->freeConnection(c);
@@ -61,7 +61,7 @@ size_t TaskRepository::storeTask(Task task) {
         std::string sql = (boost::format("INSERT INTO tasks (description, treshold, name) "
                                          "VALUES ('%s', '%s', '%s') RETURNING id; ") %
                            task.getDescription() % task.getTreshhold() % task.getName())
-                .str();
+                              .str();
         work w(*c);
         row r = w.exec1(sql);
         w.commit();
@@ -88,10 +88,8 @@ void TaskRepository::deleteTaskById(size_t task_id) {
 }
 
 Task TaskRepository::makeTask(const result::const_iterator &c) {
-    return {c.at(c.column_number("id")).as<size_t>(),
-            c.at(c.column_number("description")).as<std::string>(),
-            c.at(c.column_number("treshold")).as<float>(),
-            c.at(c.column_number("name")).as<std::string>()};
+    return {c.at(c.column_number("id")).as<size_t>(), c.at(c.column_number("description")).as<std::string>(),
+            c.at(c.column_number("treshold")).as<float>(), c.at(c.column_number("name")).as<std::string>()};
 }
 
 TaskRepository::TaskRepository() { manager = std::make_shared<dbManager>(); }

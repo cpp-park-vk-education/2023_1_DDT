@@ -27,6 +27,7 @@ class SolutionRepositoryMock : public ISolutionRepository {
     MOCK_METHOD(void, deleteSolution, (Solution solution), (override));
     MOCK_METHOD(std::optional<Solution>, getOriginalSolution, (size_t id), (override));
     MOCK_METHOD(std::vector<Solution>, getSolutionsByTaskIdAndSenderId, (size_t user_id, size_t task_id), (override));
+    MOCK_METHOD(std::vector<Solution>, getSolutionsByTaskIdAndLanguage, (size_t, std::string), (override));
 };
 
 class TaskRepositoryMock : public ITaskRepository {
@@ -70,7 +71,7 @@ TEST_F(SolutionServiceTest, deleteSolutionException) {
 TEST_F(SolutionServiceTest, getMetrics) {
     EXPECT_CALL(*solutionMockPtr, getSolutionById(1))
         .Times(1)
-        .WillOnce(::testing::Return(Solution(1, "", 1, "", 1, "", "tokens", "astTree", 1)));
+        .WillOnce(::testing::Return(Solution(1, "", 1, "", 1, "", "tokens", "astTree", 1, "cpp")));
     std::pair<std::string, std::string> metrics = ss->getMetrics(1);
     EXPECT_EQ(metrics.first, "tokens");
     EXPECT_EQ(metrics.second, "astTree");
@@ -82,20 +83,23 @@ TEST_F(SolutionServiceTest, getMetricsException) {
 }
 
 TEST_F(SolutionServiceTest, createSolutionPlagiat) {
-    EXPECT_CALL(*solutionMockPtr, storeSolution(Solution(0, "", 2, "source", 1, "", "", "", 1)))
+    EXPECT_CALL(*solutionMockPtr, storeSolution(Solution(0, "", 2, "source", 1, "", "", "", 1, "cpp")))
         .Times(1)
         .WillRepeatedly(::testing::Return(1));
 
     std::vector<Solution> solutions;
-    solutions.push_back(Solution(0, "", 1, "int main(){return 0;}", 1, "", "45 132 85 86 89 59 1 128 90 -1", "", -1));
-    EXPECT_CALL(*solutionMockPtr, getSolutionsByTaskId(1)).Times(1).WillOnce(::testing::Return(solutions));
+    solutions.push_back(
+        Solution(0, "", 1, "int main(){return 0;}", 1, "", "45 132 85 86 89 59 1 128 90 -1", "", -1, "cpp"));
+    EXPECT_CALL(*solutionMockPtr, getSolutionsByTaskIdAndLanguage(1, "cpp"))
+        .Times(1)
+        .WillOnce(::testing::Return(solutions));
 
-    EXPECT_CALL(*taskMockPtr, getTaskById(1)).Times(1).WillOnce(::testing::Return(Task(1, "desription", 0.5f)));
+    EXPECT_CALL(*taskMockPtr, getTaskById(1)).Times(1).WillOnce(::testing::Return(Task(1, "desription", 0.5f, "name")));
 
     EXPECT_CALL(*solutionMockPtr, getSolutionById(0))
         .Times(1)
         .WillOnce(::testing::Return(std::make_optional(
-            Solution(0, "", 1, "int main(){return 0;}", 1, "", "45 132 85 86 89 59 1 128 90 -1", "", -1))));
+            Solution(0, "", 1, "int main(){return 0;}", 1, "", "45 132 85 86 89 59 1 128 90 -1", "", -1, "cpp"))));
 
     Solution sol = ss->createSolution(2, 1, "main.cpp", "size_t main(){return 1;}");
     EXPECT_EQ(sol.getId(), 1);
@@ -106,15 +110,18 @@ TEST_F(SolutionServiceTest, createSolutionPlagiat) {
 }
 
 TEST_F(SolutionServiceTest, createSolutionNonPlagiat) {
-    EXPECT_CALL(*solutionMockPtr, storeSolution(Solution(0, "", 2, "source", 1, "", "", "", 1)))
+    EXPECT_CALL(*solutionMockPtr, storeSolution(Solution(0, "", 2, "source", 1, "", "", "", 1, "cpp")))
         .Times(1)
         .WillRepeatedly(::testing::Return(1));
 
     std::vector<Solution> solutions;
-    solutions.push_back(Solution(0, "", 1, "int main(){return 0;}", 1, "", "45 132 85 86 89 59 1 128 90 -1", "", -1));
-    EXPECT_CALL(*solutionMockPtr, getSolutionsByTaskId(1)).Times(1).WillOnce(::testing::Return(solutions));
+    solutions.push_back(
+        Solution(0, "", 1, "int main(){return 0;}", 1, "", "45 132 85 86 89 59 1 128 90 -1", "", -1, "cpp"));
+    EXPECT_CALL(*solutionMockPtr, getSolutionsByTaskIdAndLanguage(1, "cpp"))
+        .Times(1)
+        .WillOnce(::testing::Return(solutions));
 
-    EXPECT_CALL(*taskMockPtr, getTaskById(1)).Times(1).WillOnce(::testing::Return(Task(1, "desription", 0.5f)));
+    EXPECT_CALL(*taskMockPtr, getTaskById(1)).Times(1).WillOnce(::testing::Return(Task(1, "desription", 0.5f, "name")));
 
     Solution sol = ss->createSolution(1, 1, "main.cpp", "int main(){return 0;}");
     EXPECT_EQ(sol.getResult(),

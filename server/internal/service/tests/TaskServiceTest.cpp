@@ -47,7 +47,7 @@ TEST_F(TaskServiceTest, deleteTasWithInvalidId) {
 }
 
 TEST_F(TaskServiceTest, GetTaskByIdOK) {
-    EXPECT_CALL(*mock_ptr, getTaskById(1)).Times(1).WillOnce(::testing::Return(Task(1, "desription", 0.7f)));
+    EXPECT_CALL(*mock_ptr, getTaskById(1)).Times(1).WillOnce(::testing::Return(Task(1, "desription", 0.7f, "name")));
     Task t = ts->getTask(1);
     EXPECT_EQ(t.getId(), 1);
     EXPECT_EQ(t.getDescription(), "desription");
@@ -59,13 +59,13 @@ TEST_F(TaskServiceTest, GetTaskByIdEXEPTION) {
 }
 
 TEST_F(TaskServiceTest, CreateTask) {
-    EXPECT_CALL(*mock_ptr, storeTask(Task("desc", 0.5f))).Times(1).WillOnce(::testing::Return(1));
-    Task t = ts->createTask("desc", 0.5f);
+    EXPECT_CALL(*mock_ptr, storeTask(Task("desc", 0.5f, "name"))).Times(1).WillOnce(::testing::Return(1));
+    Task t = ts->createTask("desc");
     EXPECT_EQ(t.getId(), 1);
     EXPECT_EQ(t.getDescription(), "desc");
 
-    EXPECT_CALL(*mock_ptr, storeTask(Task("desc2", 0.8f))).Times(1).WillOnce(::testing::Return(2));
-    t = ts->createTask("desc2", 0.8f);
+    EXPECT_CALL(*mock_ptr, storeTask(Task("desc2", 0.8f, "name"))).Times(1).WillOnce(::testing::Return(2));
+    t = ts->createTask("desc2");
     EXPECT_EQ(t.getId(), 2);
     EXPECT_EQ(t.getDescription(), "desc2");
 }

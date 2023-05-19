@@ -10,8 +10,7 @@ class Task {
     std::string name;
 
  public:
-    Task(size_t id, std::string description_,
-         float treshold_, std::string name) noexcept;
+    Task(size_t id, std::string description_, float treshold_, std::string name) noexcept;
 
     Task(std::string description_, float treshold_, std::string name) noexcept;
 

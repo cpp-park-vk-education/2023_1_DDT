@@ -12,7 +12,7 @@ class TaskService : public ITaskService {
  public:
     explicit TaskService(std::unique_ptr<ITaskRepository> taskRepo);
     TaskService();
-    Task createTask(const std::string& desc, float treshold = 0.5f) override;
+    Task createTask(const std::string& desc, const std::string& name = "Default name", float treshold = 0.5f) override;
     Task getTask(size_t id) override;
     std::vector<Task> getAllTasks() override;
     void deleteTask(size_t id) override;

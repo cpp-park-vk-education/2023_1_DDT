@@ -6,9 +6,9 @@ TaskService::TaskService(std::unique_ptr<ITaskRepository> taskRepo) : taskRepo(s
 
 TaskService::TaskService() { taskRepo = std::make_unique<TaskRepository>(); }
 
-Task TaskService::createTask(const std::string& desc, float treshold) {
+Task TaskService::createTask(const std::string& desc, const std::string& name, float treshold) {
     try {
-        Task task = Task(desc, treshold);
+        Task task = Task(desc, treshold, name);
         size_t id = taskRepo->storeTask(task);
         task.setId(id);
         return task;

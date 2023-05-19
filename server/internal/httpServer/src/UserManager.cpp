@@ -1,6 +1,5 @@
 #include "UserManager.h"
 
-#include "TmpUserService.h"
 #include "ServiceExceptions.h"
 #include "Utils.h"
 
@@ -64,7 +63,7 @@ http::message_generator UserManager::registerUser(http::request<http::string_bod
         res.body() = serializer->serialUserData(user);
         res.prepare_payload();
         return res;
-    } catch (const ValidateException& e) {
+    } catch (const ValidateException &e) {
         http::response<http::string_body> res{http::status::forbidden, req.version()};
         res.set(http::field::server, BOOST_BEAST_VERSION_STRING);
         res.set(http::field::content_type, "text/plain");

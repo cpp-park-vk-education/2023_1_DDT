@@ -8,10 +8,10 @@
 #include "FileMethods.h"
 #include "MyCppAntlr.h"
 #include "PythonAntlr.h"
+#include "ServiceExceptions.h"
 #include "ServiceUtils.h"
 #include "SolutionRepository.hpp"
 #include "TaskRepository.hpp"
-#include "ServiceExceptions.h"
 
 const std::string PLAGIAT_VERDICT = "Не, ну вы не палитесь. Плагиат.";
 const std::string NOT_PLAGIAT_VERDICT = "Красивое решение. А главное уникальное !";
@@ -57,7 +57,7 @@ std::string SolutionService::setResultVerdict(float textBasedRes, float tokenBas
 std::pair<float, size_t> SolutionService::getMaxTextResMetric(std::vector<Solution>& solutions,
                                                               const std::string& filedata, size_t userId,
                                                               float treshold) {
-    std::pair<float, size_t> maxMatch = std::make_pair(0.0, 1);
+    std::pair<float, size_t> maxMatch = std::make_pair(0.0, 0);
     for (auto sol : solutions) {
         if (sol.getSenderId() == userId) {
             continue;
@@ -85,7 +85,7 @@ std::pair<float, size_t> SolutionService::getMaxTextResMetric(std::vector<Soluti
 std::pair<float, size_t> SolutionService::getMaxTokenResMetric(std::vector<Solution>& solutions,
                                                                std::vector<int>& tokens, size_t userId,
                                                                float treshold) {
-    std::pair<float, size_t> maxMatch = std::make_pair(0.0, 1);
+    std::pair<float, size_t> maxMatch = std::make_pair(0.0, 0);
 
     for (auto sol : solutions) {
         if (sol.getSenderId() == userId) {
@@ -116,6 +116,7 @@ std::pair<float, size_t> SolutionService::getMaxTokenResMetric(std::vector<Solut
 Solution SolutionService::createSolution(size_t userId, size_t taskId, const std::string& filename,
                                          const std::string& filedata) {
     try {
+        std::cout << "HERE\n\n" << std::endl;
         std::pair<std::string, bool> fileExtension = FileMethods::checkFileExtension(filename);
         if (!fileExtension.second) {
             throw FileExtensionException("unknown file extension");
@@ -128,8 +129,9 @@ Solution SolutionService::createSolution(size_t userId, size_t taskId, const std
         std::time_t now = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
 
         float treshold = taskRepo->getTaskById(taskId).value().getTreshhold();
+        std::cout << "OK" << std::endl;
 
-        std::vector<Solution> solutions = solutionRepo->getSolutionsByTaskId(taskId);
+        std::vector<Solution> solutions = solutionRepo->getSolutionsByTaskIdAndLanguage(taskId, fileExtension.first);
 
         std::pair<float, size_t> textBasedRes = getMaxTextResMetric(solutions, filedata, userId, treshold);
         std::pair<float, size_t> tokenBasedRes = getMaxTokenResMetric(solutions, tokensTypes, userId, treshold);
@@ -144,8 +146,9 @@ Solution SolutionService::createSolution(size_t userId, size_t taskId, const std
 
         std::string result = setResultVerdict(textBasedRes.first, tokenBasedRes.first, plagiatSolId, treshold);
 
-        Solution sol = Solution(std::ctime(&now), userId, filedata, taskId, result,
-                                Utils::convertIntArrayIntoString(tokensTypes), astTree, plagiatSolId);
+        Solution sol =
+            Solution(std::ctime(&now), userId, filedata, taskId, result, Utils::convertIntArrayIntoString(tokensTypes),
+                     astTree, plagiatSolId, fileExtension.first);
 
         size_t id = solutionRepo->storeSolution(sol);
         sol.setId(id);

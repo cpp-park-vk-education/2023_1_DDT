@@ -36,8 +36,7 @@ double WShinglingTokenMetric::getMetric() {
     unsigned long n = tokens1.size();
     unsigned long m = tokens2.size();
 
-    if (n < 3 || m < 3)
-        return 0;
+    if (n < 3 || m < 3) return 0;
 
     std::vector<std::tuple<int, int, int>> sh1;
     std::vector<std::tuple<int, int, int>> sh2;

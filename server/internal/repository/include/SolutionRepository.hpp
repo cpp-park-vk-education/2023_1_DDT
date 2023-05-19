@@ -13,7 +13,7 @@
 using namespace pqxx;
 
 class SolutionRepository : public ISolutionRepository {
- public:
+public:
     SolutionRepository();
 
     std::optional<Solution> getSolutionById(size_t id) override;
@@ -23,6 +23,9 @@ class SolutionRepository : public ISolutionRepository {
     std::vector<Solution> getSolutionsByTaskId(size_t task_id) override;
 
     std::vector<Solution> getSolutionsByTaskIdAndSenderId(size_t, size_t) override;
+
+    std::vector<Solution> getSolutionsByTaskIdAndLanguage(
+            size_t task_id, std::string lang) override;
 
     size_t storeSolution(Solution solution) override;
 
@@ -34,7 +37,7 @@ class SolutionRepository : public ISolutionRepository {
 
     std::optional<Solution> getOriginalSolution(size_t id) override;
 
- private:
+private:
     static Solution makeSolution(const result::const_iterator &c);
 
     std::shared_ptr<dbManager> manager;

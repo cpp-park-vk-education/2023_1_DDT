@@ -29,9 +29,9 @@ std::vector<Task> TaskRepository::getAllTasks() {
         nontransaction n(*c);
         auto stream = stream_from::query(n, sql);
         std::vector<Task> tasks;
-        std::tuple<size_t, std::string, float> row;
+        std::tuple<size_t, std::string, float, std::string> row;
         while (stream >> row) {
-            tasks.emplace_back(get<0>(row), get<1>(row), get<2>(row));
+            tasks.emplace_back(get<0>(row), get<1>(row), get<2>(row), get<3>(row));
         }
         stream.complete();
         manager->freeConnection(c);
@@ -44,9 +44,9 @@ std::vector<Task> TaskRepository::getAllTasks() {
 void TaskRepository::updateTask(const Task &task) {
     try {
         auto c = manager->connection();
-        std::string sql = (boost::format("UPDATE tasks SET description = '%s', treshold = '%s';") %
-                           task.getDescription() % task.getTreshhold())
-                              .str();
+        std::string sql = (boost::format("UPDATE tasks SET description = '%s', treshold = '%s', name = '%s';") %
+                           task.getDescription() % task.getTreshhold() % task.getName())
+                .str();
         work w(*c);
         w.exec(sql);
         manager->freeConnection(c);
@@ -58,10 +58,10 @@ void TaskRepository::updateTask(const Task &task) {
 size_t TaskRepository::storeTask(Task task) {
     try {
         auto c = manager->connection();
-        std::string sql = (boost::format("INSERT INTO tasks (description, treshold) "
-                                         "VALUES ('%s', '%s') RETURNING id; ") %
-                           task.getDescription() % task.getTreshhold())
-                              .str();
+        std::string sql = (boost::format("INSERT INTO tasks (description, treshold, name) "
+                                         "VALUES ('%s', '%s', '%s') RETURNING id; ") %
+                           task.getDescription() % task.getTreshhold() % task.getName())
+                .str();
         work w(*c);
         row r = w.exec1(sql);
         w.commit();
@@ -88,8 +88,10 @@ void TaskRepository::deleteTaskById(size_t task_id) {
 }
 
 Task TaskRepository::makeTask(const result::const_iterator &c) {
-    return {c.at(c.column_number("id")).as<size_t>(), c.at(c.column_number("description")).as<std::string>(),
-            c.at(c.column_number("treshold")).as<float>()};
+    return {c.at(c.column_number("id")).as<size_t>(),
+            c.at(c.column_number("description")).as<std::string>(),
+            c.at(c.column_number("treshold")).as<float>(),
+            c.at(c.column_number("name")).as<std::string>()};
 }
 
 TaskRepository::TaskRepository() { manager = std::make_shared<dbManager>(); }

@@ -8,7 +8,7 @@
 #include "Solution.hpp"
 
 class ISolutionRepository {
- public:
+public:
     virtual ~ISolutionRepository() = default;
 
     virtual std::optional<Solution> getSolutionById(size_t id) = 0;
@@ -18,6 +18,10 @@ class ISolutionRepository {
     virtual std::vector<Solution> getSolutionsByTaskId(size_t task_id) = 0;
 
     virtual std::vector<Solution> getSolutionsByTaskIdAndSenderId(size_t, size_t) = 0;
+
+    virtual std::vector<Solution> getSolutionsByTaskIdAndLanguage(
+            size_t, std::string) = 0;
+
 
     virtual size_t storeSolution(Solution solution) = 0;
 

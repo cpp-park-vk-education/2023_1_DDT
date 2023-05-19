@@ -210,7 +210,8 @@ CREATE TABLE public.solutions (
     result character varying,
     tokens character varying,
     asttree character varying,
-    original_solution_id integer
+    original_solution_id integer,
+    language character varying(255)
 );
 
 
@@ -249,7 +250,8 @@ ALTER SEQUENCE public.solutions_id_seq OWNED BY public.solutions.id;
 CREATE TABLE public.tasks (
     id integer NOT NULL,
     description text,
-    treshold real
+    treshold real,
+    name character varying(255)
 );
 
 
@@ -318,7 +320,7 @@ ALTER TABLE ONLY public.users ALTER COLUMN id SET DEFAULT nextval('public."Users
 --
 
 COPY public.metricstat (id, solution_id, text_based_res, token_based_res, tree_based_res, verdict, mean_res) FROM stdin;
-1	1	1	1	1	t	1
+0	0	1	1	1	t	1
 \.
 
 
@@ -328,8 +330,8 @@ COPY public.metricstat (id, solution_id, text_based_res, token_based_res, tree_b
 -- Data for Name: solutions; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.solutions (id, send_date, sender_id, source, task_id, result, tokens, asttree, original_solution_id) FROM stdin;
-1	2023-05-02	10	0.1	27	0.1	0.1	0.1	1
+COPY public.solutions (id, send_date, sender_id, source, task_id, result, tokens, asttree, original_solution_id, language) FROM stdin;
+0	2023-05-02	0	0.1	0	0.1	0.1	0.1	0 unknown
 \.
 
 
@@ -339,9 +341,10 @@ COPY public.solutions (id, send_date, sender_id, source, task_id, result, tokens
 -- Data for Name: tasks; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.tasks (id, description, treshold) FROM stdin;
-2	orher_description	0.1
-1	description	0.5
+COPY public.tasks (id, description, treshold, name) FROM stdin;
+2	other_description	0.1 second_task
+1	description	0.5 first_task
+0   zero 0 zero
 \.
 
 
@@ -352,8 +355,8 @@ COPY public.tasks (id, description, treshold) FROM stdin;
 --
 
 COPY public.users (id, login, password, username) FROM stdin;
+0   deleted_user 0000 DELETED_USER
 1	qwerty200468@gmail.com	123	tolik
-2	qwerty200468@gmail.com	123	tolik
 \.
 
 

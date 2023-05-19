@@ -7,11 +7,13 @@ class Task {
     size_t id;
     std::string description;
     float treshhold;
+    std::string name;
 
  public:
-    Task(size_t id, std::string description_, float treshold_) noexcept;
+    Task(size_t id, std::string description_,
+         float treshold_, std::string name) noexcept;
 
-    Task(std::string description_, float treshold_) noexcept;
+    Task(std::string description_, float treshold_, std::string name) noexcept;
 
     Task() noexcept;
 
@@ -26,6 +28,10 @@ class Task {
     void setDescription(const std::string &description) noexcept;
 
     void setId(size_t id) noexcept;
+
+    [[nodiscard]] const std::string &getName() const;
+
+    void setName(const std::string &name);
 
     bool operator==(const Task &rhs) const noexcept;
 

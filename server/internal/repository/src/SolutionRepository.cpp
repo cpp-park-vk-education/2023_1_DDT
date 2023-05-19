@@ -29,10 +29,10 @@ std::vector<Solution> SolutionRepository::getSolutionsBySenderId(size_t sender_i
         nontransaction n(*c);
         auto stream = stream_from::query(n, sql);
         std::vector<Solution> solutions;
-        std::tuple<size_t, std::string, size_t, std::string, size_t, std::string, std::string, std::string, size_t> row;
+        std::tuple<size_t, std::string, size_t, std::string, size_t, std::string, std::string, std::string, size_t, std::string> row;
         while (stream >> row) {
             solutions.emplace_back(get<0>(row), get<1>(row), get<2>(row), get<3>(row), get<4>(row), get<5>(row),
-                                   get<6>(row), get<7>(row), get<8>(row));
+                                   get<6>(row), get<7>(row), get<8>(row), get<9>(row));
         }
         stream.complete();
         manager->freeConnection(c);
@@ -49,10 +49,10 @@ std::vector<Solution> SolutionRepository::getSolutionsByTaskId(size_t task_id) {
         nontransaction n(*c);
         auto stream = stream_from::query(n, sql);
         std::vector<Solution> solutions;
-        std::tuple<size_t, std::string, size_t, std::string, size_t, std::string, std::string, std::string, size_t> row;
+        std::tuple<size_t, std::string, size_t, std::string, size_t, std::string, std::string, std::string, size_t, std::string> row;
         while (stream >> row) {
             solutions.emplace_back(get<0>(row), get<1>(row), get<2>(row), get<3>(row), get<4>(row), get<5>(row),
-                                   get<6>(row), get<7>(row), get<8>(row));
+                                   get<6>(row), get<7>(row), get<8>(row), get<9>(row));
         }
         stream.complete();
         manager->freeConnection(c);
@@ -66,15 +66,15 @@ std::vector<Solution> SolutionRepository::getSolutionsByTaskIdAndSenderId(size_t
     try {
         auto c = manager->connection();
         std::string sql =
-            (boost::format("SELECT * FROM solutions WHERE task_id='%s' AND sender_id='%s'") % task_id % sender_id)
-                .str();
+                (boost::format("SELECT * FROM solutions WHERE task_id='%s' AND sender_id='%s'") % task_id % sender_id)
+                        .str();
         nontransaction n(*c);
         auto stream = stream_from::query(n, sql);
         std::vector<Solution> solutions;
-        std::tuple<size_t, std::string, size_t, std::string, size_t, std::string, std::string, std::string, size_t> row;
+        std::tuple<size_t, std::string, size_t, std::string, size_t, std::string, std::string, std::string, size_t, std::string> row;
         while (stream >> row) {
             solutions.emplace_back(get<0>(row), get<1>(row), get<2>(row), get<3>(row), get<4>(row), get<5>(row),
-                                   get<6>(row), get<7>(row), get<8>(row));
+                                   get<6>(row), get<7>(row), get<8>(row), get<9>(row));
         }
         stream.complete();
         manager->freeConnection(c);
@@ -83,6 +83,29 @@ std::vector<Solution> SolutionRepository::getSolutionsByTaskIdAndSenderId(size_t
         throw;
     }
 }
+
+std::vector<Solution> SolutionRepository::getSolutionsByTaskIdAndLanguage(size_t task_id, std::string lang) {
+    try {
+        auto c = manager->connection();
+        std::string sql =
+                (boost::format("SELECT * FROM solutions WHERE task_id='%s' AND language='%s'") % task_id % lang)
+                        .str();
+        nontransaction n(*c);
+        auto stream = stream_from::query(n, sql);
+        std::vector<Solution> solutions;
+        std::tuple<size_t, std::string, size_t, std::string, size_t, std::string, std::string, std::string, size_t, std::string> row;
+        while (stream >> row) {
+            solutions.emplace_back(get<0>(row), get<1>(row), get<2>(row), get<3>(row), get<4>(row), get<5>(row),
+                                   get<6>(row), get<7>(row), get<8>(row), get<9>(row));
+        }
+        stream.complete();
+        manager->freeConnection(c);
+        return solutions;
+    } catch (...) {
+        throw;
+    }
+}
+
 
 std::optional<Solution> SolutionRepository::getOriginalSolution(size_t id) {
     try {
@@ -103,12 +126,12 @@ size_t SolutionRepository::storeSolution(Solution solution) {
         auto c = manager->connection();
 
         std::string sql =
-            (boost::format("INSERT INTO solutions (send_date,sender_id, source, task_id, result, tokens, "
-                           "astTree, original_solution_id) "
-                           "VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s') RETURNING id; ") %
-             solution.getSendDate() % solution.getSenderId() % solution.getSource() % solution.getTaskId() %
-             solution.getResult() % solution.getTokens() % solution.getAstTree() % solution.getOrigSolution())
-                .str();
+                (boost::format("INSERT INTO solutions (send_date,sender_id, source, task_id, result, tokens, "
+                               "astTree, original_solution_id, language) "
+                               "VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s') RETURNING id; ") %
+                 solution.getSendDate() % solution.getSenderId() % solution.getSource() % solution.getTaskId() %
+                 solution.getResult() % solution.getTokens() % solution.getAstTree() %
+                 solution.getOrigSolution() % solution.getLanguage()).str();
         work w(*c);
         row r = (w.exec1(sql));
         w.commit();
@@ -124,12 +147,12 @@ void SolutionRepository::updateSolution(Solution solution) {
         auto c = manager->connection();
 
         std::string sql =
-            (boost::format("UPDATE solutions SET send_date = '%s', sender_id = '%s', source = '%s',"
-                           " task_id = '%s', result = '%s', tokens = '%s', astTree = '%s', "
-                           "original_solution_id = '%s';") %
-             solution.getSendDate() % solution.getSenderId() % solution.getSource() % solution.getTaskId() %
-             solution.getResult() % solution.getTokens() % solution.getAstTree() % solution.getOrigSolution())
-                .str();
+                (boost::format("UPDATE solutions SET send_date = '%s', sender_id = '%s', source = '%s',"
+                               " task_id = '%s', result = '%s', tokens = '%s', astTree = '%s', "
+                               "original_solution_id = '%s', language = '%s';") %
+                 solution.getSendDate() % solution.getSenderId() % solution.getSource() % solution.getTaskId() %
+                 solution.getResult() % solution.getTokens() % solution.getAstTree() %
+                 solution.getOrigSolution() % solution.getLanguage()).str();
         work w(*c);
         w.exec(sql);
         manager->freeConnection(c);
@@ -162,7 +185,8 @@ Solution SolutionRepository::makeSolution(const result::const_iterator &c) {
             c.at(c.column_number("result")).as<std::string>(),
             c.at(c.column_number("tokens")).as<std::string>(),
             c.at(c.column_number("astTree")).as<std::string>(),
-            c.at(c.column_number("original_solution_id")).as<size_t>()};
+            c.at(c.column_number("original_solution_id")).as<size_t>(),
+            c.at(c.column_number("language")).as<std::string>()};
 }
 
 SolutionRepository::SolutionRepository() { manager = std::make_shared<dbManager>(); }

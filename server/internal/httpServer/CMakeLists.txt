@@ -9,7 +9,7 @@ include_directories(${INCLUDE_DIRS})
 add_library(${PROJECT_NAME} ${SOURCES})
 
 target_include_directories(${PROJECT_NAME} PUBLIC ${INCLUDE_DIRS} ${Boost_INCLUDE_DIR} ${libEntities_INCLUDE_DIRS} ${SERVICE_lib_INCLUDE_DIRS})
-target_link_libraries(${PROJECT_NAME} ${Boost_LIBRARIES} ${SERVICE_lib_LIBRARY} ${libEntities_LIB})
+target_link_libraries(${PROJECT_NAME} ${Boost_LIBRARIES} ${SERVICE_lib_LIBRARY} ${libEntities_LIB} ${PQXX_LIB})
 
 set(HTTPSERVER_LIB ${PROJECT_NAME})
 set(HTTPSERVER_LIB ${HTTPSERVER_LIB} PARENT_SCOPE)

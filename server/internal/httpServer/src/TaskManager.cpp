@@ -12,9 +12,9 @@ TaskManager::TaskManager() : serializer(std::make_shared<Serializer>()), taskSer
 void TaskManager::setService(std::shared_ptr<ITaskService> service) { taskService = service; }
 
 http::message_generator TaskManager::createTask(http::request<http::string_body> &&req) {
-    std::string description = serializer->deserialNewTaskData(req.body());
 
     try {
+        std::string description = serializer->deserialNewTaskData(req.body());
         taskService->createTask(description, 0.5);
         //    TmpTaskService::createTask(description);
         http::response<http::empty_body> res{http::status::ok, req.version()};

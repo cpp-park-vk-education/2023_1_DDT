@@ -3,7 +3,7 @@ generate:
 	cmake -B build/
 	
 build-project:
-	cd ./build && make --no-print-directory
+	cd ./build && cmake .. && make --no-print-directory
 
 clean:
 	rm -rf build
@@ -36,6 +36,5 @@ stop-docker:
 	docker stop app
 
 run-docker-compose:
-	docker compose down --volumes
 	docker compose up -d --build
 

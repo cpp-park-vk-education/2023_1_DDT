@@ -12,15 +12,12 @@ Router::Router(std::string_view doc_root_)
       doc_root(doc_root_) {}
 
 http::message_generator Router::handleRequest(http::request<http::string_body> &&req) {
-    std::cout << req << std::endl;
     if (req.method() != http::verb::get && req.method() != http::verb::post)
         return getBadRequest(req, "Unknown HTTP-method");
 
     if (req.target().empty() || req.target()[0] != '/' || req.target().find("..") != beast::string_view::npos) {
         return getBadRequest(req, "Illegal request-target");
     }
-
-    std::cout << req.target() << std::endl;
 
     if (req.target() == "/solution/submit") {
         return solutionManager->createSolution(std::move(req));

@@ -70,7 +70,7 @@ void SolutionsWindow::on_chooseFileButton_clicked() {
 }
 
 void SolutionsWindow::on_sendButton_clicked() {
-    Solution sol = Core::submitSolution(task.id, path_to_file);
+    Solution sol = Core::submitSolution(task.id, filename->text().toUtf8().constData(), path_to_file);
     result->setText(QString::fromStdString(sol.result));
 }
 

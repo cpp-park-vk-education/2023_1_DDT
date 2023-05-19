@@ -36,7 +36,10 @@ std::pair<unsigned, User> HttpClientManager::registerUser(const std::string &log
         auto* cbuf = boost::asio::buffer_cast<const char*>(seq);
         res_body.append(cbuf, boost::asio::buffer_size(seq));
     }
-    User user = serializer->deserialUserData(res_body);
+    User user;
+    if (status == 200) {
+        user = serializer->deserialUserData(res_body);
+    }
     return {status, user};
 }
 
@@ -44,6 +47,7 @@ Solution HttpClientManager::submitSolution(const int &user_id, const int &task_i
                                            const std::string &path_to_sound) {
     std::string body = serializer->serialSolutionData(user_id, task_id, filename, path_to_sound);
     http::response<http::dynamic_body> res = client->makeGetRequest("/solution/submit", body);
+    std::cout << res << std::endl;
     // unsigned status = res.result_int();
     std::string res_body;
     for (auto seq : res.body().data()) {

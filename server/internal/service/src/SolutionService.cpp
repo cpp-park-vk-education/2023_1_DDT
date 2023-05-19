@@ -9,7 +9,7 @@
 #include "PythonAntlr.h"
 #include "SolutionRepository.hpp"
 #include "TaskRepository.hpp"
-#include "Utils.h"
+#include "ServiceUtils.h"
 
 const std::string PLAGIAT_VERDICT = "Не, ну вы не палитесь. Плагиат.";
 const std::string NOT_PLAGIAT_VERDICT = "Красивое решение. А главное уникальное !";
@@ -67,14 +67,13 @@ std::pair<float, size_t> SolutionService::getMaxTextResMetric(std::vector<Soluti
 std::pair<float, size_t> SolutionService::getMaxTokenResMetric(std::vector<Solution>& solutions,
                                                                std::vector<int>& tokens, float treshold) {
     std::pair<float, size_t> maxMatch = std::make_pair(0.0, 0ul);
-    for (auto sol : solutions) {
-        std::cout << "Convert to string" << std::endl;
-        std::cout << Utils::convertIntArrayIntoString(tokens) << std::endl;
-        std::cout << sol.getTokens() << std::endl;
 
+    for (auto sol : solutions) {
         tokenMetric = std::make_unique<LevDistTokenMetric>();
         tokenMetric->setData(tokens, Utils::convertStringIntoIntArray(sol.getTokens()));
         float tokenBasedRes = float(tokenMetric->getMetric());
+
+        auto sol_tokens = Utils::convertStringIntoIntArray(sol.getTokens());
 
         tokenMetric = std::make_unique<WShinglingTokenMetric>();
         tokenMetric->setData(tokens, Utils::convertStringIntoIntArray(sol.getTokens()));
@@ -124,14 +123,8 @@ Solution SolutionService::createSolution(size_t userId, size_t taskId, const std
             }
         }
 
-        std::cout << "Plagiat" << std::endl;
-        std::cout << plagiatSolId << std::endl;
-
         Solution sol = Solution(std::ctime(&now), userId, filedata, taskId, result,
                                 Utils::convertIntArrayIntoString(tokensTypes), astTree, plagiatSolId);
-
-        std::cout << "Dick" << std::endl;
-        std::cout << sol.getOrigSolution() << std::endl;
 
         size_t id = solutionRepo->storeSolution(sol);
         sol.setId(id);

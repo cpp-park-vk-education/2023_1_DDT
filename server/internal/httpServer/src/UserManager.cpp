@@ -9,13 +9,18 @@ void UserManager::setService(std::shared_ptr<IUserService> service) { userServic
 
 http::message_generator UserManager::loginUser(http::request<http::string_body> &&req) {
     std::string login, password;
-    std::tie(login, password) = serializer->deserialUserData(req.body());
+
+    try {
+        std::tie(login, password) = serializer->deserialUserData(req.body());
+    } catch (...) {
+        return getBadRequest(req, "Something went wrong!");
+    }
 
     User user;
     bool flag = true;
 
     try {
-        auto result = userService->login(login, password);
+        user = userService->login(login, password);
     } catch (...) {
         flag = false;
     }
@@ -26,6 +31,7 @@ http::message_generator UserManager::loginUser(http::request<http::string_body> 
         res.set(http::field::content_type, "text/plain");
         res.keep_alive(req.keep_alive());
         res.body() = serializer->serialUserData(user);
+        std::cout << serializer->serialUserData(user) << std::endl;
         res.prepare_payload();
         return res;
     } else {
@@ -34,16 +40,16 @@ http::message_generator UserManager::loginUser(http::request<http::string_body> 
         res.set(http::field::content_type, "text/plain");
         res.keep_alive(req.keep_alive());
         res.body() = serializer->serialUserData(user);
+        std::cout << serializer->serialUserData(user) << std::endl;
         res.prepare_payload();
         return res;
     }
 }
 
 http::message_generator UserManager::registerUser(http::request<http::string_body> &&req) {
-    std::string login, password, username;
-    std::tie(login, password, username) = serializer->deserialNewUserData(req.body());
-
     try {
+        std::string login, password, username;
+        std::tie(login, password, username) = serializer->deserialNewUserData(req.body());
         User user = userService->createUser(login, username, password);
         http::response<http::string_body> res{http::status::ok, req.version()};
         res.set(http::field::server, BOOST_BEAST_VERSION_STRING);

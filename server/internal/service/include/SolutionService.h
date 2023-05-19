@@ -19,21 +19,20 @@ class SolutionService : public ISolutionService {
     std::unique_ptr<ITextMetric> textMetric;
     std::unique_ptr<ITokenMetric> tokenMetric;
     void setAntlrWrapper(const std::string& fileExtension, const std::string& filedata);
-    std::string setResultVerdict(float textBasedRes, float tokenBasedRes, float treshold);
+    std::string setResultVerdict(float textBasedRes, float tokenBasedRes, size_t plagiatSolId, float treshold);
     std::pair<float, size_t> getMaxTextResMetric(std::vector<Solution>& solutions, const std::string& filedata,
-                                                 float treshold);
+                                                 size_t userId, float treshold);
 
     std::pair<float, size_t> getMaxTokenResMetric(std::vector<Solution>& solutions, std::vector<int>& tokens,
-                                                  float treshold);
+                                                  size_t userId, float treshold);
 
  public:
     explicit SolutionService(std::unique_ptr<ISolutionRepository> solutionRepo,
                              std::unique_ptr<ITaskRepository> taskRepo);
     SolutionService();
-    void setMetrics(std::unique_ptr<IMockMetrics> metrics_){};
     Solution createSolution(size_t userId, size_t taskId, const std::string& filename,
                             const std::string& filedata) override;
     void deleteSolutionById(size_t solId) override;
-    std::vector<Solution> getSolutionsByUserAndTaskId(size_t user_id, size_t task_id);
+    std::vector<Solution> getSolutionsByUserAndTaskId(size_t user_id, size_t task_id) override;
     std::pair<std::string, std::string> getMetrics(size_t solId) override;
 };

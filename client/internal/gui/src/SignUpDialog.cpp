@@ -87,7 +87,11 @@ void SignUpDialog::on_signUpButton_clicked() {
                 close();
                 break;
             case 403:
-                QMessageBox::warning(this, "Регистрация невозможна", "Логин уже занят!");
+                QMessageBox::warning(this, "Регистрация невозможна", "Произошла ошибка! Попробуйте ещё раз. \n"
+                                                                     "\n"
+                                                                     "Логин должен быть в виде: example@mail.ru \n"
+                                                                     "Имя от 3 до 20 символов \n"
+                                                                     "Пароль от 8 до 30 символов");
                 break;
             default:
                 QMessageBox::critical(this, "Регистрация невозможна!", "Нет соединения с сервером!");

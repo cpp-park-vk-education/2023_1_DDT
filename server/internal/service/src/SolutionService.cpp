@@ -11,6 +11,7 @@
 #include "ServiceUtils.h"
 #include "SolutionRepository.hpp"
 #include "TaskRepository.hpp"
+#include "ServiceExceptions.h"
 
 const std::string PLAGIAT_VERDICT = "Не, ну вы не палитесь. Плагиат.";
 const std::string NOT_PLAGIAT_VERDICT = "Красивое решение. А главное уникальное !";

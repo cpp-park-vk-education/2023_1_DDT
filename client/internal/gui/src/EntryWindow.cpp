@@ -23,7 +23,7 @@ void EntryWindow::setupUi(QMainWindow *EntryWindow) {
     verticalLayout = new QVBoxLayout(centralwidget);
 
     introLabel = new QLabel(centralwidget);
-    introLabel->setText("Добро пожаловать в Noiseground!");
+    introLabel->setText("Добро пожаловать в SourcedOut!");
     introLabel->setGeometry(QRect(140, 200, 331, 31));
 
     verticalLayout->addWidget(introLabel, 0, Qt::AlignHCenter);

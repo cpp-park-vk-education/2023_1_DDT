@@ -37,7 +37,7 @@ void SolutionsWindow::setupUi(QMainWindow *SolutionsWindow) {
     filename = new QLabel(this);
 
     chooseFileButton = new QPushButton(this);
-    chooseFileButton->setText(QString::fromUtf8("Выбирите файл"));
+    chooseFileButton->setText(QString::fromUtf8("Выберите файл"));
 
     sendButton = new QPushButton(this);
     sendButton->setText(QString::fromUtf8("Отправить"));

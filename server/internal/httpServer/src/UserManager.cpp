@@ -1,6 +1,7 @@
 #include "UserManager.h"
 
 #include "TmpUserService.h"
+#include "ServiceExceptions.h"
 #include "Utils.h"
 
 UserManager::UserManager() : serializer(std::make_shared<Serializer>()), userService(std::make_shared<UserService>()) {}
@@ -13,7 +14,7 @@ http::message_generator UserManager::loginUser(http::request<http::string_body> 
     try {
         std::tie(login, password) = serializer->deserialUserData(req.body());
     } catch (...) {
-        return getBadRequest(req, "Something went wrong!");
+        return getBadRequest(req, "Неправильные параметры!");
     }
 
     User user;
@@ -40,22 +41,35 @@ http::message_generator UserManager::loginUser(http::request<http::string_body> 
         res.set(http::field::content_type, "text/plain");
         res.keep_alive(req.keep_alive());
         res.body() = serializer->serialUserData(user);
-        std::cout << serializer->serialUserData(user) << std::endl;
         res.prepare_payload();
         return res;
     }
 }
 
 http::message_generator UserManager::registerUser(http::request<http::string_body> &&req) {
+    std::string login, password, username;
+
     try {
-        std::string login, password, username;
         std::tie(login, password, username) = serializer->deserialNewUserData(req.body());
+    } catch (...) {
+        return getBadRequest(req, "Неправильные параметры!");
+    }
+
+    try {
         User user = userService->createUser(login, username, password);
         http::response<http::string_body> res{http::status::ok, req.version()};
         res.set(http::field::server, BOOST_BEAST_VERSION_STRING);
         res.set(http::field::content_type, "text/plain");
         res.keep_alive(req.keep_alive());
         res.body() = serializer->serialUserData(user);
+        res.prepare_payload();
+        return res;
+    } catch (const ValidateException& e) {
+        http::response<http::string_body> res{http::status::forbidden, req.version()};
+        res.set(http::field::server, BOOST_BEAST_VERSION_STRING);
+        res.set(http::field::content_type, "text/plain");
+        res.keep_alive(req.keep_alive());
+        res.body() = "Не валидные данные";
         res.prepare_payload();
         return res;
     } catch (...) {

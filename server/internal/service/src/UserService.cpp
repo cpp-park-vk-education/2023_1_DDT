@@ -1,6 +1,6 @@
 #include "UserService.h"
 
-#include "Exceptions.h"
+#include "ServiceExceptions.h"
 #include "UserRepository.hpp"
 #include "UserValidator.h"
 

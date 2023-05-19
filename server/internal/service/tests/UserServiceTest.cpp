@@ -1,7 +1,7 @@
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 
-#include "Exceptions.h"
+#include "ServiceExceptions.h"
 #include "UserService.h"
 
 class Exception : public std::exception {

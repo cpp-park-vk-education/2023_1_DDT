@@ -10,6 +10,7 @@
 #include <QComboBox>
 #include <QLabel>
 #include <QFileDialog>
+#include <QTextEdit>
 #include "Task.h"
 
 class TasksWindow : public QMainWindow {
@@ -32,7 +33,7 @@ private:
     QVBoxLayout* taskVerticalLayout = nullptr;
     QLabel* label = nullptr;
     QComboBox* tasks = nullptr;
-    QLabel* taskDescription = nullptr;
+    QTextEdit* taskDescription = nullptr;
     QPushButton* goToTaskButton = nullptr;
     QPushButton* addTaskButton = nullptr;
     QPushButton* backButton = nullptr;

@@ -9,6 +9,7 @@
 #include <QComboBox>
 #include <QLabel>
 #include <QFileDialog>
+#include <QTextEdit>
 #include "Task.h"
 #include "TasksWindow.h"
 
@@ -36,7 +37,7 @@ private:
     QPushButton* chooseFileButton = nullptr;
     QLabel* filename = nullptr;
     QPushButton* sendButton = nullptr;
-    QLabel* result = nullptr;
+    QTextEdit* result = nullptr;
     QPushButton* backButton = nullptr;
 
     void setupUi(QMainWindow *UserWindow);

@@ -42,7 +42,8 @@ void SolutionsWindow::setupUi(QMainWindow *SolutionsWindow) {
     sendButton = new QPushButton(this);
     sendButton->setText(QString::fromUtf8("Отправить"));
 
-    result = new QLabel(this);
+    result = new QTextEdit(this);
+    result->setReadOnly(true);
     result->setText(QString::fromUtf8("Отправьте для принятия решения"));
 
     backButton = new QPushButton(this);
@@ -70,6 +71,10 @@ void SolutionsWindow::on_chooseFileButton_clicked() {
 }
 
 void SolutionsWindow::on_sendButton_clicked() {
+    if (path_to_file.empty()) {
+        QMessageBox::warning(this, "Ошибка отправки", "Файл должен быть указан");
+        return;
+    }
     Solution sol = Core::submitSolution(task.id, filename->text().toUtf8().constData(), path_to_file);
     result->setText(QString::fromStdString(sol.result));
 }

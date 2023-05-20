@@ -54,7 +54,8 @@ void TasksWindow::setupUi(QMainWindow *UserWindow) {
     taskVerticalLayout->addWidget(label);
     taskVerticalLayout->addWidget(tasks);
 
-    taskDescription = new QLabel(this);
+    taskDescription = new QTextEdit(this);
+    taskDescription->setReadOnly(true);
     std::string description = tasks_vector.empty() ? "" : tasks_vector[0].description;
     taskDescription->setText(QString(description.c_str()));
 

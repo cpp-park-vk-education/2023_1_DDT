@@ -7,7 +7,6 @@
 
 AddTaskDialog::AddTaskDialog(QWidget *parent) : QDialog(parent) {
     setupUi(this);
-
     connect(createButton, &QPushButton::clicked, this, &AddTaskDialog::on_createButton_clicked);
     connect(backButton, &QPushButton::clicked, this, &AddTaskDialog::on_backButton_clicked);
 }

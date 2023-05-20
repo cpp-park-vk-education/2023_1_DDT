@@ -45,13 +45,17 @@ void TasksWindow::setupUi(QMainWindow *UserWindow) {
     for (int i = 0; i < tasks_vector.size(); i++) {
         tasks->insertItem(i, QString::number(tasks_vector[i].id));
     }
+
+    if (tasks_vector.empty()) {
+        tasks->insertItem(0, QString::fromUtf8("Пока заданий нет"));
+    }
     tasks->setCurrentIndex(0);
 
     taskVerticalLayout->addWidget(label);
     taskVerticalLayout->addWidget(tasks);
 
     taskDescription = new QLabel(this);
-    std::string description = tasks_vector[0].description;
+    std::string description = tasks_vector.empty() ? "" : tasks_vector[0].description;
     taskDescription->setText(QString(description.c_str()));
 
     buttonsWidget = new QWidget(centralwidget);
@@ -62,6 +66,9 @@ void TasksWindow::setupUi(QMainWindow *UserWindow) {
 
     goToTaskButton = new QPushButton(this);
     goToTaskButton->setText(QString::fromUtf8("Перейти к сдаче"));
+
+    if (tasks_vector.empty())
+        goToTaskButton->setDisabled(true);
 
     addTaskButton = new QPushButton(this);
     addTaskButton->setText(QString::fromUtf8("Добавить задание"));
@@ -114,4 +121,6 @@ void TasksWindow::updateTasks() {
 
     std::string description = tasks_vector[0].description;
     taskDescription->setText(QString(description.c_str()));
+
+    goToTaskButton->setDisabled(false);
 }

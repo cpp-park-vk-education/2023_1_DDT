@@ -11,45 +11,25 @@ defaults:
     shell: bash
 
 jobs:
+  Format:
+    runs-on: ubuntu-latest
+    container: raiden454/cpp-app
+    steps:
+      - uses: actions/checkout@v3
+      - run: make format
+  Lint:
+    runs-on: ubuntu-latest
+    container: raiden454/cpp-app
+    needs: [Format]
+    steps:
+      - uses: actions/checkout@v3
+      - run: make lint        
   build:
     runs-on: ubuntu-latest
     container: raiden454/cpp-app
     steps:
       - uses: actions/checkout@v3
-      - name: Installing
-        run: |
-          apt update
-          git clone https://github.com/google/googletest.git -b release-1.11.0
-          cd googletest
-          mkdir build
-          cd build
-          cmake .. -DBUILD_GMOCK=ON
-          make
-          make install
-          cd ../..
       - name: Building
-        run: |
-          mkdir build
-          cd build
-          cmake ..
-          make
-  # tests:
-  #   runs-on: ubuntu-latest
-  #   container: raiden454/cpp-app
-  #   needs: [build]
-  #   steps:
-  #     - uses: actions/checkout@v3
-  #     - name: Run-Tests
-  #       run: |
-  #         find / -name "test_service"
-  linters:
-    runs-on: ubuntu-latest
-    container: raiden454/cpp-app
-    steps:
-      - uses: actions/checkout@v3
-      - name: Cppcheck
-        run: |
-          cppcheck server --std=c++17 --enable=all
-      - name: Cpplint
-        run: |
-          cpplint --extensions=cpp,hpp,h --recursive ./server/*
+        run: make rebuild
+      - name: Run-Tests
+        run: make test   

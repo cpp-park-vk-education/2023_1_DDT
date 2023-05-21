@@ -20,24 +20,40 @@ services:
     ports:
       - "5432:5432"
     networks:
-      - db-network  
+      - db-network
+
   server:
     image: raiden454/cpp-app:latest
     networks:
       - db-network
+      - nginx-network
     env_file:
       - .env  
     volumes:
       - .:/project
     command: bash -c "make build-project && make server-run"
     ports:
-      - "8080:8080"
+      - "8081:8080"
     depends_on:
       - db
     links:
-      - db:db  
+      - db:db
+
+  docs:
+    image: nginx
+    container_name: docs
+    volumes:
+      - ./docs/index.html:/usr/share/nginx/html/index.html
+      - ./docs/openapi.yml:/usr/share/nginx/html/openapi.yml
+    ports:
+      - 8080:80 
+    networks:
+      - nginx-network 
     
 networks:
   db-network:
     driver: bridge
     name: db_network
+  nginx-network:
+    driver: bridge
+    name: nginx_network  

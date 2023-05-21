@@ -16,7 +16,8 @@ public:
 
     static Solution submitSolution(const int& task_id, const std::string& filename, const std::string& path_to_file);
 
-    static unsigned int createTask(const std::string &desc);
+    static unsigned int createTask(const std::string& name, const std::string &desc,
+                                   const double& threshold);
 
     static void logout();
 

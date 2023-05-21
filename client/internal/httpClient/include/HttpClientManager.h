@@ -23,8 +23,8 @@ public:
                             const std::string &path_to_solution);
     unsigned int getAllSolutionsForTask(const int& user_id, const int& task_id);
     std::vector<Task> getAllTasks();
-    unsigned int createTask(const std::string& desc);
-//    std::vector<Metric> getMetrics(const int& sol_id);
+    unsigned int createTask(const std::string& name, const std::string &desc,
+                            const double& threshold);
     void setHttpClient(std::shared_ptr<IHttpClient> client_);
 private:
     std::string host;

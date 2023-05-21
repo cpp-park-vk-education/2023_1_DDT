@@ -77,8 +77,9 @@ std::vector<Task> HttpClientManager::getAllTasks() {
     return tasks;
 }
 
-unsigned int HttpClientManager::createTask(const std::string &desc) {
-    std::string body = serializer->serialNewTaskData(desc);
+unsigned int HttpClientManager::createTask(const std::string& name, const std::string &desc,
+                                           const double& threshold) {
+    std::string body = serializer->serialNewTaskData(name, desc, threshold);
     http::response<http::dynamic_body> res = client->makeGetRequest("/task/create", body);
     unsigned int result = res.result_int();
     return result;

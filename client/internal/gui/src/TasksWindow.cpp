@@ -43,7 +43,7 @@ void TasksWindow::setupUi(QMainWindow *UserWindow) {
 
     tasks = new QComboBox(this);
     for (int i = 0; i < tasks_vector.size(); i++) {
-        tasks->insertItem(i, QString::number(tasks_vector[i].id));
+        tasks->insertItem(i, QString::fromUtf8(tasks_vector[i].name));
     }
 
     if (tasks_vector.empty()) {
@@ -116,7 +116,7 @@ void TasksWindow::updateTasks() {
     tasks_vector = Core::getAllTasks();
     tasks->clear();
     for (int i = 0; i < tasks_vector.size(); i++) {
-        tasks->insertItem(i, QString::number(tasks_vector[i].id));
+        tasks->insertItem(i, QString::fromUtf8(tasks_vector[i].name));
     }
     tasks->setCurrentIndex(0);
 

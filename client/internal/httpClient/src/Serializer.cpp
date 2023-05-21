@@ -22,7 +22,7 @@ User Serializer::deserialUserData(std::string_view body) {
     User res = {
             json.get<std::size_t>("user_id"),
             json.get<std::string>("login"),
-            json.get<std::string>("password"),
+            "",
             json.get<std::string>("username")
     };
     return res;
@@ -45,8 +45,9 @@ std::vector<Task> Serializer::deserialAllTasks(std::string_view body) {
     boost::property_tree::ptree json;
     boost::property_tree::read_json(ss, json);
     std::vector<Task> tasks;
-    for (auto &sound : json.get_child("tasks")) {
-        Task new_task(sound.second.get<std::size_t>("task_id"), sound.second.get<std::string>("description"));
+    for (auto &task : json.get_child("tasks")) {
+        Task new_task(task.second.get<std::size_t>("task_id"), task.second.get<std::string>("description"),
+                      task.second.get<std::string>("name"), task.second.get<double>("threshold"));
         tasks.push_back(new_task);
     }
     return tasks;
@@ -81,9 +82,11 @@ Solution Serializer::deserialSolutionData(std::string_view body) {
     return res;
 }
 
-std::string Serializer::serialNewTaskData(std::string_view desc) {
+std::string Serializer::serialNewTaskData(std::string_view name, std::string_view desc, double threshold) {
     boost::property_tree::ptree json;
+    json.put("name", name);
     json.put("description", desc);
+    json.put("threshold", threshold);
     std::stringstream out;
     boost::property_tree::write_json(out, json);
     return out.str();

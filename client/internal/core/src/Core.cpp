@@ -34,7 +34,8 @@ Solution Core::submitSolution(const int &task_id, const std::string& filename, c
     return client.submitSolution(user_id, task_id, filename, path_to_file);
 }
 
-unsigned int Core::createTask(const std::string &desc) {
-    return client.createTask(desc);
+unsigned int Core::createTask(const std::string& name, const std::string &desc,
+                              const double& threshold) {
+    return client.createTask(name, desc, threshold);
 }
 

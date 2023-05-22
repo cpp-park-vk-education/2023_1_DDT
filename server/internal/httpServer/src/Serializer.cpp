@@ -29,10 +29,7 @@ std::tuple<std::size_t, std::size_t> Serializer::deserialTaskData(const std::str
     ss << val;
     boost::property_tree::ptree json;
     boost::property_tree::read_json(ss, json);
-    std::tuple<std::size_t, std::size_t> res = {
-            json.get<std::size_t>("user_id"),
-            json.get<std::size_t>("task_id")
-    };
+    std::tuple<std::size_t, std::size_t> res = {json.get<std::size_t>("user_id"), json.get<std::size_t>("task_id")};
     return res;
 }
 
@@ -42,10 +39,7 @@ std::tuple<std::string, std::string, double> Serializer::deserialNewTaskData(con
     boost::property_tree::ptree json;
     boost::property_tree::read_json(ss, json);
     std::tuple<std::string, std::string, double> res = {
-            json.get<std::string>("name"),
-            json.get<std::string>("description"),
-            json.get<double>("threshold")
-    };
+        json.get<std::string>("name"), json.get<std::string>("description"), json.get<double>("threshold")};
     return res;
 }
 

@@ -35,30 +35,26 @@ void SolutionService::setAntlrWrapper(const std::string& fileExtension, const st
     }
 }
 
-std::string SolutionService::setResultVerdict(float textBasedRes, float tokenBasedRes, size_t plagiatSolId,
-                                              float treshold = 0.5f) {
+std::pair<std::string, std::string> SolutionService::setResultVerdict(float textBasedRes, float tokenBasedRes,
+                                                                      float treshold = 0.5f) {
     float meanRes = (tokenBasedRes + textBasedRes) / 2;
     if (meanRes < treshold) {
-        return (boost::format("\n%s\nРезультаты метрик: %.2f\n\tАнализ текста: %.2f\n\tАнализ токенов: %.2f") %
-                NOT_PLAGIAT_VERDICT % meanRes % textBasedRes % tokenBasedRes)
-            .str();
+        return std::make_pair(
+            (boost::format("\n%s\nРезультаты метрик: %.2f\n\tАнализ текста: %.2f\n\tАнализ токенов: %.2f") %
+             NOT_PLAGIAT_VERDICT % meanRes % textBasedRes % tokenBasedRes)
+                .str(),
+            NOT_PLAGIAT_VERDICT);
     }
-    try {
-        std::string closestCode = solutionRepo->getSolutionById(plagiatSolId).value().getSource();
-        return (boost::format(
-                    "\n%s\nРезультаты метрик: %.2f\n\tАнализ текста: %.2f\n\tАнализ токенов: %.2f\nОчень похоже на "
-                    "решение, отправленное до вас:\n%s") %
-                PLAGIAT_VERDICT % meanRes % textBasedRes % tokenBasedRes % closestCode)
-            .str();
-    } catch (...) {
-        throw;
-    }
+    return std::make_pair(
+        (boost::format("\n%s\nРезультаты метрик: %.2f\n\tАнализ текста: %.2f\n\tАнализ токенов: %.2f\n") %
+         PLAGIAT_VERDICT % meanRes % textBasedRes % tokenBasedRes)
+            .str(),
+        PLAGIAT_VERDICT);
 }
 
 std::pair<float, size_t> SolutionService::getMaxTextResMetric(std::vector<Solution>& solutions,
                                                               const std::string& filedata, size_t userId,
                                                               float treshold) {
-    // std::cout << "getMaxTextResMetric start" << std::endl;
     std::pair<float, size_t> maxMatch = std::make_pair(0.0, 0);
     for (auto sol : solutions) {
         if (sol.getSenderId() == userId) {
@@ -81,7 +77,6 @@ std::pair<float, size_t> SolutionService::getMaxTextResMetric(std::vector<Soluti
             break;
         }
     }
-    // std::cout << "getMaxTextResMetric done" << std::endl;
     return maxMatch;
 }
 
@@ -89,7 +84,6 @@ std::pair<float, size_t> SolutionService::getMaxTokenResMetric(std::vector<Solut
                                                                std::vector<int>& tokens, size_t userId,
                                                                float treshold) {
     std::pair<float, size_t> maxMatch = std::make_pair(0.0, 0);
-    // std::cout << "getMaxTokenResMetric start" << std::endl;
     for (auto sol : solutions) {
         if (sol.getSenderId() == userId) {
             continue;
@@ -113,12 +107,12 @@ std::pair<float, size_t> SolutionService::getMaxTokenResMetric(std::vector<Solut
             break;
         }
     }
-    // std::cout << "getMaxTokenResMetric done" << std::endl;
     return maxMatch;
 }
 
-Solution SolutionService::createSolution(size_t userId, size_t taskId, const std::string& filename,
-                                         const std::string& filedata) {
+std::pair<Solution, Solution::Codes> SolutionService::createSolution(size_t userId, size_t taskId,
+                                                                     const std::string& filename,
+                                                                     const std::string& filedata) {
     try {
         std::pair<std::string, bool> fileExtension = FileMethods::checkFileExtension(filename);
         if (!fileExtension.second) {
@@ -147,22 +141,28 @@ Solution SolutionService::createSolution(size_t userId, size_t taskId, const std
         t1.join();
         t2.join();
 
-        size_t plagiatSolId = 1;
-        if (textBasedRes.first > tokenBasedRes.first) {
-            plagiatSolId = textBasedRes.second;
-        } else {
-            plagiatSolId = tokenBasedRes.second;
+        std::pair<std::string, std::string> result =
+            setResultVerdict(textBasedRes.first, tokenBasedRes.first, treshold);
+
+        size_t plagiatSolId = 0;
+        Solution::Codes codes;
+        if (result.second == PLAGIAT_VERDICT) {
+            if (textBasedRes.first > tokenBasedRes.first) {
+                plagiatSolId = textBasedRes.second;
+            } else {
+                plagiatSolId = tokenBasedRes.second;
+            }
+            std::string originalCode = solutionRepo->getSolutionById(plagiatSolId).value().getSource();
+            codes = Solution::Codes(originalCode, filedata);
         }
 
-        std::string result = setResultVerdict(textBasedRes.first, tokenBasedRes.first, plagiatSolId, treshold);
-
         Solution sol =
-            Solution(std::ctime(&now), userId, filedata, taskId, result, Utils::convertIntArrayIntoString(tokensTypes),
-                     astTree, plagiatSolId, fileExtension.first);
+            Solution(std::ctime(&now), userId, filedata, taskId, result.first,
+                     Utils::convertIntArrayIntoString(tokensTypes), astTree, plagiatSolId, fileExtension.first);
 
         size_t id = solutionRepo->storeSolution(sol);
         sol.setId(id);
-        return sol;
+        return std::make_pair(sol, codes);
     } catch (...) {
         throw;
     }

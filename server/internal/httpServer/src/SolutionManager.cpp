@@ -24,7 +24,7 @@ http::message_generator SolutionManager::createSolution(http::request<http::stri
     }
 
     try {
-        Solution sol = solutionService->createSolution(user_id, task_id, filename, filedata);
+        Solution sol = solutionService->createSolution(user_id, task_id, filename, filedata).first;
         http::response<http::string_body> res{http::status::ok, req.version()};
         res.set(http::field::server, BOOST_BEAST_VERSION_STRING);
         res.set(http::field::content_type, "text/plain");

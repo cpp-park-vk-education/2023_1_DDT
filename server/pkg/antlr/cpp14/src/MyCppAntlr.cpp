@@ -35,6 +35,19 @@ std::vector<int> MyCppAntlr::getTokensTypes() {
   return ans;
 }
 
+std::vector<std::string> MyCppAntlr::getTokensNames() {
+  tokenStream_ptr->fill();
+  std::vector<std::string> ans(tokenStream_ptr->size());
+
+  int i = 0;
+  for (antlr4::Token *token : tokenStream_ptr->getTokens()) {
+    ans[i] = token->getText();
+    i++;
+  }
+
+  return ans;
+}
+
 std::string MyCppAntlr::getTokensString() {
   tokenStream_ptr->fill();
   std::string res;

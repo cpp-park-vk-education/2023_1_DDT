@@ -22,6 +22,7 @@ class PythonAntlr:public IAntlrWrapper {
   std::vector<antlr4::Token*> getTokens() override;
   std::vector<int> getTokensTypes() override;
   std::vector<std::string> getTokensNames() override;
+  std::vector<std::pair<std::string, int>> getTokensNamesWithPosition() override;
   std::pair<std::string, std::string> getTokensAndTree() override;
   std::string getTokensString() override;
   std::string getTreeString() override;

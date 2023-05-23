@@ -23,7 +23,7 @@ dev:
 	docker run --rm -it \
 		-v $(PWD):/project \
 		--name app \
-		ddt-project
+		raiden454/cpp-app
 
 stop-docker:
 	docker stop app

@@ -173,8 +173,8 @@ std::pair <std::string, std::string> FoundSame::getTexts2() {
                 cases.push_back( {dist[i - 1][j - 1], {"C", r, h} } );
             else
                 cases.push_back({dist[i - 1][j - 1] + 1, {"R", r, h}});
-            cases.push_back( { dist[i][j-1] + 1, {"D", r, {"#", h.second} } } );
-            cases.push_back( { dist[i-1][j] + 1, {"I", {"%", r.second}, h} } );
+            cases.push_back( { dist[i][j-1] + 1, {"D", r, {"#", r.second} } } );
+            cases.push_back( { dist[i-1][j] + 1, {"I", {"%", h.second}, h} } );
 
             dist[i][j] = cases[0].first;
             cache[i][j] = cases[0].second;
@@ -192,6 +192,14 @@ std::pair <std::string, std::string> FoundSame::getTexts2() {
     size_t i = n, j = m;
     while (i != 0 || j != 0){
         std::string op = cache[i][j].op;
+        auto temp = cache[i][j];
+        if (temp.token1.second > temp.token2.second) {
+            temp.token2.second = temp.token1.second;
+        }
+        else{
+            temp.token1.second = temp.token2.second;
+        }
+        cache[i][j] = temp;
         alignment.push_back(cache[i][j]);
         if (op == "C" || op == "R"){
             i--, j--;
@@ -202,6 +210,11 @@ std::pair <std::string, std::string> FoundSame::getTexts2() {
         }
     }
     std::reverse(alignment.begin(), alignment.end());
+
+    for (auto & a : alignment){
+        std::cout << a.op << " {" << a.token1.first << " " << a.token1.second << "} {"
+                  << a.token2.first << " " << a.token2.second << "}" << std::endl;
+    }
 
     res_alignment2 = alignment;
     tokens2text2();
@@ -217,8 +230,10 @@ void FoundSame::tokens2text2() {
 
     for (auto & i : res_alignment2){
         if (i.token1.second > line){
-            res1 += '\n';
-            line = i.token1.second;
+            while(line != i.token1.second){
+                res1 += '\n';
+                line++;
+            }
         }
         res1 += i.token1.first, res1 += " ";
     }
@@ -231,8 +246,10 @@ void FoundSame::tokens2text2() {
                 res2 += op, res2 += " ";
             }
             ops.clear();
-            res2 += '\n';
-            line = i.token2.second;
+            while(line < i.token2.second){
+                res2+= '\n';
+                line++;
+            }
         }
         ops.push_back(i.op);
         res2 += i.token2.first, res2 += " ";

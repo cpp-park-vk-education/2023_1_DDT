@@ -45,14 +45,10 @@ int main(int argc, const char* argv[]) {
   std::vector <std::pair <std::string, int> > str_int_tokens2 = cppA2.getTokensNamesWithPosition();
   std::vector <std::pair <std::string, int> > str_int_tokens1 = cppA1.getTokensNamesWithPosition();
 
-  for (int i = 0; i < str_int_tokens1.size(); i++){
-      std::cout << str_int_tokens1[i].first << " " << str_int_tokens1[i].second << std::endl;
-  }
-
   //PythonAntlr pyA1 = PythonAntlr(fin3);
   //PythonAntlr pyA2 = PythonAntlr(fin4);
 
-  foundSame.setData2(str_int_tokens1, str_int_tokens2);
+  foundSame.setData2(str_int_tokens2, str_int_tokens1); // поменял местами токены на вводе
   std::pair <std::string, std::string> res = foundSame.getTexts2();
 
   std::vector<int> tokens1 = cppA1.getTokensTypes();

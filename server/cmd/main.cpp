@@ -51,6 +51,15 @@ int main(int argc, const char* argv[]) {
   foundSame.setData2(str_int_tokens2, str_int_tokens1); // поменял местами токены на вводе
   std::pair <std::string, std::string> res = foundSame.getTexts2();
 
+  std::ofstream out1("internal/metrics/testProgs/output/out1.txt");
+  std::ofstream out2("internal/metrics/testProgs/output/out2.txt");
+
+  out1 << res.first;
+  out2 << res.second;
+
+  out1.close();
+  out2.close();
+
   std::vector<int> tokens1 = cppA1.getTokensTypes();
   std::vector<int> tokens2 = cppA2.getTokensTypes();
 

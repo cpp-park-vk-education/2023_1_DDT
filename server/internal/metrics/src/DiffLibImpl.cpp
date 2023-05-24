@@ -217,12 +217,12 @@ std::pair <std::string, std::string> FoundSame::getTexts2() {
     }
 
     res_alignment2 = alignment;
-    tokens2text2();
 
-    return {"", ""};
+
+    return tokens2text2();
 }
 
-void FoundSame::tokens2text2() {
+std::pair <std::string, std::string> FoundSame::tokens2text2() {
     std::string res1, res2;
     std::vector <std::string> ops;
 
@@ -257,7 +257,7 @@ void FoundSame::tokens2text2() {
 
     res1.pop_back(), res2.pop_back();
 
-    std::cout << res1 << "\n\n" << res2 << std::endl;
+    return {res1, res2};
 }
 
 

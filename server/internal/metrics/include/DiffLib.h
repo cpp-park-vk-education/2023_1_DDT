@@ -18,7 +18,7 @@ public:
     void setData(std::string text1, std::string text2);
     void setData2(std::vector <std::pair <std::string, int> > _tokens1, std::vector <std::pair <std::string, int> > _tokens2);
     void tokens2text();
-    void tokens2text2();
+    std::pair <std::string, std::string> tokens2text2();
     [[maybe_unused]] std::pair <std::string, std::string> getTexts();
     [[maybe_unused]] std::pair <std::string, std::string> getTexts2();
 

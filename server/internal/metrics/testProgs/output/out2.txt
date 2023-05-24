@@ -1,49 +1,49 @@
-#include <iostream> 	C 
-#include <vector> 	C 
+#include <iostream> 	[C]
+#include <vector> 	[C]
 
-using namespace std ; 	C C C C 
+using namespace std ; 	[C]
 
 bool check1 ( vector < int > s , int i , int j ) { 	C R C C C C C C C C C C C C C C 
-for ( int k = 0 ; k < s . size ( ) ; k ++ ) { 	C C C C C C C C C C C C C C C C C C C 
-if ( s [ k ] != i && s [ k ] != j && s [ k ] % i == 0 && j % s [ k ] == 0 ) { 	C C C C C C C C C C C C C C C C C C C C C C C C C C C C C C C C C C C 
-return 0 ; 	C C C 
-} 	C 
-} 	C 
-return 1 ; 	C C C 
-} 	C 
+for ( int k = 0 ; k < s . size ( ) ; k ++ ) { 	[C]
+if ( s [ k ] != i && s [ k ] != j && s [ k ] % i == 0 && j % s [ k ] == 0 ) { 	[C]
+return 0 ; 	[C]
+} 	[C]
+} 	[C]
+return 1 ; 	[C]
+} 	[C]
 
-int main ( ) { 	C C C C C 
+int main ( ) { 	[C]
 long long n1 ; 	C C R C 
 cin > > n1 ; 	C C C R C 
 vector < int > s2 ; 	C C C C R C 
 for ( int k = 1 ; k <= n1 ; k ++ ) { 	C C C R C C C R C R C R C C C 
 if ( n1 % k == 0 ) { 	C C R C R C C C C 
 s2 . push_back ( k ) ; 	R C C C R C C 
-} 	I 
-} 	C 
+} 	[I]
+} 	[C]
 
-if ( n % 2 == 0 ) { 	I I I I I I I I I 
-n += 1 ; 	I I I I 
-n -= 1 ; 	I I I I 
-} 	C 
+if ( n % 2 == 0 ) { 	[I]
+n += 1 ; 	[I]
+n -= 1 ; 	[I]
+} 	[C]
 
-vector < pair < int , int > > ans ; 	C C C C C C C C C C C 
+vector < pair < int , int > > ans ; 	[C]
 for ( int i = 0 ; i < s2 . size ( ) ; i ++ ) { 	C C C C C C C C C R C C C C C C C C C 
 for ( int j = i + 1 ; j < s2 . size ( ) ; j ++ ) { 	C C C C C C C C C C C R C C C C C C C C C 
 if ( s2 [ j ] % s2 [ i ] == 0 && check1 ( s2 , s2 [ i ] , s2 [ j ] ) ) { 	C C R C C C C R C C C C C C R C R C R C C C C R C C C C C C 
-ans . push_back ( { s [ i ] , s [ j ] } ) ; 	C C C C C C C C C C C C C C C C C 
-} 	C 
-} 	C 
-} 	C 
+ans . push_back ( { s [ i ] , s [ j ] } ) ; 	[C]
+} 	[C]
+} 	[C]
+} 	[C]
 cout < < "graph {" ; 	C C C C I 
 cout < < '\n' ; 	I C C R C 
 for ( int k = 0 ; k < s2 . size ( ) ; k ++ ) { 	C C C R C C C R C R C C C C C R C C C 
 cout < < s [ k ] < < endl ; 	C C C C C R C C C C C 
-} 	C 
+} 	[C]
 
-for ( int i = 0 ; i < ans . size ( ) ; i ++ ) { 	C C C C C C C C C C C C C C C C C C C 
-cout < < ans [ i ] . first < < "--" < < ans [ i ] . second < < endl ; 	C C C C C C C C C C C C C C C C C C C C C C C C 
-} 	C 
+for ( int i = 0 ; i < ans . size ( ) ; i ++ ) { 	[C]
+cout < < ans [ i ] . first < < "--" < < ans [ i ] . second < < endl ; 	[C]
+} 	[C]
 cout < < "}" ; 	C C C C I 
 cout < < '\n' ; 	I I I I C 
 } <EOF>

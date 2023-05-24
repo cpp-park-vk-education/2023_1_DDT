@@ -242,9 +242,7 @@ std::pair <std::string, std::string> FoundSame::tokens2text2() {
     for (auto & i : res_alignment2){
         if (i.token2.second > line){
             res2 += '\t';
-            for (auto & op : ops){
-                res2 += op, res2 += " ";
-            }
+            outOps(ops, res2);
             ops.clear();
             while(line < i.token2.second){
                 res2+= '\n';
@@ -258,6 +256,24 @@ std::pair <std::string, std::string> FoundSame::tokens2text2() {
     res1.pop_back(), res2.pop_back();
 
     return {res1, res2};
+}
+
+void FoundSame::outOps(std::vector <std::string> ops, std::string& str) {
+    if (ops.empty()) return;
+    std::string o = ops[0];
+    int f = 0;
+    for (auto & op : ops){
+        if (op != o){
+            f = 1;
+            break;
+        }
+    }
+    if (f == 0)
+        str += "[" + o + "]";
+    else
+        for (auto & op : ops){
+            str += op, str += " ";
+        }
 }
 
 

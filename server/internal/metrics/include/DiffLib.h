@@ -45,6 +45,7 @@ private:
 
     static std::vector <std::string> diffTokenizer(const std::string& text);
     static std::string delServSimbols(std::string s);
+    static void outOps (std::vector <std::string> ops, std::string& str);
 };
 
 #endif //SOURCEDOUT_DIFFLIB_H

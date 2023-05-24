@@ -17,6 +17,7 @@ public:
 
     User deserialUserData(std::string_view body);
     Solution deserialSolutionData(std::string_view body);
+    std::pair<Solution, Solution::Codes> deserialNewSolutionData(std::string_view body);
     std::vector<Task> deserialAllTasks(std::string_view body);
 };
 

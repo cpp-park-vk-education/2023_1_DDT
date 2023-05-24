@@ -116,6 +116,18 @@ std::string Serializer::serialSolution(const Solution &sol) {
     return out.str();
 }
 
+std::string Serializer::serialNewSolution(const Solution &sol, const Solution::Codes& codes) {
+    boost::property_tree::ptree json;
+    json.put("sol_id", sol.getId());
+    json.put("source", sol.getSource());
+    json.put("result", sol.getResult());
+    json.put("your_code", codes.current);
+    json.put("original", codes.original);
+    std::stringstream out;
+    boost::property_tree::write_json(out, json);
+    return out.str();
+}
+
 std::string Serializer::serialTask(const Task &task) {
     boost::property_tree::ptree json;
     json.put("name", task.getName());

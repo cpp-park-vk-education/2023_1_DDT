@@ -22,6 +22,7 @@ class Serializer {
     std::string serialAllTasks(const std::vector<Task>& tasks);
     std::string serialUserData(const User& user);
     std::string serialSolution(const Solution& sol);
+    std::string serialNewSolution(const Solution& sol, const Solution::Codes& codes);
     std::string serialTask(const Task& task);
 };
 

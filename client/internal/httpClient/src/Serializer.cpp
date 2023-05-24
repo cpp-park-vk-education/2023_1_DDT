@@ -82,6 +82,23 @@ Solution Serializer::deserialSolutionData(std::string_view body) {
     return res;
 }
 
+std::pair<Solution, Solution::Codes> Serializer::deserialNewSolutionData(std::string_view body) {
+    std::stringstream ss;
+    ss << body;
+    boost::property_tree::ptree json;
+    boost::property_tree::read_json(ss, json);
+    Solution sol = {
+            json.get<std::size_t>("sol_id"),
+            json.get<std::string>("source"),
+            json.get<std::string>("result"),
+    };
+    Solution::Codes codes = {
+            json.get<std::string>("original"),
+            json.get<std::string>("your_code"),
+    };
+    return {sol, codes};
+}
+
 std::string Serializer::serialNewTaskData(std::string_view name, std::string_view desc, double threshold) {
     boost::property_tree::ptree json;
     json.put("name", name);

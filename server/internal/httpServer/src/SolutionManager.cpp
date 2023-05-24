@@ -24,13 +24,14 @@ http::message_generator SolutionManager::createSolution(http::request<http::stri
     }
 
     try {
-        Solution sol = solutionService->createSolution(user_id, task_id, filename, filedata).first;
+        Solution sol;
+        Solution::Codes codes;
+        std::tie(sol, codes) = solutionService->createSolution(user_id, task_id, filename, filedata);
         http::response<http::string_body> res{http::status::ok, req.version()};
         res.set(http::field::server, BOOST_BEAST_VERSION_STRING);
         res.set(http::field::content_type, "text/plain");
         res.keep_alive(req.keep_alive());
-        res.body() = serializer->serialSolution(sol);
-        res.prepare_payload();
+        res.body() = serializer->serialNewSolution(sol, codes);
         return res;
     } catch (const std::exception& e) {
         return getInternalServerError(req, e.what());

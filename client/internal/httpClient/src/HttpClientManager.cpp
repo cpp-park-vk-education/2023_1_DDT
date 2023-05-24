@@ -43,7 +43,7 @@ std::pair<unsigned, User> HttpClientManager::registerUser(const std::string &log
     return {status, user};
 }
 
-Solution HttpClientManager::submitSolution(const int &user_id, const int &task_id, const std::string& filename,
+std::pair<Solution, Solution::Codes> HttpClientManager::submitSolution(const int &user_id, const int &task_id, const std::string& filename,
                                            const std::string &path_to_sound) {
     std::string body = serializer->serialSolutionData(user_id, task_id, filename, path_to_sound);
     http::response<http::dynamic_body> res = client->makeGetRequest("/solution/submit", body);
@@ -54,8 +54,10 @@ Solution HttpClientManager::submitSolution(const int &user_id, const int &task_i
         auto* cbuf = boost::asio::buffer_cast<const char*>(seq);
         res_body.append(cbuf, boost::asio::buffer_size(seq));
     }
-    Solution sol = serializer->deserialSolutionData(res_body);
-    return sol;
+    Solution sol;
+    Solution::Codes codes;
+    std::tie(sol, codes) = serializer->deserialNewSolutionData(res_body);
+    return {sol, codes};
 }
 
 unsigned int HttpClientManager::getAllSolutionsForTask(const int &user_id, const int &task_id) {

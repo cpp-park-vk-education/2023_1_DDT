@@ -15,18 +15,19 @@
 
 class FoundSame {
 public:
-    void setData(std::vector <std::pair <std::string, int> > _tokens1, std::vector <std::pair <std::string, int> > _tokens2);
+    void setData(std::vector <std::pair <std::string, std::pair <int, int> > > _tokens1,
+                 std::vector <std::pair <std::string, std::pair <int, int> > > _tokens2);
     [[maybe_unused]] std::pair <std::string, std::string> getTexts();
 
 private:
     struct Elem2 {
         std::string op; // 1 - Insert, 2 - Delete, 3 - Copy, 4 - Replace
-        std::pair <std::string, int> token1;
-        std::pair <std::string, int> token2;
+        std::pair <std::string, std::pair <int, int> > token1;
+        std::pair <std::string, std::pair <int, int> > token2;
     };
 
-    std::vector <std::pair <std::string, int> > str_int_tokens1;
-    std::vector <std::pair <std::string, int> > str_int_tokens2;
+    std::vector <std::pair <std::string, std::pair <int, int> > > str_int_tokens1;
+    std::vector <std::pair <std::string, std::pair <int, int> > > str_int_tokens2;
     std::vector <Elem2> res_alignment;
 
     std::pair <std::string, std::string> tokens2text();

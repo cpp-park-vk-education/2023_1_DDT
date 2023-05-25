@@ -5,7 +5,8 @@
 
 #include "DiffLib.h"
 
-void FoundSame::setData(std::vector <std::pair <std::string, int> > _tokens1, std::vector <std::pair <std::string, int> > _tokens2) {
+void FoundSame::setData(std::vector <std::pair <std::string, std::pair <int, int> > > _tokens1,
+                        std::vector <std::pair <std::string, std::pair <int, int> > > _tokens2) {
     str_int_tokens1 = std::move(_tokens2);
     str_int_tokens2 = std::move(_tokens1);
 }
@@ -33,7 +34,7 @@ std::pair <std::string, std::string> FoundSame::getTexts() {
         cache[0][i] = {"D", str_int_tokens2[i-1], {"#", str_int_tokens2[i-1].second}}; //аналогично
     }
 
-    std::pair <std::string, int> r, h;
+    std::pair <std::string, std::pair <int, int> > r, h;
     for (size_t i = 1; i <= n; i++){
         for (size_t j = 1; j <= m; j++){
             h = str_int_tokens1[i-1], r = str_int_tokens2[j-1];
@@ -90,11 +91,11 @@ std::pair <std::string, std::string> FoundSame::tokens2text() {
     std::string res1, res2;
     std::vector <std::string> ops;
 
-    int line = res_alignment[0].token1.second;
+    int line = res_alignment[0].token1.second.first;
 
     for (auto & i : res_alignment){
-        if (i.token1.second > line){
-            while(line != i.token1.second){
+        if (i.token1.second.first > line){
+            while(line != i.token1.second.first){
                 res1 += '\n';
                 line++;
             }
@@ -102,13 +103,13 @@ std::pair <std::string, std::string> FoundSame::tokens2text() {
         res1 += i.token1.first, res1 += " ";
     }
 
-    line = res_alignment[0].token2.second;
+    line = res_alignment[0].token2.second.first;
     for (auto & i : res_alignment){
-        if (i.token2.second > line){
+        if (i.token2.second.first > line){
             res2 += '\t';
             //outOps(ops, res2);
             ops.clear();
-            while(line < i.token2.second){
+            while(line < i.token2.second.first){
                 res2+= '\n';
                 line++;
             }
@@ -167,12 +168,12 @@ std::pair<std::string, std::string> FoundSame::tokens2html() {
 
         if (i.token1.first == "%") {
             i.token1.first = "";
-            i.token1.second = -1;
+            i.token1.second.first = -1;
         }
 
         if (i.token2.first == "#") {
             i.token2.first = "";
-            i.token2.second = -1;
+            i.token2.second.first = -1;
         }
     }
 
@@ -182,38 +183,54 @@ std::pair<std::string, std::string> FoundSame::tokens2html() {
     std::string res2 = res1;
     std::vector <std::string> ops;
 
-    int line = res_alignment[0].token1.second;
+    int line = res_alignment[0].token1.second.first;
+
+    int f = 0;
 
     for (auto & i : res_alignment){
-        if (i.token1.second > line){
-            while(line != i.token1.second){
+        if (i.token1.second.first > line){
+            while(line < i.token1.second.first){
                 res1 += "<br>";
                 res1 += '\n';
                 line++;
             }
+            f = 1;
         }
         if (i.op == "I") res1 += teg_I;
         if (i.op == "D") res1 += teg_D;
         if (i.op == "C") res1 += teg_C;
         if (i.op == "R") res1 += teg_R;
+        if (f == 1){
+            for (int k = 0; k < i.token1.second.second; k++){
+                res1 += "&nbsp";
+            }
+            f = 0;
+        }
         res1 += i.token1.first;
         if (!i.token1.first.empty()) res1 += " ";
         res1 += close_teg;
     }
 
-    line = res_alignment[0].token2.second;
+    line = res_alignment[0].token2.second.first;
     for (auto & i : res_alignment){
-        if (i.token2.second > line){
-            while(line < i.token2.second){
+        if (i.token2.second.first > line){
+            while(line < i.token2.second.first){
                 res2 += "<br>";
                 res2+= '\n';
                 line++;
             }
+            f = 1;
         }
         if (i.op == "I") res2 += teg_I;
         if (i.op == "D") res2 += teg_D;
         if (i.op == "C") res2 += teg_C;
         if (i.op == "R") res2 += teg_R;
+        if (f == 1){
+            for (int k = 0; k < i.token2.second.second; k++){
+                res2 += "&nbsp";
+            }
+            f = 0;
+        }
         res2 += i.token2.first;
         if (!i.token2.first.empty()) res2 += " ";
         res2 += close_teg;

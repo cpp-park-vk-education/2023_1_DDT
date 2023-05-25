@@ -37,6 +37,22 @@ std::vector<std::pair<std::string, int>> PythonAntlr::getTokensNamesWithPosition
   return ans;
 }
 
+std::vector<std::pair<std::string, std::pair <int, int> > > PythonAntlr::getTokensNamesWithFullPosition(){
+    tokenStream_ptr->fill();
+    std::vector<std::pair<std::string, std::pair <int, int> > > ans(tokenStream_ptr->size());
+
+    size_t i = 0;
+    for (antlr4::Token *token : tokenStream_ptr->getTokens()) {
+        auto type = token->getText();
+        int line = token->getLine();
+        int pos = token->getCharPositionInLine();
+        ans[i] = std::make_pair(type, std::make_pair(line, pos));
+        i++;
+    }
+
+    return ans;
+}
+
 std::vector<int> PythonAntlr::getTokensTypes() {
   tokenStream_ptr->fill();
   std::vector<int> ans(tokenStream_ptr->size());

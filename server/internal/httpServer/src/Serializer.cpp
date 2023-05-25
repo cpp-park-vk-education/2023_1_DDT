@@ -116,7 +116,7 @@ std::string Serializer::serialSolution(const Solution &sol) {
     return out.str();
 }
 
-std::string Serializer::serialNewSolution(const Solution &sol, const Solution::Codes& codes) {
+std::string Serializer::serialNewSolution(const Solution &sol, const Solution::Codes &codes) {
     boost::property_tree::ptree json;
     json.put("sol_id", sol.getId());
     json.put("source", sol.getSource());

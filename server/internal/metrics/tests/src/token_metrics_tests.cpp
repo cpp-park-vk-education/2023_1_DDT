@@ -5,7 +5,6 @@
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 
-#include <fstream>
 #include <sstream>
 
 #include "TokenMetricLib.h"
@@ -61,7 +60,7 @@ TEST_F(WShinglingTokenMetricTest, check_eq_progs) {
 
 TEST_F(WShinglingTokenMetricTest, check_absolutely_not_eq_progs) {
     std::vector<int> tokens1 = {1, 2, 3};
-    std::vector<int> tokens2 = {4, 5, 6, 9};
+    std::vector<int> tokens2 = {4, 5, 6};
 
     wShinglingTokenMetric->setData(tokens1, tokens2);
 
@@ -77,13 +76,23 @@ TEST_F(WShinglingTokenMetricTest, test_with_empty_prog) {
     EXPECT_EQ(wShinglingTokenMetric->getMetric(), 0);
 }
 
-TEST_F(WShinglingTokenMetricTest, test_with_small_prog) {
-    std::vector<int> tokens1 = {1, 2, 3, 4};
-    std::vector<int> tokens2 = {9};
+TEST_F(WShinglingTokenMetricTest, test_with_empty_progs) {
+    std::vector<int> tokens1 = {};
+    std::vector<int> tokens2 = {};
 
     wShinglingTokenMetric->setData(tokens1, tokens2);
 
     EXPECT_EQ(wShinglingTokenMetric->getMetric(), 0);
+}
+
+TEST_F(WShinglingTokenMetricTest, test_with_small_size) {
+    std::vector<int> tokens1 = {1};
+    std::vector<int> tokens2 = {2, 3};
+
+    wShinglingTokenMetric->setData(tokens1, tokens2);
+
+    double res = wShinglingTokenMetric->getMetric();
+    EXPECT_EQ(res, 0);
 }
 
 TEST_F(WShinglingTokenMetricTest, test_with_big_size) {

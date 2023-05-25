@@ -103,7 +103,7 @@ TEST_F(SolutionServiceTest, createSolutionPlagiat) {
 
     auto sol = ss->createSolution(2, 1, "main.cpp", "size_t main(){return 1;}");
     EXPECT_EQ(sol.first.getId(), 1);
-    EXPECT_EQ(sol.second.original,"int main(){return 0;}");
+    EXPECT_EQ(sol.second.original, "int main(){return 0;}");
     EXPECT_EQ(
         sol.first.getResult(),
         "\nНе, ну вы не палитесь. Плагиат.\nРезультаты метрик: 0.72\n\tАнализ текста: 0.54\n\tАнализ токенов: 0.89\n");

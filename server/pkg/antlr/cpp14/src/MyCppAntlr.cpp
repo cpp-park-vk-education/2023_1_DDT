@@ -22,6 +22,37 @@ std::vector<antlr4::Token*> MyCppAntlr::getTokens() {
     return ans;
 }
 
+std::vector<std::pair<std::string, int>> MyCppAntlr::getTokensNamesWithPosition() {
+    tokenStream_ptr->fill();
+    std::vector<std::pair<std::string, int>> ans(tokenStream_ptr->size());
+
+    int i = 0;
+    for (antlr4::Token* token : tokenStream_ptr->getTokens()) {
+        auto type = token->getText();
+        int line = token->getLine();
+        ans[i] = std::make_pair(type, line);
+        i++;
+    }
+
+    return ans;
+}
+
+std::vector<std::pair<std::string, std::pair<int, int>>> MyCppAntlr::getTokensNamesWithFullPosition() {
+    tokenStream_ptr->fill();
+    std::vector<std::pair<std::string, std::pair<int, int>>> ans(tokenStream_ptr->size());
+
+    size_t i = 0;
+    for (antlr4::Token* token : tokenStream_ptr->getTokens()) {
+        auto type = token->getText();
+        int line = static_cast<int>(token->getLine());
+        int pos = static_cast<int>(token->getCharPositionInLine());
+        ans[i] = std::make_pair(type, std::make_pair(line, pos));
+        i++;
+    }
+
+    return ans;
+}
+
 std::vector<int> MyCppAntlr::getTokensTypes() {
     tokenStream_ptr->fill();
     std::vector<int> ans(tokenStream_ptr->size());
@@ -33,6 +64,19 @@ std::vector<int> MyCppAntlr::getTokensTypes() {
         } else {
             ans[i] = token->getType();
         }
+        i++;
+    }
+
+    return ans;
+}
+
+std::vector<std::string> MyCppAntlr::getTokensNames() {
+    tokenStream_ptr->fill();
+    std::vector<std::string> ans(tokenStream_ptr->size());
+
+    int i = 0;
+    for (antlr4::Token* token : tokenStream_ptr->getTokens()) {
+        ans[i] = token->getText();
         i++;
     }
 

@@ -164,6 +164,16 @@ std::pair<std::string, std::string> FoundSame::tokens2html() {
         while ((pos = i.token2.first.find(">")) != std::string::npos) {
             i.token2.first.replace(pos, 1, "&gt");
         }
+
+        if (i.token1.first == "%") {
+            i.token1.first = "";
+            i.token1.second = -1;
+        }
+
+        if (i.token2.first == "#") {
+            i.token2.first = "";
+            i.token2.second = -1;
+        }
     }
 
     std::string res1 = "<!DOCTYPE html>\n"
@@ -182,7 +192,13 @@ std::pair<std::string, std::string> FoundSame::tokens2html() {
                 line++;
             }
         }
-        res1 += i.token1.first, res1 += " ";
+        if (i.op == "I") res1 += teg_I;
+        if (i.op == "D") res1 += teg_D;
+        if (i.op == "C") res1 += teg_C;
+        if (i.op == "R") res1 += teg_R;
+        res1 += i.token1.first;
+        if (!i.token1.first.empty()) res1 += " ";
+        res1 += close_teg;
     }
 
     line = res_alignment[0].token2.second;
@@ -199,7 +215,7 @@ std::pair<std::string, std::string> FoundSame::tokens2html() {
         if (i.op == "C") res2 += teg_C;
         if (i.op == "R") res2 += teg_R;
         res2 += i.token2.first;
-        res2 += " ";
+        if (!i.token2.first.empty()) res2 += " ";
         res2 += close_teg;
     }
 

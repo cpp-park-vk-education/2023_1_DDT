@@ -12,7 +12,11 @@ HttpClient::HttpClient(std::string_view host_, std::string_view port_) :
 http::response<http::dynamic_body> HttpClient::makeRequest(std::string_view target,
                                                            http::verb method,
                                                            std::string_view body) {
-    auto const results = resolver.resolve(host, port);
+    tcp::resolver::results_type results;
+    {
+        std::lock_guard _{mutex};
+        results = resolver.resolve(host, port);
+    }
     stream.connect(results);
     http::request<http::string_body> req{http::verb::get, target, 11};
     req.set(http::field::host, host);

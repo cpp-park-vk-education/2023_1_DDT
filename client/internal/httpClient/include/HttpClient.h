@@ -4,6 +4,7 @@
 #include <utility>
 #include <memory>
 #include <string>
+#include <mutex>
 #include <boost/asio.hpp>
 #include <boost/beast.hpp>
 
@@ -30,6 +31,7 @@ private:
     beast::tcp_stream stream;
     std::string host;
     std::string port;
+    std::mutex mutex;
 };
 
 

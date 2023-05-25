@@ -6,6 +6,7 @@
 #include <sstream>
 #include <thread>
 
+#include "DiffLib.h"
 #include "FileMethods.h"
 #include "MyCppAntlr.h"
 #include "PythonAntlr.h"
@@ -121,6 +122,7 @@ std::pair<Solution, Solution::Codes> SolutionService::createSolution(size_t user
 
         setAntlrWrapper(fileExtension.first, filedata);
         std::vector<int> tokensTypes = antlr->getTokensTypes();
+        auto curTokensNamesWithFullPosition = antlr->getTokensNamesWithFullPosition();
         std::string astTree = antlr->getTreeString();
 
         std::time_t now = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
@@ -152,8 +154,13 @@ std::pair<Solution, Solution::Codes> SolutionService::createSolution(size_t user
             } else {
                 plagiatSolId = tokenBasedRes.second;
             }
-            std::string originalCode = solutionRepo->getSolutionById(plagiatSolId).value().getSource();
-            codes = Solution::Codes(originalCode, filedata);
+            Solution originalSol = solutionRepo->getSolutionById(plagiatSolId).value();
+            setAntlrWrapper(originalSol.getLanguage(), originalSol.getSource());
+            auto originalTokensNamesWithFullPosition = antlr->getTokensNamesWithFullPosition();
+            FoundSame foundSame;
+            foundSame.setData(originalTokensNamesWithFullPosition, curTokensNamesWithFullPosition);
+            std::pair<std::string, std::string> res = foundSame.getTexts();
+            codes = Solution::Codes(res.first, res.second);
         }
 
         Solution sol =

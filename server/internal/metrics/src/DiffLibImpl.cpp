@@ -5,142 +5,12 @@
 
 #include "DiffLib.h"
 
-void FoundSame::setData(std::string text1, std::string text2) {
-    tokens1 = diffTokenizer(text1);
-    tokens2 = diffTokenizer(text2);
-}
-
-void FoundSame::setData2(std::vector <std::pair <std::string, int> > _tokens1, std::vector <std::pair <std::string, int> > _tokens2) {
-    str_int_tokens1 = std::move(_tokens1);
-    str_int_tokens2 = std::move(_tokens2);
-}
-
-std::vector<std::string> FoundSame::diffTokenizer(const std::string& text) {
-    boost::char_separator <char> sep(" \r", "\n");
-    std::vector <std::string> res;
-    boost::tokenizer < boost::char_separator <char> > tokens(text, sep);
-
-    for (const std::string &s: tokens) {
-        if (s == "\n" && !res.empty()){
-            res.back() += "\n";
-        }
-        else
-            res.push_back(s);
-    }
-    return res;
+void FoundSame::setData(std::vector <std::pair <std::string, int> > _tokens1, std::vector <std::pair <std::string, int> > _tokens2) {
+    str_int_tokens1 = std::move(_tokens2);
+    str_int_tokens2 = std::move(_tokens1);
 }
 
 std::pair <std::string, std::string> FoundSame::getTexts() {
-    unsigned long n = tokens1.size();
-    unsigned long m = tokens2.size();
-
-    std::vector <std::vector <int> > dist (n + 1, std::vector <int> (m + 1, 0));
-
-    for (size_t i = 0; i < n + 1; i++){
-        dist[i][0] = static_cast <int> (i);
-    }
-
-    for (size_t i = 0; i < m + 1; i++){
-        dist[0][i] = static_cast <int> (i);
-    }
-
-    std::vector <std::vector <Elem> > cache (n + 1, std::vector <Elem > (m + 1));
-
-    for (size_t i = 1; i <= n; i++){
-        cache[i][0] = {"I", (tokens1[i-1].back() == '\n' && tokens1[i-1].size() > 1 ? "%\n" : "%"), tokens1[i-1]};
-    }
-    for (size_t i = 1; i <= m; i++){
-        cache[0][i] = {"D", tokens2[i-1], (tokens2[i-1].back() == '\n' && tokens1[i-1].size() > 1 ? "#\n" : "#")};
-    }
-
-    std::string r, h;
-    for (size_t i = 1; i <= n; i++){
-        for (size_t j = 1; j <= m; j++){
-            h = tokens1[i-1], r = tokens2[j-1];
-            std::vector <std::pair <int, Elem> > cases;
-
-            if (delServSimbols(r) == delServSimbols(h))
-                cases.push_back( {dist[i - 1][j - 1], {"C", r, h} } );
-            else
-                cases.push_back({dist[i - 1][j - 1] + 1, {"R", r, h}});
-            cases.push_back( { dist[i][j-1] + 1, {"D", r, (r.back() == '\n' && r.size() > 1 ? "#\n" : "#")} } );
-            cases.push_back( { dist[i-1][j] + 1, {"I", (h.back() == '\n' && h.size() > 1 ? "%\n" : "%"), h} } );
-
-            dist[i][j] = cases[0].first;
-            cache[i][j] = cases[0].second;
-
-            for (size_t k = 1; k < cases.size(); k++){
-                if (dist[i][j] > cases[k].first){
-                    dist[i][j] = cases[k].first;
-                    cache[i][j] = cases[k].second;
-                }
-            }
-        }
-    }
-
-    std::vector <Elem> alignment;
-    size_t i = n, j = m;
-    while (i != 0 || j != 0){
-        std::string op = cache[i][j].op;
-        alignment.push_back(cache[i][j]);
-        if (op == "C" || op == "R"){
-            i--, j--;
-        } else if (op == "I"){
-            i--;
-        } else{
-            j--;
-        }
-    }
-    std::reverse(alignment.begin(), alignment.end());
-
-    res_alignment = alignment;
-    tokens2text();
-
-    return {"", ""};
-}
-
-void FoundSame::tokens2text() {
-
-    std::vector <std::string> ops;
-
-    for (auto & k : res_alignment){
-        std::cout << k.op << " " << k.token1 << " " << k.token2 << std::endl;
-    }
-
-    for (const auto& elem : res_alignment){
-        std::cout << elem.token1;
-        if (elem.token1.back() != '\n')
-            std::cout << " ";
-    }
-    std::cout << std::endl;
-    for (const auto &elem : res_alignment){
-        ops.push_back(elem.op);
-        if (elem.token2.back() == '\n') {
-            std::string t_token = elem.token2;
-            t_token.pop_back();
-            std::cout << t_token << "\t";
-            for (const auto& oper : ops)
-                std::cout << oper << " ";
-            std::cout << std::endl;
-            ops.clear();
-        }
-        else{
-            std::cout << elem.token2;
-            if (elem.token2.back() != '\n')
-                std::cout << " ";
-        }
-    }
-}
-
-std::string FoundSame::delServSimbols(std::string s) {
-    std::string res = std::move(s);
-    while(!res.empty() && res.back() == '\n'){
-        res.pop_back();
-    }
-    return res;
-}
-
-std::pair <std::string, std::string> FoundSame::getTexts2() {
     unsigned long n = str_int_tokens1.size();
     unsigned long m = str_int_tokens2.size();
 
@@ -193,12 +63,12 @@ std::pair <std::string, std::string> FoundSame::getTexts2() {
     while (i != 0 || j != 0){
         std::string op = cache[i][j].op;
         auto temp = cache[i][j];
-        if (temp.token1.second > temp.token2.second) {
-            temp.token2.second = temp.token1.second;
-        }
-        else{
-            temp.token1.second = temp.token2.second;
-        }
+//        if (temp.token1.second > temp.token2.second) {
+//            temp.token2.second = temp.token1.second;
+//        }
+//        else{
+//            temp.token1.second = temp.token2.second;
+//        }
         cache[i][j] = temp;
         alignment.push_back(cache[i][j]);
         if (op == "C" || op == "R"){
@@ -211,24 +81,18 @@ std::pair <std::string, std::string> FoundSame::getTexts2() {
     }
     std::reverse(alignment.begin(), alignment.end());
 
-    for (auto & a : alignment){
-        std::cout << a.op << " {" << a.token1.first << " " << a.token1.second << "} {"
-                  << a.token2.first << " " << a.token2.second << "}" << std::endl;
-    }
+    res_alignment = alignment;
 
-    res_alignment2 = alignment;
-
-
-    return tokens2text2();
+    return tokens2html();
 }
 
-std::pair <std::string, std::string> FoundSame::tokens2text2() {
+std::pair <std::string, std::string> FoundSame::tokens2text() {
     std::string res1, res2;
     std::vector <std::string> ops;
 
-    int line = res_alignment2[0].token1.second;
+    int line = res_alignment[0].token1.second;
 
-    for (auto & i : res_alignment2){
+    for (auto & i : res_alignment){
         if (i.token1.second > line){
             while(line != i.token1.second){
                 res1 += '\n';
@@ -238,11 +102,11 @@ std::pair <std::string, std::string> FoundSame::tokens2text2() {
         res1 += i.token1.first, res1 += " ";
     }
 
-    line = res_alignment2[0].token2.second;
-    for (auto & i : res_alignment2){
+    line = res_alignment[0].token2.second;
+    for (auto & i : res_alignment){
         if (i.token2.second > line){
             res2 += '\t';
-            outOps(ops, res2);
+            //outOps(ops, res2);
             ops.clear();
             while(line < i.token2.second){
                 res2+= '\n';
@@ -274,6 +138,77 @@ void FoundSame::outOps(std::vector <std::string> ops, std::string& str) {
         for (auto & op : ops){
             str += op, str += " ";
         }
+}
+
+std::pair<std::string, std::string> FoundSame::tokens2html() {
+
+    std::string teg_I = "<span style=\"background-color: #00FF00\">";
+    std::string teg_D = "<span style=\"background-color: #CD5C5C\">";
+    std::string teg_C = "<span style=\"background-color: #96CC9F\">";
+    std::string teg_R = "<span style=\"background-color: #FFD700\">";
+    std::string close_teg = "</span>";
+
+    for (auto & i : res_alignment){
+
+        size_t pos;
+        while ((pos = i.token1.first.find("<")) != std::string::npos) {
+            i.token1.first.replace(pos, 1, "&lt");
+        }
+        while ((pos = i.token1.first.find(">")) != std::string::npos) {
+            i.token1.first.replace(pos, 1, "&gt");
+        }
+
+        while ((pos = i.token2.first.find("<")) != std::string::npos) {
+            i.token2.first.replace(pos, 1, "&lt");
+        }
+        while ((pos = i.token2.first.find(">")) != std::string::npos) {
+            i.token2.first.replace(pos, 1, "&gt");
+        }
+    }
+
+    std::string res1 = "<!DOCTYPE html>\n"
+                       "<html lang=\"en\">\n"
+                       "<div>";
+    std::string res2 = res1;
+    std::vector <std::string> ops;
+
+    int line = res_alignment[0].token1.second;
+
+    for (auto & i : res_alignment){
+        if (i.token1.second > line){
+            while(line != i.token1.second){
+                res1 += "<br>";
+                res1 += '\n';
+                line++;
+            }
+        }
+        res1 += i.token1.first, res1 += " ";
+    }
+
+    line = res_alignment[0].token2.second;
+    for (auto & i : res_alignment){
+        if (i.token2.second > line){
+            while(line < i.token2.second){
+                res2 += "<br>";
+                res2+= '\n';
+                line++;
+            }
+        }
+        if (i.op == "I") res2 += teg_I;
+        if (i.op == "D") res2 += teg_D;
+        if (i.op == "C") res2 += teg_C;
+        if (i.op == "R") res2 += teg_R;
+        res2 += i.token2.first;
+        res2 += " ";
+        res2 += close_teg;
+    }
+
+    res1 += "</div>\n"
+            "</html>";
+    res2 += "</div>\n"
+            "</html>";
+
+    return {res1, res2};
 }
 
 

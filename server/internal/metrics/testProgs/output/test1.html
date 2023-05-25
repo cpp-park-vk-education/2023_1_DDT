@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<div>#include &ltiostream&gt
+    <br>
+    #include &ltvector&gt
+    <br>
+    % <br>
+    % <br>
+    using namespace std ; <br>
+    bool check ( vector &lt int &gt <br>
+    <br>
+    <br>
+    s , int i , <br>
+    int j ) { for ( int <br>
+    k = 0 ; k &lt s . size ( ) ; k <br>
+    ++ ) { if ( s <br>
+    [ k ] != i && s [ k ] != j && s [ k <br>
+    ] % i == 0 && j % s <br>
+    [ k ] == 0 ) { return 0 ; } } return 1 ; } int <br>
+    main ( ) { long long n ; <br>
+    cin &gt &gt n ; <br>
+    vector &lt int &gt s ; <br>
+    for ( int i = 1 ; i &lt= n ; i ++ ) { <br>
+    if ( n % i == 0 ) { <br>
+    s . push_back ( i % % ) ; <br>
+    } <br>
+    } <br>
+    vector &lt pair &lt <br>
+    int , int &gt &gt ans ; <br>
+    for ( int i = 0 ; i &lt s . size ( ) % <br>
+    % ; i ++ ) { <br>
+    for ( int j = i + 1 ; j &lt s . size ( ) ; j ++ ) { <br>
+    if ( % s [ j ] % s [ i ] == 0 && check ( s , s [ i ] , s [ j ] ) ) <br>
+    { ans . push_back <br>
+    ( { s [ i ] % % % % , <br>
+    s [ j ] } ) ; <br>
+    } } } cout &lt &lt "graph {" &lt &lt endl ; <br>
+    for ( int i = 0 ; <br>
+    % i &lt s . size ( <br>
+    ) ; i ++ ) { cout &lt &lt s [ i ] &lt &lt <br>
+    endl ; } for ( int i = 0 ; i &lt <br>
+    ans . size ( ) ; i <br>
+    ++ <br>
+    ) <br>
+    <br>
+    { <br>
+    cout &lt &lt % ans [ i ] . first &lt &lt "--" &lt &lt ans [ i ] . second &lt &lt endl ; } cout &lt <br>
+    &lt "}" ; <br>
+    } &ltEOF&gt </div>
+</html>

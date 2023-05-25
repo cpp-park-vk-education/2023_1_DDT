@@ -1,49 +1,48 @@
-#include <iostream> 	[C]
-#include <vector> 	[C]
-
-using namespace std ; 	[C]
-
-bool check1 ( vector < int > s , int i , int j ) { 	C R C C C C C C C C C C C C C C 
-for ( int k = 0 ; k < s . size ( ) ; k ++ ) { 	[C]
-if ( s [ k ] != i && s [ k ] != j && s [ k ] % i == 0 && j % s [ k ] == 0 ) { 	[C]
-return 0 ; 	[C]
-} 	[C]
-} 	[C]
-return 1 ; 	[C]
-} 	[C]
-
-int main ( ) { 	[C]
-long long n1 ; 	C C R C 
-cin > > n1 ; 	C C C R C 
-vector < int > s2 ; 	C C C C R C 
-for ( int k = 1 ; k <= n1 ; k ++ ) { 	C C C R C C C R C R C R C C C 
-if ( n1 % k == 0 ) { 	C C R C R C C C C 
-s2 . push_back ( k ) ; 	R C C C R C C 
-} 	[I]
-} 	[C]
-
-if ( n % 2 == 0 ) { 	[I]
-n += 1 ; 	[I]
-n -= 1 ; 	[I]
-} 	[C]
-
-vector < pair < int , int > > ans ; 	[C]
-for ( int i = 0 ; i < s2 . size ( ) ; i ++ ) { 	C C C C C C C C C R C C C C C C C C C 
-for ( int j = i + 1 ; j < s2 . size ( ) ; j ++ ) { 	C C C C C C C C C C C R C C C C C C C C C 
-if ( s2 [ j ] % s2 [ i ] == 0 && check1 ( s2 , s2 [ i ] , s2 [ j ] ) ) { 	C C R C C C C R C C C C C C R C R C R C C C C R C C C C C C 
-ans . push_back ( { s [ i ] , s [ j ] } ) ; 	[C]
-} 	[C]
-} 	[C]
-} 	[C]
-cout < < "graph {" ; 	C C C C I 
-cout < < '\n' ; 	I C C R C 
-for ( int k = 0 ; k < s2 . size ( ) ; k ++ ) { 	C C C R C C C R C R C C C C C R C C C 
-cout < < s [ k ] < < endl ; 	C C C C C R C C C C C 
-} 	[C]
-
-for ( int i = 0 ; i < ans . size ( ) ; i ++ ) { 	[C]
-cout < < ans [ i ] . first < < "--" < < ans [ i ] . second < < endl ; 	[C]
-} 	[C]
-cout < < "}" ; 	C C C C I 
-cout < < '\n' ; 	I I I I C 
-} <EOF>
+<!DOCTYPE html>
+<html lang="en">
+<div><span style="background-color: #96CC9F">#include &ltiostream&gt </span><br>
+<span style="background-color: #96CC9F">#include &ltvector&gt </span><br>
+<span style="background-color: #00FF00">#include&ltalgorithm&gt </span><br>
+<span style="background-color: #00FF00">#include&ltcmath&gt </span><br>
+<span style="background-color: #96CC9F">using </span><span style="background-color: #96CC9F">namespace </span><span style="background-color: #96CC9F">std </span><span style="background-color: #96CC9F">; </span><br>
+<span style="background-color: #CD5C5C"># </span><span style="background-color: #FFD700">const </span><span style="background-color: #FFD700">int </span><span style="background-color: #FFD700">inf </span><span style="background-color: #FFD700">= </span><span style="background-color: #FFD700">1e9 </span><span style="background-color: #FFD700">; </span><br>
+<br>
+<br>
+<span style="background-color: #FFD700">int </span><span style="background-color: #FFD700">main </span><span style="background-color: #FFD700">( </span><span style="background-color: #FFD700">) </span><span style="background-color: #FFD700">{ </span><br>
+<span style="background-color: #96CC9F">int </span><span style="background-color: #FFD700">n </span><span style="background-color: #FFD700">, </span><span style="background-color: #FFD700">s </span><span style="background-color: #FFD700">, </span><span style="background-color: #FFD700">f </span><span style="background-color: #FFD700">; </span><br>
+<span style="background-color: #FFD700">cin </span><span style="background-color: #FFD700">&gt </span><span style="background-color: #FFD700">&gt </span><span style="background-color: #FFD700">n </span><span style="background-color: #FFD700">&gt </span><span style="background-color: #FFD700">&gt </span><span style="background-color: #96CC9F">s </span><span style="background-color: #CD5C5C"># </span><span style="background-color: #FFD700">&gt </span><span style="background-color: #FFD700">&gt </span><span style="background-color: #FFD700">f </span><span style="background-color: #96CC9F">; </span><span style="background-color: #CD5C5C"># </span><br>
+<span style="background-color: #FFD700">s </span><span style="background-color: #FFD700">-- </span><span style="background-color: #FFD700">; </span><span style="background-color: #FFD700">f </span><span style="background-color: #FFD700">-- </span><span style="background-color: #FFD700">; </span><br>
+<span style="background-color: #FFD700">vector </span><span style="background-color: #FFD700">&lt </span><span style="background-color: #FFD700">int </span><span style="background-color: #FFD700">&gt </span><span style="background-color: #FFD700">d </span><span style="background-color: #FFD700">( </span><span style="background-color: #FFD700">n </span><span style="background-color: #FFD700">, </span><span style="background-color: #FFD700">inf </span><span style="background-color: #FFD700">) </span><span style="background-color: #FFD700">, </span><span style="background-color: #FFD700">p </span><span style="background-color: #FFD700">( </span><span style="background-color: #FFD700">n </span><span style="background-color: #FFD700">) </span><span style="background-color: #FFD700">; </span><br>
+<span style="background-color: #FFD700">vector </span><span style="background-color: #FFD700">&lt </span><span style="background-color: #FFD700">int </span><span style="background-color: #FFD700">&gt </span><span style="background-color: #FFD700">u </span><span style="background-color: #FFD700">( </span><span style="background-color: #FFD700">n </span><span style="background-color: #FFD700">) </span><span style="background-color: #FFD700">; </span><br>
+<span style="background-color: #FFD700">vector </span><span style="background-color: #FFD700">&lt </span><span style="background-color: #FFD700">vector </span><span style="background-color: #FFD700">&lt </span><span style="background-color: #FFD700">pair </span><span style="background-color: #FFD700">&lt </span><span style="background-color: #FFD700">int </span><span style="background-color: #FFD700">, </span><span style="background-color: #FFD700">int </span><span style="background-color: #FFD700">&gt </span><span style="background-color: #FFD700">&gt </span><span style="background-color: #FFD700">&gt </span><span style="background-color: #FFD700">g </span><span style="background-color: #FFD700">( </span><span style="background-color: #FFD700">n </span><span style="background-color: #FFD700">) </span><span style="background-color: #FFD700">; </span><br>
+<span style="background-color: #FFD700">for </span><span style="background-color: #96CC9F">( </span><span style="background-color: #CD5C5C"># </span><span style="background-color: #FFD700">int </span><span style="background-color: #FFD700">i </span><span style="background-color: #FFD700">= </span><span style="background-color: #FFD700">0 </span><span style="background-color: #96CC9F">; </span><br>
+<span style="background-color: #CD5C5C"># </span><span style="background-color: #FFD700">i </span><span style="background-color: #FFD700">&lt </span><span style="background-color: #96CC9F">n </span><span style="background-color: #96CC9F">; </span><br>
+<span style="background-color: #CD5C5C"># </span><span style="background-color: #CD5C5C"># </span><span style="background-color: #FFD700">i </span><span style="background-color: #FFD700">++ </span><span style="background-color: #FFD700">) </span><span style="background-color: #FFD700">{ </span><br>
+<span style="background-color: #96CC9F">for </span><span style="background-color: #96CC9F">( </span><span style="background-color: #96CC9F">int </span><span style="background-color: #FFD700">j </span><span style="background-color: #96CC9F">= </span><span style="background-color: #FFD700">0 </span><span style="background-color: #96CC9F">; </span><span style="background-color: #FFD700">j </span><span style="background-color: #FFD700">&lt </span><span style="background-color: #96CC9F">n </span><span style="background-color: #96CC9F">; </span><span style="background-color: #FFD700">j </span><span style="background-color: #96CC9F">++ </span><span style="background-color: #96CC9F">) </span><span style="background-color: #96CC9F">{ </span><br>
+<span style="background-color: #FFD700">int </span><span style="background-color: #FFD700">q </span><span style="background-color: #FFD700">; </span><span style="background-color: #FFD700">scanf </span><span style="background-color: #FFD700">( </span><span style="background-color: #FFD700">"%d" </span><span style="background-color: #FFD700">, </span><span style="background-color: #FFD700">& </span><span style="background-color: #FFD700">q </span><br>
+<span style="background-color: #FFD700">) </span><span style="background-color: #FFD700">; </span><span style="background-color: #FFD700">if </span><span style="background-color: #96CC9F">( </span><span style="background-color: #96CC9F">i </span><span style="background-color: #00FF00">&gt </span><span style="background-color: #00FF00">0 </span><span style="background-color: #96CC9F">) </span><span style="background-color: #FFD700">{ </span><br>
+<span style="background-color: #96CC9F">} </span><br>
+<span style="background-color: #96CC9F">} </span><br>
+<span style="background-color: #CD5C5C"># </span><span style="background-color: #CD5C5C"># </span><span style="background-color: #CD5C5C"># </span><span style="background-color: #FFD700">} </span><br>
+<span style="background-color: #FFD700">d </span><span style="background-color: #FFD700">[ </span><span style="background-color: #FFD700">s </span><span style="background-color: #FFD700">] </span><span style="background-color: #FFD700">= </span><span style="background-color: #FFD700">0 </span><span style="background-color: #96CC9F">; </span><br>
+<span style="background-color: #96CC9F">for </span><span style="background-color: #96CC9F">( </span><span style="background-color: #96CC9F">int </span><span style="background-color: #96CC9F">i </span><span style="background-color: #96CC9F">= </span><span style="background-color: #96CC9F">0 </span><span style="background-color: #96CC9F">; </span><span style="background-color: #96CC9F">i </span><span style="background-color: #96CC9F">&lt </span><span style="background-color: #FFD700">n </span><span style="background-color: #FFD700">; </span><span style="background-color: #FFD700">++ </span><span style="background-color: #FFD700">i </span><span style="background-color: #96CC9F">) </span><span style="background-color: #00FF00">{ </span><br>
+<span style="background-color: #00FF00">int </span><span style="background-color: #FFD700">v </span><span style="background-color: #FFD700">= </span><span style="background-color: #FFD700">- </span><span style="background-color: #FFD700">1 </span><span style="background-color: #FFD700">; </span><br>
+<span style="background-color: #96CC9F">for </span><span style="background-color: #96CC9F">( </span><span style="background-color: #96CC9F">int </span><span style="background-color: #96CC9F">j </span><span style="background-color: #96CC9F">= </span><span style="background-color: #CD5C5C"># </span><span style="background-color: #CD5C5C"># </span><span style="background-color: #FFD700">0 </span><span style="background-color: #96CC9F">; </span><span style="background-color: #96CC9F">j </span><span style="background-color: #96CC9F">&lt </span><span style="background-color: #CD5C5C"># </span><span style="background-color: #CD5C5C"># </span><span style="background-color: #CD5C5C"># </span><span style="background-color: #CD5C5C"># </span><span style="background-color: #FFD700">n </span><span style="background-color: #96CC9F">; </span><span style="background-color: #CD5C5C"># </span><span style="background-color: #96CC9F">++ </span><span style="background-color: #FFD700">j </span><span style="background-color: #FFD700">) </span><br>
+<span style="background-color: #96CC9F">if </span><span style="background-color: #96CC9F">( </span><span style="background-color: #00FF00">! </span><span style="background-color: #FFD700">u </span><span style="background-color: #96CC9F">[ </span><span style="background-color: #96CC9F">j </span><span style="background-color: #96CC9F">] </span><span style="background-color: #CD5C5C"># </span><span style="background-color: #CD5C5C"># </span><span style="background-color: #FFD700">&& </span><span style="background-color: #FFD700">( </span><span style="background-color: #FFD700">v </span><span style="background-color: #96CC9F">== </span><span style="background-color: #CD5C5C"># </span><span style="background-color: #CD5C5C"># </span><span style="background-color: #CD5C5C"># </span><span style="background-color: #FFD700">- </span><span style="background-color: #FFD700">1 </span><span style="background-color: #FFD700">|| </span><span style="background-color: #FFD700">d </span><span style="background-color: #96CC9F">[ </span><span style="background-color: #FFD700">j </span><span style="background-color: #96CC9F">] </span><span style="background-color: #FFD700">&lt </span><span style="background-color: #FFD700">d </span><span style="background-color: #96CC9F">[ </span><span style="background-color: #FFD700">v </span><span style="background-color: #96CC9F">] </span><span style="background-color: #96CC9F">) </span><span style="background-color: #96CC9F">) </span><br>
+<span style="background-color: #FFD700">v </span><span style="background-color: #FFD700">= </span><span style="background-color: #FFD700">j </span><span style="background-color: #FFD700">; </span><br>
+<span style="background-color: #FFD700">if </span><span style="background-color: #FFD700">( </span><span style="background-color: #FFD700">d </span><span style="background-color: #96CC9F">[ </span><span style="background-color: #FFD700">v </span><span style="background-color: #96CC9F">] </span><span style="background-color: #00FF00">== </span><span style="background-color: #00FF00">inf </span><span style="background-color: #00FF00">) </span><span style="background-color: #00FF00">break </span><span style="background-color: #FFD700">; </span><br>
+<span style="background-color: #FFD700">u </span><span style="background-color: #96CC9F">[ </span><span style="background-color: #FFD700">v </span><span style="background-color: #96CC9F">] </span><span style="background-color: #FFD700">= </span><span style="background-color: #FFD700">true </span><span style="background-color: #96CC9F">; </span><br>
+<span style="background-color: #FFD700">for </span><span style="background-color: #FFD700">( </span><span style="background-color: #FFD700">auto </span><span style="background-color: #FFD700">j </span><span style="background-color: #FFD700">: </span><span style="background-color: #FFD700">g </span><span style="background-color: #FFD700">[ </span><span style="background-color: #FFD700">v </span><span style="background-color: #FFD700">] </span><span style="background-color: #FFD700">) </span><span style="background-color: #FFD700">{ </span><br>
+<span style="background-color: #FFD700">int </span><span style="background-color: #FFD700">to </span><span style="background-color: #FFD700">= </span><span style="background-color: #FFD700">j </span><span style="background-color: #FFD700">. </span><span style="background-color: #FFD700">first </span><span style="background-color: #96CC9F">; </span><br>
+<span style="background-color: #00FF00">int </span><span style="background-color: #FFD700">len </span><span style="background-color: #FFD700">= </span><span style="background-color: #FFD700">j </span><span style="background-color: #96CC9F">. </span><span style="background-color: #FFD700">second </span><span style="background-color: #FFD700">; </span><br>
+<span style="background-color: #FFD700">if </span><span style="background-color: #FFD700">( </span><span style="background-color: #FFD700">d </span><span style="background-color: #FFD700">[ </span><span style="background-color: #FFD700">v </span><span style="background-color: #FFD700">] </span><span style="background-color: #FFD700">+ </span><span style="background-color: #FFD700">len </span><span style="background-color: #96CC9F">&lt </span><span style="background-color: #FFD700">d </span><span style="background-color: #96CC9F">[ </span><span style="background-color: #FFD700">to </span><span style="background-color: #96CC9F">] </span><span style="background-color: #FFD700">) </span><span style="background-color: #FFD700">{ </span><br>
+<span style="background-color: #FFD700">d </span><span style="background-color: #FFD700">[ </span><span style="background-color: #FFD700">to </span><span style="background-color: #FFD700">] </span><span style="background-color: #FFD700">= </span><span style="background-color: #FFD700">d </span><span style="background-color: #FFD700">[ </span><span style="background-color: #FFD700">v </span><span style="background-color: #FFD700">] </span><span style="background-color: #FFD700">+ </span><span style="background-color: #FFD700">len </span><span style="background-color: #FFD700">; </span><br>
+<span style="background-color: #FFD700">p </span><span style="background-color: #FFD700">[ </span><span style="background-color: #FFD700">to </span><span style="background-color: #FFD700">] </span><span style="background-color: #FFD700">= </span><span style="background-color: #FFD700">v </span><span style="background-color: #FFD700">; </span><br>
+<span style="background-color: #FFD700">} </span><br>
+<span style="background-color: #FFD700">} </span><br>
+<br>
+<span style="background-color: #FFD700">} </span><br>
+<span style="background-color: #96CC9F">cout </span><span style="background-color: #96CC9F">&lt </span><span style="background-color: #96CC9F">&lt </span><span style="background-color: #00FF00">( </span><span style="background-color: #FFD700">d </span><span style="background-color: #96CC9F">[ </span><span style="background-color: #FFD700">f </span><span style="background-color: #96CC9F">] </span><span style="background-color: #CD5C5C"># </span><span style="background-color: #FFD700">== </span><span style="background-color: #FFD700">inf </span><span style="background-color: #FFD700">? </span><span style="background-color: #FFD700">- </span><span style="background-color: #FFD700">1 </span><span style="background-color: #FFD700">: </span><span style="background-color: #FFD700">d </span><span style="background-color: #96CC9F">[ </span><span style="background-color: #FFD700">f </span><span style="background-color: #96CC9F">] </span><span style="background-color: #CD5C5C"># </span><span style="background-color: #FFD700">) </span><span style="background-color: #96CC9F">&lt </span><span style="background-color: #96CC9F">&lt </span><span style="background-color: #96CC9F">endl </span><span style="background-color: #96CC9F">; </span><span style="background-color: #CD5C5C"># </span><span style="background-color: #CD5C5C"># </span><span style="background-color: #CD5C5C"># </span><br>
+<span style="background-color: #FFD700">return </span><span style="background-color: #FFD700">0 </span><span style="background-color: #96CC9F">; </span><br>
+<span style="background-color: #96CC9F">} </span><span style="background-color: #96CC9F">&ltEOF&gt </span></div>
+</html>

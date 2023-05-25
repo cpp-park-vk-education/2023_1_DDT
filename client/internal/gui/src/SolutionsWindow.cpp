@@ -98,8 +98,8 @@ void SolutionsWindow::on_sendButton_clicked() {
     Solution::Codes codes;
     std::tie(sol, codes) = Core::submitSolution(task.id, filename->text().toUtf8().constData(), path_to_file);
     result->setText(QString::fromStdString(sol.result));
-    original->setText(QString::fromUtf8(codes.original));
-    current->setText(QString::fromUtf8(codes.current));
+    original->setHtml(QString::fromUtf8(codes.original));
+    current->setHtml(QString::fromUtf8(codes.current));
 }
 
 

@@ -5,6 +5,8 @@
 
 #include "HttpClientManager.h"
 
+//const std::string CLIENT_IP = "195.19.32.74";
+//const std::string CLIENT_PORT = "3005";
 const std::string CLIENT_IP = "0.0.0.0";
 const std::string CLIENT_PORT = "8081";
 HttpClientManager client(CLIENT_IP, CLIENT_PORT);

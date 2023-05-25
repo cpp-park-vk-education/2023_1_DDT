@@ -153,17 +153,17 @@ std::pair<std::string, std::string> FoundSame::tokens2html() {
     for (auto& i : res_alignment) {
         size_t pos;
         while ((pos = i.token1.first.find("<")) != std::string::npos) {
-            i.token1.first.replace(pos, 1, "&lt");
+            i.token1.first.replace(pos, 1, "&lt;");
         }
         while ((pos = i.token1.first.find(">")) != std::string::npos) {
-            i.token1.first.replace(pos, 1, "&gt");
+            i.token1.first.replace(pos, 1, "&gt;");
         }
 
         while ((pos = i.token2.first.find("<")) != std::string::npos) {
-            i.token2.first.replace(pos, 1, "&lt");
+            i.token2.first.replace(pos, 1, "&lt;");
         }
         while ((pos = i.token2.first.find(">")) != std::string::npos) {
-            i.token2.first.replace(pos, 1, "&gt");
+            i.token2.first.replace(pos, 1, "&gt;");
         }
 
         if (i.token1.first == "%") {
@@ -200,7 +200,7 @@ std::pair<std::string, std::string> FoundSame::tokens2html() {
         if (f == 1) {
             res1 += "<span>";
             for (int k = 0; k < i.token1.second.second; k++) {
-                res1 += "&nbsp";
+                res1 += "&nbsp;";
             }
             res1 += "</span>";
             f = 0;
@@ -228,7 +228,7 @@ std::pair<std::string, std::string> FoundSame::tokens2html() {
         if (f == 1) {
             res2 += "<span>";
             for (int k = 0; k < i.token2.second.second; k++) {
-                res2 += "&nbsp";
+                res2 += "&nbsp;";
             }
             res2 += "</span>";
             f = 0;

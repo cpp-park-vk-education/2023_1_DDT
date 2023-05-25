@@ -196,16 +196,19 @@ std::pair<std::string, std::string> FoundSame::tokens2html() {
             }
             f = 1;
         }
+        if (f == 1){
+            res1 += "<span>";
+            for (int k = 0; k < i.token1.second.second; k++){
+                res1 += "&nbsp";
+            }
+            res1 += "</span>";
+            f = 0;
+        }
         if (i.op == "I") res1 += teg_I;
         if (i.op == "D") res1 += teg_D;
         if (i.op == "C") res1 += teg_C;
         if (i.op == "R") res1 += teg_R;
-        if (f == 1){
-            for (int k = 0; k < i.token1.second.second; k++){
-                res1 += "&nbsp";
-            }
-            f = 0;
-        }
+
         res1 += i.token1.first;
         if (!i.token1.first.empty()) res1 += " ";
         res1 += close_teg;
@@ -221,16 +224,19 @@ std::pair<std::string, std::string> FoundSame::tokens2html() {
             }
             f = 1;
         }
+        if (f == 1){
+            res2 += "<span>";
+            for (int k = 0; k < i.token2.second.second; k++){
+                res2 += "&nbsp";
+            }
+            res2 += "</span>";
+            f = 0;
+        }
         if (i.op == "I") res2 += teg_I;
         if (i.op == "D") res2 += teg_D;
         if (i.op == "C") res2 += teg_C;
         if (i.op == "R") res2 += teg_R;
-        if (f == 1){
-            for (int k = 0; k < i.token2.second.second; k++){
-                res2 += "&nbsp";
-            }
-            f = 0;
-        }
+
         res2 += i.token2.first;
         if (!i.token2.first.empty()) res2 += " ";
         res2 += close_teg;

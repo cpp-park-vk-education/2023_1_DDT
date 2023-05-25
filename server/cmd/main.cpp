@@ -9,20 +9,20 @@
 int main(int argc, const char* argv[]) {
   FoundSame foundSame;
 
-  std::ifstream fin3("internal/metrics/testProgs/cpp/code1.txt");
-  std::ifstream fin4("internal/metrics/testProgs/cpp/code4.txt");
+  std::ifstream fin3("internal/metrics/testProgs/python/pycode1.txt");
+  std::ifstream fin4("internal/metrics/testProgs/python/pycode2.txt");
 
-  //PythonAntlr pyA1 = PythonAntlr(fin3);
-  //PythonAntlr pyA2 = PythonAntlr(fin4);
+  PythonAntlr pyA1 = PythonAntlr(fin3);
+  PythonAntlr pyA2 = PythonAntlr(fin4);
 
-  MyCppAntlr cppA1 = MyCppAntlr(fin3);
-  MyCppAntlr cppA2 = MyCppAntlr(fin4);
+  //MyCppAntlr cppA1 = MyCppAntlr(fin3);
+  //MyCppAntlr cppA2 = MyCppAntlr(fin4);
 
 //  std::vector <std::pair <std::string, int> > str_int_tokens2 = cppA2.getTokensNamesWithPosition();
 //  std::vector <std::pair <std::string, int> > str_int_tokens1 = cppA1.getTokensNamesWithPosition();
 
-    std::vector <std::pair <std::string, std::pair <int, int> > > str_int_tokens2 = cppA2.getTokensNamesWithFullPosition();
-    std::vector <std::pair <std::string, std::pair <int, int> > > str_int_tokens1 = cppA1.getTokensNamesWithFullPosition();
+    std::vector <std::pair <std::string, std::pair <int, int> > > str_int_tokens2 = pyA2.getTokensNamesWithFullPosition();
+    std::vector <std::pair <std::string, std::pair <int, int> > > str_int_tokens1 = pyA1.getTokensNamesWithFullPosition();
 
     for (auto & i : str_int_tokens1){
         std::cout << i.first << " {" << i.second.first << " " << i.second.second << "}\n";

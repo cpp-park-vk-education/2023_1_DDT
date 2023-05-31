@@ -30,9 +30,7 @@ private:
     std::vector <std::pair <std::string, std::pair <int, int> > > str_int_tokens2;
     std::vector <Elem2> res_alignment;
 
-    std::pair <std::string, std::string> tokens2text();
     std::pair <std::string, std::string> tokens2html();
-    static void outOps (std::vector <std::string> ops, std::string& str);
 };
 
 #endif //SOURCEDOUT_DIFFLIB_H

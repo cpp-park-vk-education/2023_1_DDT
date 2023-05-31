@@ -64,12 +64,6 @@ std::pair <std::string, std::string> FoundSame::getTexts() {
     while (i != 0 || j != 0){
         std::string op = cache[i][j].op;
         auto temp = cache[i][j];
-//        if (temp.token1.second > temp.token2.second) {
-//            temp.token2.second = temp.token1.second;
-//        }
-//        else{
-//            temp.token1.second = temp.token2.second;
-//        }
         cache[i][j] = temp;
         alignment.push_back(cache[i][j]);
         if (op == "C" || op == "R"){
@@ -87,83 +81,29 @@ std::pair <std::string, std::string> FoundSame::getTexts() {
     return tokens2html();
 }
 
-std::pair <std::string, std::string> FoundSame::tokens2text() {
-    std::string res1, res2;
-    std::vector <std::string> ops;
-
-    int line = res_alignment[0].token1.second.first;
-
-    for (auto & i : res_alignment){
-        if (i.token1.second.first > line){
-            while(line != i.token1.second.first){
-                res1 += '\n';
-                line++;
-            }
-        }
-        res1 += i.token1.first, res1 += " ";
-    }
-
-    line = res_alignment[0].token2.second.first;
-    for (auto & i : res_alignment){
-        if (i.token2.second.first > line){
-            res2 += '\t';
-            //outOps(ops, res2);
-            ops.clear();
-            while(line < i.token2.second.first){
-                res2+= '\n';
-                line++;
-            }
-        }
-        ops.push_back(i.op);
-        res2 += i.token2.first, res2 += " ";
-    }
-
-    res1.pop_back(), res2.pop_back();
-
-    return {res1, res2};
-}
-
-void FoundSame::outOps(std::vector <std::string> ops, std::string& str) {
-    if (ops.empty()) return;
-    std::string o = ops[0];
-    int f = 0;
-    for (auto & op : ops){
-        if (op != o){
-            f = 1;
-            break;
-        }
-    }
-    if (f == 0)
-        str += "[" + o + "]";
-    else
-        for (auto & op : ops){
-            str += op, str += " ";
-        }
-}
-
 std::pair<std::string, std::string> FoundSame::tokens2html() {
 
-    std::string teg_I = "<span style=\"background-color: #00FF00\">";
-    std::string teg_D = "<span style=\"background-color: #CD5C5C\">";
-    std::string teg_C = "<span style=\"background-color: #96CC9F\">";
-    std::string teg_R = "<span style=\"background-color: #FFD700\">";
-    std::string close_teg = "</span>";
+    const std::string teg_I = "<span style=\"background-color: #00FF00\">";
+    const std::string teg_D = "<span style=\"background-color: #CD5C5C\">";
+    const std::string teg_C = "<span style=\"background-color: #96CC9F\">";
+    const std::string teg_R = "<span style=\"background-color: #FFD700\">";
+    const std::string close_teg = "</span>";
 
     for (auto & i : res_alignment){
 
         size_t pos;
         while ((pos = i.token1.first.find("<")) != std::string::npos) {
-            i.token1.first.replace(pos, 1, "&lt");
+            i.token1.first.replace(pos, 1, "&lt;");
         }
         while ((pos = i.token1.first.find(">")) != std::string::npos) {
-            i.token1.first.replace(pos, 1, "&gt");
+            i.token1.first.replace(pos, 1, "&gt;");
         }
 
         while ((pos = i.token2.first.find("<")) != std::string::npos) {
-            i.token2.first.replace(pos, 1, "&lt");
+            i.token2.first.replace(pos, 1, "&lt;");
         }
         while ((pos = i.token2.first.find(">")) != std::string::npos) {
-            i.token2.first.replace(pos, 1, "&gt");
+            i.token2.first.replace(pos, 1, "&gt;");
         }
 
         if (i.token1.first == "%") {
@@ -199,7 +139,7 @@ std::pair<std::string, std::string> FoundSame::tokens2html() {
         if (f == 1){
             res1 += "<span>";
             for (int k = 0; k < i.token1.second.second; k++){
-                res1 += "&nbsp";
+                res1 += "&nbsp;";
             }
             res1 += "</span>";
             f = 0;
@@ -227,7 +167,7 @@ std::pair<std::string, std::string> FoundSame::tokens2html() {
         if (f == 1){
             res2 += "<span>";
             for (int k = 0; k < i.token2.second.second; k++){
-                res2 += "&nbsp";
+                res2 += "&nbsp;";
             }
             res2 += "</span>";
             f = 0;

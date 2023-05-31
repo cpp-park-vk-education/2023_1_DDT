@@ -15,18 +15,10 @@ int main(int argc, const char* argv[]) {
   PythonAntlr pyA1 = PythonAntlr(fin3);
   PythonAntlr pyA2 = PythonAntlr(fin4);
 
-  //MyCppAntlr cppA1 = MyCppAntlr(fin3);
-  //MyCppAntlr cppA2 = MyCppAntlr(fin4);
-
-//  std::vector <std::pair <std::string, int> > str_int_tokens2 = cppA2.getTokensNamesWithPosition();
-//  std::vector <std::pair <std::string, int> > str_int_tokens1 = cppA1.getTokensNamesWithPosition();
 
     std::vector <std::pair <std::string, std::pair <int, int> > > str_int_tokens2 = pyA2.getTokensNamesWithFullPosition();
     std::vector <std::pair <std::string, std::pair <int, int> > > str_int_tokens1 = pyA1.getTokensNamesWithFullPosition();
 
-    for (auto & i : str_int_tokens1){
-        std::cout << i.first << " {" << i.second.first << " " << i.second.second << "}\n";
-    }
 
   foundSame.setData(str_int_tokens1, str_int_tokens2);
   std::pair <std::string, std::string> res = foundSame.getTexts();

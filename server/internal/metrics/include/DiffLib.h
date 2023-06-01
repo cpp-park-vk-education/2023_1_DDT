@@ -21,7 +21,7 @@ class FoundSame {
 
  private:
     struct Elem2 {
-        std::string op;  // 1 - Insert, 2 - Delete, 3 - Copy, 4 - Replace
+        std::string op;
         std::pair<std::string, std::pair<int, int> > token1;
         std::pair<std::string, std::pair<int, int> > token2;
     };

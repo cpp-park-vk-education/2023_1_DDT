@@ -29,10 +29,10 @@ std::pair<std::string, std::string> FoundSame::getTexts() {
 
     for (size_t i = 1; i <= n; i++) {
         cache[i][0] = {
-            "I", {"%", str_int_tokens1[i - 1].second}, str_int_tokens1[i - 1]};  // str_int_tokens1[i-1].second мб кал
+            "I", {"%", str_int_tokens1[i - 1].second}, str_int_tokens1[i - 1]};
     }
     for (size_t i = 1; i <= m; i++) {
-        cache[0][i] = {"D", str_int_tokens2[i - 1], {"#", str_int_tokens2[i - 1].second}};  // аналогично
+        cache[0][i] = {"D", str_int_tokens2[i - 1], {"#", str_int_tokens2[i - 1].second}};
     }
 
     std::pair<std::string, std::pair<int, int> > r, h;
@@ -65,12 +65,6 @@ std::pair<std::string, std::string> FoundSame::getTexts() {
     while (i != 0 || j != 0) {
         std::string op = cache[i][j].op;
         auto temp = cache[i][j];
-        //        if (temp.token1.second > temp.token2.second) {
-        //            temp.token2.second = temp.token1.second;
-        //        }
-        //        else{
-        //            temp.token1.second = temp.token2.second;
-        //        }
         cache[i][j] = temp;
         alignment.push_back(cache[i][j]);
         if (op == "C" || op == "R") {

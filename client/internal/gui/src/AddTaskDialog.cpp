@@ -20,6 +20,20 @@ void AddTaskDialog::setupUi(QDialog *AddTaskDialog) {
 
     verticalLayout = new QVBoxLayout(AddTaskDialog);
 
+    nameLabel = new QLabel(AddTaskDialog);
+    nameLabel->setText(QString::fromUtf8("Имя задания:"));
+    verticalLayout->addWidget(nameLabel);
+
+    name = new QLineEdit(AddTaskDialog);
+    verticalLayout->addWidget(name);
+
+    thresholLabel = new QLabel(AddTaskDialog);
+    thresholLabel->setText(QString::fromUtf8("Порог:"));
+    verticalLayout->addWidget(thresholLabel);
+
+    threshold = new QLineEdit(AddTaskDialog);
+    verticalLayout->addWidget(threshold);
+
     label = new QLabel(AddTaskDialog);
     label->setText(QString::fromUtf8("Введите текст задания"));
     verticalLayout->addWidget(label);
@@ -38,11 +52,14 @@ void AddTaskDialog::setupUi(QDialog *AddTaskDialog) {
 
 void AddTaskDialog::on_createButton_clicked() {
     std::string desc = editor->toPlainText().toUtf8().constData();
-    if (desc.empty()) {
-        QMessageBox::warning(this, "Ошибка отправки", "Описание не может быть пустыми");
+    double th = threshold->text().toDouble();
+    std::string n = name->text().toUtf8().constData();
+    if (desc.empty() || n.empty() || threshold->text().isEmpty()) {
+        QMessageBox::warning(this, "Ошибка отправки", "Поля не могут быть пустыми");
         return;
     }
-    unsigned result = Core::createTask(desc);
+
+    unsigned result = Core::createTask(n, desc, th);
     switch (result) {
         case 200:
             accept();

@@ -33,12 +33,14 @@ std::tuple<std::size_t, std::size_t> Serializer::deserialTaskData(const std::str
     return res;
 }
 
-std::string Serializer::deserialNewTaskData(const std::string &val) {
+std::tuple<std::string, std::string, double> Serializer::deserialNewTaskData(const std::string &val) {
     std::stringstream ss;
     ss << val;
     boost::property_tree::ptree json;
     boost::property_tree::read_json(ss, json);
-    return json.get<std::string>("description");
+    std::tuple<std::string, std::string, double> res = {
+        json.get<std::string>("name"), json.get<std::string>("description"), json.get<double>("threshold")};
+    return res;
 }
 
 std::tuple<std::string, std::string> Serializer::deserialUserData(const std::string &val) {
@@ -84,6 +86,8 @@ std::string Serializer::serialAllTasks(const std::vector<Task> &tasks) {
         boost::property_tree::ptree node;
         node.put("task_id", i.getId());
         node.put("description", i.getDescription());
+        node.put("name", i.getName());
+        node.put("threshold", i.getTreshhold());
         tasks_nodes.push_back(std::make_pair("", node));
     }
     json.add_child("tasks", tasks_nodes);
@@ -97,7 +101,6 @@ std::string Serializer::serialUserData(const User &user) {
     json.put("user_id", user.getId());
     json.put("login", user.getLogin());
     json.put("username", user.getUsername());
-    json.put("password", user.getPassword());
     std::stringstream out;
     boost::property_tree::write_json(out, json);
     return out.str();
@@ -108,6 +111,28 @@ std::string Serializer::serialSolution(const Solution &sol) {
     json.put("sol_id", sol.getId());
     json.put("source", sol.getSource());
     json.put("result", sol.getResult());
+    std::stringstream out;
+    boost::property_tree::write_json(out, json);
+    return out.str();
+}
+
+std::string Serializer::serialNewSolution(const Solution &sol, const Solution::Codes &codes) {
+    boost::property_tree::ptree json;
+    json.put("sol_id", sol.getId());
+    json.put("source", sol.getSource());
+    json.put("result", sol.getResult());
+    json.put("your_code", codes.current);
+    json.put("original", codes.original);
+    std::stringstream out;
+    boost::property_tree::write_json(out, json);
+    return out.str();
+}
+
+std::string Serializer::serialTask(const Task &task) {
+    boost::property_tree::ptree json;
+    json.put("name", task.getName());
+    json.put("description", task.getDescription());
+    json.put("threshold", task.getTreshhold());
     std::stringstream out;
     boost::property_tree::write_json(out, json);
     return out.str();

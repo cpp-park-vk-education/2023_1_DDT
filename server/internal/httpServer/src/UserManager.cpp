@@ -13,7 +13,7 @@ http::message_generator UserManager::loginUser(http::request<http::string_body> 
     try {
         std::tie(login, password) = serializer->deserialUserData(req.body());
     } catch (...) {
-        return getBadRequest(req, "Неправильные параметры!");
+        return getBadRequest(req, "Bad parameters");
     }
 
     User user;
@@ -51,7 +51,7 @@ http::message_generator UserManager::registerUser(http::request<http::string_bod
     try {
         std::tie(login, password, username) = serializer->deserialNewUserData(req.body());
     } catch (...) {
-        return getBadRequest(req, "Неправильные параметры!");
+        return getBadRequest(req, "Bad parameters");
     }
 
     try {
@@ -68,10 +68,10 @@ http::message_generator UserManager::registerUser(http::request<http::string_bod
         res.set(http::field::server, BOOST_BEAST_VERSION_STRING);
         res.set(http::field::content_type, "text/plain");
         res.keep_alive(req.keep_alive());
-        res.body() = "Не валидные данные";
+        res.body() = "Невалидные данные";
         res.prepare_payload();
         return res;
     } catch (...) {
-        return getBadRequest(req, "Something went wrong!");
+        return getInternalServerError(req, "Something went wrong!");
     }
 }

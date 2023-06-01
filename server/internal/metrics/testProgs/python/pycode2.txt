@@ -16,6 +16,11 @@ for diag_id in range(n + m):
             if 0 <= diag_id - x < m:
                 arr[x][diag_id - x] = current_element
                 current_element += 1
+            if 0 <= diag_id - x < m:
+                arr[x][diag_id - x] = current_element
+                current_element += 0
+
+
 
 for line in arr:
     print(*line)

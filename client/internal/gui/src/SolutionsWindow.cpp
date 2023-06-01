@@ -34,19 +34,37 @@ void SolutionsWindow::setupUi(QMainWindow *SolutionsWindow) {
 
     taskLayout->addWidget(taskDescription);
 
-    filename = new QLabel(this);
+    filename = new QLabel(SolutionsWindow);
 
-    chooseFileButton = new QPushButton(this);
+    chooseFileButton = new QPushButton(SolutionsWindow);
     chooseFileButton->setText(QString::fromUtf8("Выберите файл"));
 
-    sendButton = new QPushButton(this);
+    sendButton = new QPushButton(SolutionsWindow);
     sendButton->setText(QString::fromUtf8("Отправить"));
 
-    result = new QTextEdit(this);
+    result = new QTextEdit(SolutionsWindow);
     result->setReadOnly(true);
     result->setText(QString::fromUtf8("Отправьте для принятия решения"));
 
-    backButton = new QPushButton(this);
+    solutionWidget = new QWidget(SolutionsWindow);
+    solutionLayout = new QGridLayout(solutionWidget);
+
+    originalLabel = new QLabel(solutionWidget);
+    originalLabel->setText(QString::fromUtf8("Оригинальное решение"));
+    original = new QTextEdit(solutionWidget);
+    original->setReadOnly(true);
+
+    currentLabel = new QLabel(solutionWidget);
+    currentLabel->setText(QString::fromUtf8("Ваше решение"));
+    current = new QTextEdit(solutionWidget);
+    current->setReadOnly(true);
+
+    solutionLayout->addWidget(currentLabel, 0, 0);
+    solutionLayout->addWidget(originalLabel, 0, 1);
+    solutionLayout->addWidget(current, 1, 0);
+    solutionLayout->addWidget(original, 1, 1);
+
+    backButton = new QPushButton(SolutionsWindow);
     backButton->setText(QString::fromUtf8("Назад"));
 
     verticalLayout->addWidget(taskBox);
@@ -54,6 +72,7 @@ void SolutionsWindow::setupUi(QMainWindow *SolutionsWindow) {
     verticalLayout->addWidget(chooseFileButton);
     verticalLayout->addWidget(sendButton);
     verticalLayout->addWidget(result);
+    verticalLayout->addWidget(solutionWidget);
     verticalLayout->addWidget(backButton);
 
     SolutionsWindow->setCentralWidget(centralwidget);
@@ -75,8 +94,12 @@ void SolutionsWindow::on_sendButton_clicked() {
         QMessageBox::warning(this, "Ошибка отправки", "Файл должен быть указан");
         return;
     }
-    Solution sol = Core::submitSolution(task.id, filename->text().toUtf8().constData(), path_to_file);
+    Solution sol;
+    Solution::Codes codes;
+    std::tie(sol, codes) = Core::submitSolution(task.id, filename->text().toUtf8().constData(), path_to_file);
     result->setText(QString::fromStdString(sol.result));
+    original->setHtml(QString::fromUtf8(codes.original));
+    current->setHtml(QString::fromUtf8(codes.current));
 }
 
 

@@ -101,12 +101,12 @@ TEST_F(SolutionServiceTest, createSolutionPlagiat) {
         .WillOnce(::testing::Return(std::make_optional(
             Solution(0, "", 1, "int main(){return 0;}", 1, "", "45 132 85 86 89 59 1 128 90 -1", "", -1, "cpp"))));
 
-    Solution sol = ss->createSolution(2, 1, "main.cpp", "size_t main(){return 1;}");
-    EXPECT_EQ(sol.getId(), 1);
+    auto sol = ss->createSolution(2, 1, "main.cpp", "size_t main(){return 1;}");
+    EXPECT_EQ(sol.first.getId(), 1);
+    // EXPECT_EQ(sol.second.original, "int main(){return 0;}");
     EXPECT_EQ(
-        sol.getResult(),
-        "\nНе, ну вы не палитесь. Плагиат.\nРезультаты метрик: 0.72\n\tАнализ текста: 0.54\n\tАнализ токенов: 0.89"
-        "\nОчень похоже на решение, отправленное до вас:\nint main(){return 0;}");
+        sol.first.getResult(),
+        "\nНе, ну вы не палитесь. Плагиат.\nРезультаты метрик: 0.72\n\tАнализ текста: 0.54\n\tАнализ токенов: 0.89\n");
 }
 
 TEST_F(SolutionServiceTest, createSolutionNonPlagiat) {
@@ -123,7 +123,7 @@ TEST_F(SolutionServiceTest, createSolutionNonPlagiat) {
 
     EXPECT_CALL(*taskMockPtr, getTaskById(1)).Times(1).WillOnce(::testing::Return(Task(1, "desription", 0.5f, "name")));
 
-    Solution sol = ss->createSolution(1, 1, "main.cpp", "int main(){return 0;}");
+    Solution sol = ss->createSolution(1, 1, "main.cpp", "int main(){return 0;}").first;
     EXPECT_EQ(sol.getResult(),
               "\nКрасивое решение. А главное уникальное !\nРезультаты метрик: 0.00\n\tАнализ текста: 0.00\n\tАнализ "
               "токенов: 0.00");

@@ -4,7 +4,6 @@
 #include <utility>
 
 #include "IAntlrWrapper.h"
-#include "IMockMetrics.h"
 #include "ISolutionRepository.hpp"
 #include "ISolutionService.h"
 #include "ITaskRepository.hpp"
@@ -19,7 +18,7 @@ class SolutionService : public ISolutionService {
     std::unique_ptr<ITextMetric> textMetric;
     std::unique_ptr<ITokenMetric> tokenMetric;
     void setAntlrWrapper(const std::string& fileExtension, const std::string& filedata);
-    std::string setResultVerdict(float textBasedRes, float tokenBasedRes, size_t plagiatSolId, float treshold);
+    std::pair<std::string, std::string> setResultVerdict(float textBasedRes, float tokenBasedRes, float treshold);
     std::pair<float, size_t> getMaxTextResMetric(std::vector<Solution>& solutions, const std::string& filedata,
                                                  size_t userId, float treshold);
 
@@ -30,8 +29,8 @@ class SolutionService : public ISolutionService {
     explicit SolutionService(std::unique_ptr<ISolutionRepository> solutionRepo,
                              std::unique_ptr<ITaskRepository> taskRepo);
     SolutionService();
-    Solution createSolution(size_t userId, size_t taskId, const std::string& filename,
-                            const std::string& filedata) override;
+    std::pair<Solution, Solution::Codes> createSolution(size_t userId, size_t taskId, const std::string& filename,
+                                                        const std::string& filedata) override;
     void deleteSolutionById(size_t solId) override;
     std::vector<Solution> getSolutionsByUserAndTaskId(size_t user_id, size_t task_id) override;
     std::pair<std::string, std::string> getMetrics(size_t solId) override;

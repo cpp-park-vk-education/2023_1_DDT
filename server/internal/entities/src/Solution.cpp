@@ -4,6 +4,9 @@
 #include <string>
 #include <utility>
 
+Solution::Codes::Codes(const std::string &original, const std::string &current)
+    : original(original), current(current) {}
+
 Solution::Solution(size_t id, std::string sendDate, size_t senderId, std::string source, size_t taskId,
                    std::string result, std::string tokens, std::string astTree, size_t orig_solution,
                    std::string language_) noexcept

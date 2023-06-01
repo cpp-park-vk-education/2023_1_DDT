@@ -11,24 +11,31 @@ TaskManager::TaskManager() : serializer(std::make_shared<Serializer>()), taskSer
 void TaskManager::setService(std::shared_ptr<ITaskService> service) { taskService = service; }
 
 http::message_generator TaskManager::createTask(http::request<http::string_body> &&req) {
+    std::string description, name;
+    double threshold;
     try {
-        std::string description = serializer->deserialNewTaskData(req.body());
-        taskService->createTask(description);
-        http::response<http::empty_body> res{http::status::ok, req.version()};
+        std::tie(name, description, threshold) = serializer->deserialNewTaskData(req.body());
+    } catch (...) {
+        return getBadRequest(req, "Bad parameters");
+    }
+
+    try {
+        Task task = taskService->createTask(description, name, threshold);
+        http::response<http::string_body> res{http::status::ok, req.version()};
         res.set(http::field::server, BOOST_BEAST_VERSION_STRING);
         res.set(http::field::content_type, "text/plain");
         res.keep_alive(req.keep_alive());
+        res.body() = serializer->serialTask(task);
         res.prepare_payload();
         return res;
     } catch (...) {
-        return getBadRequest(req, "Something went wrong!");
+        return getInternalServerError(req, "Something went wrong!");
     }
 }
 
 http::message_generator TaskManager::getAllTasks(http::request<http::string_body> &&req) {
     try {
         std::vector<Task> tasks = taskService->getAllTasks();
-        //    std::vector<Task> tasks = TmpTaskService::getAllTasks();
         http::response<http::string_body> res{http::status::ok, req.version()};
         res.set(http::field::server, BOOST_BEAST_VERSION_STRING);
         res.set(http::field::content_type, "text/plain");
@@ -37,6 +44,6 @@ http::message_generator TaskManager::getAllTasks(http::request<http::string_body
         res.prepare_payload();
         return res;
     } catch (...) {
-        return getBadRequest(req, "Something went wrong!");
+        return getInternalServerError(req, "Something went wrong!");
     }
 }

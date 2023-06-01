@@ -39,6 +39,12 @@ private:
     QPushButton* sendButton = nullptr;
     QTextEdit* result = nullptr;
     QPushButton* backButton = nullptr;
+    QWidget* solutionWidget = nullptr;
+    QGridLayout* solutionLayout = nullptr;
+    QLabel* originalLabel = nullptr;
+    QTextEdit* original = nullptr;
+    QLabel* currentLabel = nullptr;
+    QTextEdit* current = nullptr;
 
     void setupUi(QMainWindow *UserWindow);
 };

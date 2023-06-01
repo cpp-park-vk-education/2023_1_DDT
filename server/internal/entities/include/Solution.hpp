@@ -7,10 +7,18 @@
 
 class Solution {
 public:
-    Solution(size_t id, std::string sendDate, size_t senderId,
-             std::string source, size_t taskId, std::string result,
-             std::string tokens, std::string astTree, size_t orig_solution,
-             std::string language) noexcept;
+    struct Codes {
+        std::string original;
+        std::string current;
+        Codes(const std::string &original, const std::string &current);
+        Codes() = default;
+    };
+
+    Solution(size_t id, std::string sendDate,
+             size_t senderId, std::string source,
+             size_t taskId, std::string result,
+             std::string tokens, std::string astTree,
+             size_t orig_solution, std::string language) noexcept;
 
     Solution(std::string sendDate, size_t senderId,
              std::string source, size_t taskId, std::string result,
@@ -63,7 +71,7 @@ public:
 
     bool operator!=(const Solution &rhs) const noexcept;
 
-private:
+ private:
     size_t id;
     std::string send_date;
     size_t sender_id;

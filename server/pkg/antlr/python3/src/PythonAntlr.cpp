@@ -22,6 +22,37 @@ std::vector<antlr4::Token*> PythonAntlr::getTokens() {
     return ans;
 }
 
+std::vector<std::pair<std::string, int>> PythonAntlr::getTokensNamesWithPosition() {
+    tokenStream_ptr->fill();
+    std::vector<std::pair<std::string, int>> ans(tokenStream_ptr->size());
+
+    int i = 0;
+    for (antlr4::Token* token : tokenStream_ptr->getTokens()) {
+        auto type = token->getText();
+        int line = token->getLine();
+        ans[i] = std::make_pair(type, line);
+        i++;
+    }
+
+    return ans;
+}
+
+std::vector<std::pair<std::string, std::pair<int, int>>> PythonAntlr::getTokensNamesWithFullPosition() {
+    tokenStream_ptr->fill();
+    std::vector<std::pair<std::string, std::pair<int, int>>> ans(tokenStream_ptr->size());
+
+    size_t i = 0;
+    for (antlr4::Token* token : tokenStream_ptr->getTokens()) {
+        auto type = token->getText();
+        int line = token->getLine();
+        int pos = token->getCharPositionInLine();
+        ans[i] = std::make_pair(type, std::make_pair(line, pos));
+        i++;
+    }
+
+    return ans;
+}
+
 std::vector<int> PythonAntlr::getTokensTypes() {
     tokenStream_ptr->fill();
     std::vector<int> ans(tokenStream_ptr->size());
@@ -48,6 +79,19 @@ std::string PythonAntlr::getTokensString() {
     }
 
     return res;
+}
+
+std::vector<std::string> PythonAntlr::getTokensNames() {
+    tokenStream_ptr->fill();
+    std::vector<std::string> ans(tokenStream_ptr->size());
+
+    int i = 0;
+    for (antlr4::Token* token : tokenStream_ptr->getTokens()) {
+        ans[i] = token->getText();
+        i++;
+    }
+
+    return ans;
 }
 
 std::string PythonAntlr::getTreeString() {

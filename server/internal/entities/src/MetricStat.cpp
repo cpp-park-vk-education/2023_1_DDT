@@ -3,26 +3,26 @@
 
 MetricStat::MetricStat(unsigned long solutionId, float textBasedRes, float tokenBasedRes, float treeBasedRes,
                        bool verdict, float meanRes) noexcept
-    : id(0),
-      solution_id(solutionId),
-      text_based_res(textBasedRes),
-      token_based_res(tokenBasedRes),
-      tree_based_res(treeBasedRes),
-      verdict(verdict),
-      mean_res(meanRes) {}
+        : id(0),
+          solution_id(solutionId),
+          text_based_res(textBasedRes),
+          token_based_res(tokenBasedRes),
+          tree_based_res(treeBasedRes),
+          verdict(verdict),
+          mean_res(meanRes) {}
 
 MetricStat::MetricStat(size_t id, size_t solutionId, float textBasedRes, float tokenBasedRes, float treeBasedRes,
                        bool verdict, float meanRes) noexcept
-    : id(id),
-      solution_id(solutionId),
-      text_based_res(textBasedRes),
-      token_based_res(tokenBasedRes),
-      tree_based_res(treeBasedRes),
-      verdict(verdict),
-      mean_res(meanRes) {}
+        : id(id),
+          solution_id(solutionId),
+          text_based_res(textBasedRes),
+          token_based_res(tokenBasedRes),
+          tree_based_res(treeBasedRes),
+          verdict(verdict),
+          mean_res(meanRes) {}
 
 MetricStat::MetricStat() noexcept
-    : id(0), solution_id(0), text_based_res(0), token_based_res(0), tree_based_res(), verdict(true), mean_res(0) {}
+        : id(0), solution_id(0), text_based_res(0), token_based_res(0), tree_based_res(), verdict(true), mean_res(0) {}
 
 size_t MetricStat::getId() const noexcept { return id; }
 

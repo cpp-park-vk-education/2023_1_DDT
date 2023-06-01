@@ -1,20 +1,20 @@
 set(CMAKE_PREFIX_PATH build)
 project(SourcedOut CXX)
 find_package(Boost 1.81.0 REQUIRED)
-IF(APPLE)
+IF (APPLE)
     set(CMAKE_THREAD_LIBS_INIT "-lpthread")
     set(CMAKE_HAVE_THREADS_LIBRARY 1)
     set(CMAKE_USE_WIN32_THREADS_INIT 0)
     set(CMAKE_USE_PTHREADS_INIT 1)
     set(THREADS_PREFER_PTHREAD_FLAG ON)
-ELSE()
+ELSE ()
     find_package(Threads REQUIRED)
-ENDIF()
+ENDIF ()
 
 find_library(PQXX_LIB pqxx)
-#find_package(libpqxx REQUIRED)
+
 find_package(GTest REQUIRED)
-#find_package(nlohmann_json REQUIRED)
+
 message(STATUS ${nlohmann_json_LIBRARIES})
 
 set(THREADS_PREFER_PTHREAD_FLAG ON)

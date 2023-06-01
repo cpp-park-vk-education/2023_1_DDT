@@ -4,12 +4,12 @@
 #include <utility>
 
 Task::Task(std::string description_, float treshold_, std::string name_) noexcept
-    : id(0), description(std::move(description_)), treshhold(treshold_), name(std::move(name_)) {}
+        : id(0), description(std::move(description_)), treshhold(treshold_), name(std::move(name_)) {}
 
 Task::Task(size_t id, std::string description_, float treshold_, std::string name_) noexcept
-    : id(id), description(std::move(description_)), treshhold(treshold_), name(std::move(name_)) {}
+        : id(id), description(std::move(description_)), treshhold(treshold_), name(std::move(name_)) {}
 
-Task::Task() noexcept : id(0), treshhold(0) {}
+Task::Task() noexcept: id(0), treshhold(0) {}
 
 unsigned long Task::getId() const noexcept { return id; }
 

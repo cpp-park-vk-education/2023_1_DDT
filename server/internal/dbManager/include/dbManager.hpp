@@ -10,18 +10,18 @@
 #include <thread>
 #include <vector>
 
-// #include "dotenv.h"
-//  using namespace dotenv;
+
 class dbManager {
- public:
+public:
     dbManager();
 
     std::shared_ptr<pqxx::connection> connection();
 
     void freeConnection(const std::shared_ptr<pqxx::connection> &);
 
- private:
-    const size_t POOL_SIZE = 10;
+private:
+    const size_t POOL_SIZE = std::getenv("POOL_SIZE") ?
+                             std::stoul(std::getenv("POOL_SIZE")) : 10;
     std::condition_variable m_condition;
 
     void createPool();

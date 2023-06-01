@@ -13,7 +13,7 @@
 using namespace pqxx;
 
 class SolutionRepository : public ISolutionRepository {
- public:
+public:
     SolutionRepository();
 
     std::optional<Solution> getSolutionById(size_t id) override;
@@ -36,7 +36,7 @@ class SolutionRepository : public ISolutionRepository {
 
     std::optional<Solution> getOriginalSolution(size_t id) override;
 
- private:
+private:
     static Solution makeSolution(const result::const_iterator &c);
 
     std::shared_ptr<dbManager> manager;

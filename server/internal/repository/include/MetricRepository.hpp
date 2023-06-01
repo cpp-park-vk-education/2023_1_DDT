@@ -10,7 +10,7 @@
 using namespace pqxx;
 
 class MetricRepository : public IMetricRepository {
- public:
+public:
     MetricRepository();
 
     std::optional<MetricStat> getById(size_t id) override;
@@ -23,7 +23,7 @@ class MetricRepository : public IMetricRepository {
 
     void deleteMetricById(size_t id) override;
 
- private:
+private:
     std::shared_ptr<dbManager> manager;
 
     static MetricStat makeMetric(const result::const_iterator &c);

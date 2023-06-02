@@ -6,7 +6,7 @@
 #include <utility>
 
 class Solution {
-public:
+ public:
     struct Codes {
         std::string original;
         std::string current;
@@ -14,16 +14,11 @@ public:
         Codes() = default;
     };
 
-    Solution(size_t id, std::string sendDate,
-             size_t senderId, std::string source,
-             size_t taskId, std::string result,
-             std::string tokens, std::string astTree,
-             size_t orig_solution, std::string language) noexcept;
+    Solution(size_t id, std::string sendDate, size_t senderId, std::string source, size_t taskId, std::string result,
+             std::string tokens, std::string astTree, size_t orig_solution, std::string language) noexcept;
 
-    Solution(std::string sendDate, size_t senderId,
-             std::string source, size_t taskId, std::string result,
-             std::string tokens, std::string astTree,
-             size_t orig_solution, std::string language) noexcept;
+    Solution(std::string sendDate, size_t senderId, std::string source, size_t taskId, std::string result,
+             std::string tokens, std::string astTree, size_t orig_solution, std::string language) noexcept;
 
     Solution() noexcept;
 

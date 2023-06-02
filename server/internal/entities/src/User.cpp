@@ -3,12 +3,12 @@
 #include <iostream>
 
 User::User(size_t id_, std::string login_, std::string password_, std::string username_) noexcept
-        : id(id_), login(std::move(login_)), password(std::move(password_)), username(std::move(username_)) {}
+    : id(id_), login(std::move(login_)), password(std::move(password_)), username(std::move(username_)) {}
 
 User::User(std::string login_, std::string password_, std::string username_) noexcept
-        : id(0), login(std::move(login_)), password(std::move(password_)), username(std::move(username_)) {}
+    : id(0), login(std::move(login_)), password(std::move(password_)), username(std::move(username_)) {}
 
-User::User() noexcept: id(0) {}
+User::User() noexcept : id(0) {}
 
 const std::string &User::getLogin() const noexcept { return login; }
 

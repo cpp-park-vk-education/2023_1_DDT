@@ -13,7 +13,7 @@
 using namespace pqxx;
 
 class UserRepository : public IUserRepository {
-public:
+ public:
     UserRepository();
 
     std::optional<User> getUserById(size_t id) override;
@@ -30,7 +30,7 @@ public:
 
     void update(User user) override;
 
-private:
+ private:
     static User makeUser(const result::const_iterator &c);
 
     std::shared_ptr<dbManager> manager;

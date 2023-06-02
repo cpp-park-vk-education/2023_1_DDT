@@ -12,7 +12,7 @@
 using namespace pqxx;
 
 class TaskRepository : public ITaskRepository {
-public:
+ public:
     TaskRepository();
 
     std::optional<Task> getTaskById(size_t id) override;
@@ -27,7 +27,7 @@ public:
 
     void deleteTaskById(size_t task_id) override;
 
-private:
+ private:
     static Task makeTask(const result::const_iterator &c);
 
     std::shared_ptr<dbManager> manager;

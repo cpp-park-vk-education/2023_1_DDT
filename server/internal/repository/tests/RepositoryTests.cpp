@@ -30,7 +30,6 @@ TEST(UserRepository_CRUD_Test, CRUD) {
     EXPECT_NO_FATAL_FAILURE(rep.deleteUser(new_user));
 }
 
-
 TEST(TaskRepository_CRUD_Test, CRUD) {
     TaskRepository rep;
 
@@ -51,7 +50,6 @@ TEST(TaskRepository_CRUD_Test, CRUD) {
     EXPECT_NO_FATAL_FAILURE(rep.updateTask(new_task));
     EXPECT_NO_FATAL_FAILURE(rep.deleteTask(new_task));
 }
-
 
 TEST(SolutionRepository_CRUD_Test, CRUD) {
     SolutionRepository rep;
@@ -74,7 +72,6 @@ TEST(SolutionRepository_CRUD_Test, CRUD) {
     EXPECT_NO_FATAL_FAILURE(rep.deleteSolution(new_solution));
 }
 
-
 TEST(MetricRepository_CRUD_Test, CRUD) {
     MetricRepository rep;
     MetricStat metricStat(1, 0.8f, 0.9f, 0.89f, true, 0.85f);
@@ -93,16 +90,13 @@ TEST(MetricRepository_CRUD_Test, CRUD) {
     EXPECT_NO_FATAL_FAILURE(rep.deleteMetric(new_stat));
 }
 
-
 TEST(UserRepository_CRUD_Test, getAllUsers) {
     UserRepository rep;
-    std::vector<User> v = {{"test@test.com",  "test",  "testuser"},
-                           {"test2@test.com", "test2", "testuser2"}};
+    std::vector<User> v = {{"test@test.com", "test", "testuser"}, {"test2@test.com", "test2", "testuser2"}};
     EXPECT_NO_FATAL_FAILURE(rep.getAllUsers());
     std::vector<User> new_v = rep.getAllUsers();
     EXPECT_EQ(v, new_v);
 }
-
 
 TEST(UserRepository_CRUD_Test, loginLikeId) {
     UserRepository rep;
@@ -115,7 +109,6 @@ TEST(UserRepository_CRUD_Test, loginLikeId) {
     EXPECT_EQ(new_user_id, new_user_login);
     EXPECT_NO_FATAL_FAILURE(rep.deleteUser(user));
 }
-
 
 TEST(SolutionRepository_CRUD_Test, CRUD_getSolutionsBySenderId) {
     SolutionRepository rep;
@@ -134,14 +127,13 @@ TEST(SolutionRepository_CRUD_Test, CRUD_getSolutionsBySenderId) {
     EXPECT_EQ(solution2, rep.getSolutionById(id2));
 
     std::vector<Solution> v = {{id1, "01.01.1970", 1, ":/C/Users", 1, "result", "tokens.txt", "tree.txt", 1, "py"},
-                               {id2, "01.01.1970", 1, "home/usr",  1, "result", "tokens.txt", "tree.txt", 1, "cpp"}};
+                               {id2, "01.01.1970", 1, "home/usr", 1, "result", "tokens.txt", "tree.txt", 1, "cpp"}};
     std::vector<Solution> new_v = rep.getSolutionsBySenderId(solution1.getSenderId());
 
     EXPECT_EQ(v, new_v);
     EXPECT_NO_FATAL_FAILURE(rep.deleteSolution(solution1));
     EXPECT_NO_FATAL_FAILURE(rep.deleteSolution(solution2));
 }
-
 
 TEST(SolutionRepository_CRUD_Test, CRUD_getSolutionsByTaskId) {
     SolutionRepository rep;
@@ -161,7 +153,6 @@ TEST(SolutionRepository_CRUD_Test, CRUD_getSolutionsByTaskId) {
     EXPECT_NO_FATAL_FAILURE(rep.deleteSolution(solution2));
 }
 
-
 TEST(SolutionRepository_CRUD_Test, CRUD_getSolutionsByTaskIdAndLanguage) {
     SolutionRepository rep;
     Solution solution1("01.01.1970", 1, ":/C/Users", 1, "result", "tokens.txt", "tree.txt", 1, "py");
@@ -177,7 +168,6 @@ TEST(SolutionRepository_CRUD_Test, CRUD_getSolutionsByTaskIdAndLanguage) {
     EXPECT_NO_FATAL_FAILURE(rep.deleteSolution(solution1));
     EXPECT_NO_FATAL_FAILURE(rep.deleteSolution(solution2));
 }
-
 
 TEST(SolutionRepository_CRUD_Test, CRUD_getSolutionsByTaskIdAndSenderId) {
     SolutionRepository rep;
@@ -199,7 +189,6 @@ TEST(SolutionRepository_CRUD_Test, CRUD_getSolutionsByTaskIdAndSenderId) {
     EXPECT_NO_FATAL_FAILURE(rep.deleteSolution(solution3));
 }
 
-
 TEST(SolutionRepository_CRUD_Test, tryToAddWithNotExistingTask) {
     SolutionRepository rep;
     Solution solution("01.01.1970", 1, ":/C/Users", 100500, "result", "tokens.txt", "tree.txt", 1, "py");
@@ -209,7 +198,6 @@ TEST(SolutionRepository_CRUD_Test, tryToAddWithNotExistingTask) {
         std::cout << e.what();
     }
 }
-
 
 TEST(SolutionRepository_CRUD_Test, tryToStoreWithNotExistingSender) {
     SolutionRepository rep;

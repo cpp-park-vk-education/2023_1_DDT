@@ -13,6 +13,7 @@ SolutionsWindow::SolutionsWindow(Task task, QWidget *parent) : QMainWindow(paren
     connect(backButton, &QPushButton::clicked, this, &SolutionsWindow::on_backButton_clicked);
     connect(chooseFileButton, &QPushButton::clicked, this, &SolutionsWindow::on_chooseFileButton_clicked);
     connect(sendButton, &QPushButton::clicked, this, &SolutionsWindow::on_sendButton_clicked);
+    thread.start();
 }
 
 void SolutionsWindow::setupUi(QMainWindow *SolutionsWindow) {
@@ -94,12 +95,28 @@ void SolutionsWindow::on_sendButton_clicked() {
         QMessageBox::warning(this, "Ошибка отправки", "Файл должен быть указан");
         return;
     }
+
+    SolutionDownloadTask* downloadTask;
+    downloadTask = new SolutionDownloadTask(task.id, filename->text().toUtf8().constData(), path_to_file);
+    downloadTask->moveToThread(&thread);
+
+    connect(downloadTask, &SolutionDownloadTask::Ready, this, &SolutionsWindow::on_solutionData_ready);
+    connect(downloadTask, &SolutionDownloadTask::Ready, downloadTask, &QObject::deleteLater);
+
+    QMetaObject::invokeMethod(downloadTask, [downloadTask]() {
+        downloadTask->Start();
+    });
+
+    result->setText(QString::fromStdString("Файл отправлен, идет обработка"));
+}
+
+void SolutionsWindow::on_solutionData_ready(std::pair<Solution, Solution::Codes> data) {
     Solution sol;
     Solution::Codes codes;
-    std::tie(sol, codes) = Core::submitSolution(task.id, filename->text().toUtf8().constData(), path_to_file);
+    std::tie(sol, codes) = data;
     result->setText(QString::fromStdString(sol.result));
-    original->setHtml(QString::fromUtf8(codes.original));
-    current->setHtml(QString::fromUtf8(codes.current));
+    original->setHtml(QString::fromStdString(codes.original));
+    current->setHtml(QString::fromStdString(codes.current));
 }
 
 
